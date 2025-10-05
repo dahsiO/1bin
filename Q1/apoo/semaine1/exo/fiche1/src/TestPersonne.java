@@ -4,7 +4,6 @@ public class TestPersonne {
         // cree les domiciles
         Adresse adresse1 = new Adresse("louise", "43", "1030", "bruxelles");
 
-
         // Création de 3 personnes
         Personne p1 = new Personne("Durand", "Marie", 15, 3, 1995, adresse1 );
         Personne p2 = new Personne("Martin", "Paul", 7, 11, 1988,adresse1 );

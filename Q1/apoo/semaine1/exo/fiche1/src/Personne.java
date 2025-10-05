@@ -7,7 +7,6 @@ public class Personne {
     private Adresse domicile;
 
 
-
     // Constructeur
 
 
@@ -18,6 +17,7 @@ public class Personne {
         this.moisNaissance = moisNaissance;
         this.anneeNaissance = anneeNaissance;
         this.domicile = domicile;
+
     }
 
     // Âge à la fin de l'année actuelle
@@ -44,6 +44,6 @@ public class Personne {
     // Pour affichage de l’état de la personne
     @Override
     public String toString() {
-        return prenom + " " + nom + " (né le " + getDateNaissance() + "), habite : " + domicile.toString();
+        return prenom + " " + nom + " (né le " + getDateNaissance() + "), habite : " + domicile;
     }
 }

@@ -37,6 +37,8 @@ public class Personne {
         return Naissance.toString();
     }
 
+
+
     public void demenager(String rue, String numero, String codePostal, String ville) {
         this.domicile = new Adresse(rue, numero, codePostal, ville);
     }

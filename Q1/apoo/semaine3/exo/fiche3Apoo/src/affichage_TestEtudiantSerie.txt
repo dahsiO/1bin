@@ -1,0 +1,20 @@
+19890902-112, Capelle Alain (série 1)
+19900623-243, Lepage David (série 1)
+19911114-121, Tonneau Jeremy (série 1)
+19900101-139, Mimoun Brahim (série 1)
+Série 1
+
+Election 1_____________________________
+Série 1 (délégué : Alain Capelle)
+
+Election 2_____________________________
+Série 2
+
+Election 3_____________________________
+Série 1 (délégué : Alain Capelle)
+
+Changement série 1________________________
+19900101-139, Mimoun Brahim (série 2)
+
+Changement série 2________________________
+19890902-112, Capelle Alain (série 1)
