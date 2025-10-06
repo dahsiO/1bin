@@ -33,8 +33,8 @@ public class CompteEnBanque {
         return solde;
     }
 
-    public void setDateDeValidite(Date dateDeValidite) {
-        this.dateDeValidite = dateDeValidite;
+    public void setDateDeValidite(Date nouvelledateDeValidite) {
+        this.dateDeValidite = nouvelledateDeValidite;
     }
     public double retrait(double montant){
         return solde -=montant;
@@ -48,7 +48,7 @@ public class CompteEnBanque {
     public boolean virement(CompteEnBanque compteEnBanque, double montant){
         // verifier si le compte est pas null
         if (compteEnBanque == null){
-
+        return false;
         }
         //verifier si il fait pas de virement a lui meme
         if (compteEnBanque == this){
@@ -58,11 +58,12 @@ public class CompteEnBanque {
         if (solde < montant) {
             return false;
         }
-        if (montant < 0){
+        if (montant <= 0){
             return false;
         }
         // diminuier du compte
         else compteEnBanque.solde += montant;
+        solde-=montant;
         return true;
     }
 
@@ -73,6 +74,6 @@ public class CompteEnBanque {
                 " dateDeValidite : " + dateDeValidite +
                 " numero : " + numero +
                 " dateOuverture : " + dateOuverture +
-                " solde : " + solde ;
+                " solde : " + solde +"$" ;
     }
 }

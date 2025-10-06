@@ -16,18 +16,19 @@ public class TestCompteEnBanque {
 
         //creation de compte en banque
         CompteEnBanque compteEnBanque = new CompteEnBanque(p1,dateDeValidité1,"01",dateDeOuverture1,2000);
-        CompteEnBanque compteEnBanque2 = new CompteEnBanque(p2,dateDeValidité2,"01",dateDeOuverture2,1200);
+        CompteEnBanque compteEnBanque2 = new CompteEnBanque(p2,dateDeValidité2,"02",dateDeOuverture2,1200);
 
 
         //teste
         compteEnBanque.depot(200);
-        System.out.println(compteEnBanque);
+        System.out.println(compteEnBanque.getSolde());
 
         compteEnBanque.retrait(100);
-        System.out.println(compteEnBanque);
+        System.out.println(compteEnBanque.getSolde());
 
         compteEnBanque.virement(compteEnBanque2,2000);
-        System.out.println(compteEnBanque2);
+        System.out.println(compteEnBanque2.getSolde());
+        System.out.println(compteEnBanque.getSolde());
 
     }
 }
