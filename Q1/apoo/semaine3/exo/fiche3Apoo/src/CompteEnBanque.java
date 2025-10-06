@@ -38,6 +38,7 @@ public class CompteEnBanque {
     }
     public double retrait(double montant){
         return solde -=montant;
+
     }
 
 
@@ -45,12 +46,22 @@ public class CompteEnBanque {
         return solde+=montant;
     }
     public boolean virement(CompteEnBanque compteEnBanque, double montant){
-        if (solde < 0) {
+        // verifier si le compte est pas null
+        if (compteEnBanque == null){
+
+        }
+        //verifier si il fait pas de virement a lui meme
+        if (compteEnBanque == this){
+            return false;
+        }
+        // verifier que il a le solde sufisant
+        if (solde < montant) {
             return false;
         }
         if (montant < 0){
             return false;
         }
+        // diminuier du compte
         else compteEnBanque.solde += montant;
         return true;
     }
