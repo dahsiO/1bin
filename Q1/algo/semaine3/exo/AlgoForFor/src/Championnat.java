@@ -25,5 +25,3 @@ public class Championnat {
             System.out.println("la moyenne est :"+sommeDesNote/6);
         }
     }
-
-
