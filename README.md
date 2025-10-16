@@ -1,4 +1,4 @@
-<!-- BANNIÈRE -->
+µ<!-- BANNIÈRE -->
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=rect&color=0:1e3c72,100:2a5298&height=120&section=header&text=🚀%20Mon%20Année%20à%20HE%20Vinci%20–%202025%20🎓&fontColor=ffffff&fontSize=28&animation=fadeIn" alt="Bannière"/>
 </p>
@@ -82,26 +82,6 @@ Chaque commit représente une **étape concrète de mon apprentissage** 🚀
   <img src="https://github-readme-streak-stats.herokuapp.com?user=oussama-dahsi&theme=tokyonight&hide_border=true&border_radius=10" />
 </p>
 
----
-
-## 📊 Statistiques & Badges
-
-<p align="center">
-  <img src="https://img.shields.io/github/last-commit/oussama-dahsi/vinci2025?style=for-the-badge&color=blueviolet"/>
-  <img src="https://img.shields.io/github/repo-size/oussama-dahsi/vinci2025?style=for-the-badge&color=blue"/>
-  <img src="https://img.shields.io/github/languages/count/oussama-dahsi/vinci2025?style=for-the-badge&color=teal"/>
-  <img src="https://img.shields.io/github/stars/oussama-dahsi/vinci2025?style=for-the-badge&color=yellow"/>
-</p>
-
----
-
-## 🌐 Liens utiles
-
-<p align="center">
-  <a href="https://github.com/oussama-dahsi"><img src="https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge&logo=github" /></a>
-  <a href="https://www.linkedin.com/in/ton-profil"><img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin" /></a>
-  <a href="mailto:ton.email@exemple.com"><img src="https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail" /></a>
-</p>
 
 ---
 
