@@ -13,8 +13,24 @@ public class MultiplicationAuFinish {
 		System.out.println("Calculez : " + premierNombre + " x " + secondNombre + " = ");
 		// A COMPLETER
 
+// Calcul du résultat attendu
+		int resultatCorrect = premierNombre * secondNombre;
 
+		// Affiche la question
+		System.out.print("Calculez : " + premierNombre + " x " + secondNombre + " = ");
+		int reponse = scanner.nextInt();  // première réponse de l'utilisateur
+
+		// Tant que la réponse est fausse, on recommence
+		while (reponse != resultatCorrect) {
+			System.out.println("C'est faux, recommence !");
+			System.out.print("Calculez : " + premierNombre + " x " + secondNombre + " = ");
+			reponse = scanner.nextInt();  // nouvelle tentative
+		}
+
+		// Si on sort de la boucle, c’est que la réponse est correcte
+		System.out.println("Bravo ! La bonne réponse était bien " + resultatCorrect + " !");
 	}
+
 
 	// A NE PAS MODIFIER
 	public static int unEntierAuHasardEntre (int valeurMinimale, int valeurMaximale){
