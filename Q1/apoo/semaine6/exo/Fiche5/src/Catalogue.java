@@ -21,38 +21,31 @@ public class Catalogue {
         return sb.toString();
     }
 
-    // Vérifier si un livre est présent (par ISBN)
-    public boolean contientLivre(String isbn) {
-        for (Livre livre : livres) {
-            if (livre.getIsbn().equals(isbn)) {
-                return true;
-            }
-        }
-        return false;
+    // Vérifier si un livre est présent
+    public boolean contientLivre(Livre livre) {
+        return livres.contains(livre);
     }
 
     // Ajouter un livre (si non présent)
-    public boolean ajouterLivre(Livre livre) {
-        if (!contientLivre(livre.getIsbn())) {
+    public boolean ajouter(Livre livre) {
+        if (!contientLivre(livre)) {
             livres.add(livre);
             return true;
         }
         return false;
     }
 
-    // Retirer un livre par ISBN
-    public boolean retirerLivre(String isbn) {
-        for (Livre livre : livres) {
-            if (livre.getIsbn().equals(isbn)) {
-                livres.remove(livre);
-                return true;
-            }
+    // Retirer un livre
+    public boolean retirer(Livre livre) {
+        if (contientLivre(livre)) {
+            livres.remove(livre);
+            return true;
         }
         return false;
     }
 
     // Nombre de livres
-    public int nombreLivres() {
+    public int nombreDeLivres() {
         return livres.size();
     }
 
@@ -62,7 +55,7 @@ public class Catalogue {
     }
 
     // Récupérer un livre par ISBN
-    public Livre getLivre(String isbn) {
+    public Livre recupererLivre(String isbn) {
         for (Livre livre : livres) {
             if (livre.getIsbn().equals(isbn)) {
                 return livre;
