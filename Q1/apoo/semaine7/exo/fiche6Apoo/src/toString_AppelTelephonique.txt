@@ -1,0 +1,13 @@
+Le formatage de la date s'effectue grâce à un formateur qu'il faut configurer selon le style souhaité. La méthode de classe ofLocalizedDateTime de la classe DateTimeFormatter permet de configurer un formateur selon un style souhaité. Ensuite, il faut invoquer la méthode format du formateur avec une date passée en paramètre. 
+
+Le code permettant de formater la date vous est fourni. À vous de le compléter afin d'ajouter les autres informations de l'appel. Pour la durée, arrangez-vous pour la faire au format "x min. y sec." (par exemple, 7 min. 25 sec. ) . 
+
+N'oubliez pas que la javadoc locale est votre amie! :-)
+
+	@Override
+	public String toString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+		String infos = " Appel passé le " + formatter.format(dateHeureAppel);
+                //TODO complétez en ajoutant les autres informations de l'appel
+                return infos;
+	}
