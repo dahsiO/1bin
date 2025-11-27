@@ -48,14 +48,18 @@ public class Tortue {
 		t.setSpeed(995);
 	}
 	
-	public void dessinerUnCarre(double longueur){
+	public void dessinerUnCarre(double longueur) {
 		for (int i = 0; i < 4; i++) {
 			avancer(longueur);
 			tournerADroite(90);
 		}
 	}
+	//to do tu dois faire une methode dessier un triangle
+	public void dessinerUnTriangle ( double longueur){
+		for (int i = 0; i < 3; i++) {
+			avancer(longueur);
+			tournerADroite(120);
+		}
+	}
 
-
-
-	
 }

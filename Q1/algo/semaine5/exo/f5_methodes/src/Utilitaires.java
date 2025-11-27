@@ -37,7 +37,14 @@ public class Utilitaires {
      */
     public static double lireReelComprisEntre(double min, double max ){
 
-        return 0;
+
+        double x = scanner.nextDouble();
+        while (x < min || x > max) {
+            System.out.println("Attention le réel doit être compris entre " + min + " et " + max);
+            System.out.print("Recommencez : ");
+            x = scanner.nextDouble();
+        }
+        return x;
         // TODO
 
         // pour que la classe compile, la methode doit renvoyer un entier
@@ -55,7 +62,15 @@ public class Utilitaires {
      */
     public static char lireOouN(){
 
-        return 'p';
+
+        char c = scanner.next().toLowerCase().charAt(0);
+        while (c != 'o' && c != 'n') {
+            System.out.println("Veuillez entrer 'o' pour oui ou 'n' pour non.");
+            System.out.print("Recommencez : ");
+            c = scanner.next().toLowerCase().charAt(0);
+        }
+        return c;
+
         // TODO
 
         // pour que la classe compile, la methode doit renvoyer un caractere
@@ -65,5 +80,45 @@ public class Utilitaires {
         //il faut placer une boucle dans cette methode !
     }
 
+    /**
+     *
+     * Lire un entier.
+     * Vérifier qu’il n’est pas nul.
+     * Redemander tant que la valeur est 0.
+     * @return un entier différent de 0
+     * */
+
+    public static double lireEntierNonNul(){
+
+        int x = scanner.nextInt();
+        while (x == 0) {
+            System.out.println("Attention, l'entier ne peut pas être nul !");
+            System.out.print("Recommencez : ");
+            x = scanner.nextInt();
+        }
+        return x;
+    }
+
+    /**
+     * Retourne le maximum de trois entiers
+     * @param entier1 premier entier
+     * @param entier2 deuxième entier
+     * @param entier3 troisième entier
+     * @return le plus grand des trois entiers
+     */
+    public static int max3(int entier1, int entier2, int entier3) {
+        int max = entier1;
+        if (entier2 > max) max = entier2;
+        if (entier3 > max) max = entier3;
+        return max;
+    }
+
+    /**
+     * Simule le lancer d'un dé à 6 faces
+     * @return un entier compris entre 1 et 6
+     */
+    public static int lancerDe() {
+        return unEntierAuHasardEntre(1, 6);
+    }
 
 }
