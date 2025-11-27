@@ -75,4 +75,5 @@ public class Joueur {
                 "Points ELO : " + pointsElo;
         return s;
     }
+
 }
