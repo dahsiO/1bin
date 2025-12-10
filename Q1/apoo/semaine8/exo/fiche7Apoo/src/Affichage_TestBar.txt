@@ -1,0 +1,18 @@
+ajout de jus1 à la carte : true
+ajout de jus2 à la carte : false
+jus2 présent dans la carte : true
+Nombre de boissons à la carte : 1
+Retrait de orval de la carte : false
+Nombre de boissons à la carte : 1
+Ajout de orval à la carte : true
+Ajout de coktail à la carte : true
+Nombres de boissons à la carte : 3
+Retrait de jus2 de la carte : true
+jus1 présent dans la carte : false
+Nombre de boissons à la carte : 2
+Ajout de jus2 à la carte : true
+Modification du prix de jus 1 
+Carte :
+Bière en bouteille : Orval (33 cl) à 4.0 euros (degré d'alcool : 6.2°)
+Bloody Mary (12 cl) à 9.0 euros (degré d'alcool : 14.0°)
+Jus d'oranges pressées (20 cl) à 4.0 euros

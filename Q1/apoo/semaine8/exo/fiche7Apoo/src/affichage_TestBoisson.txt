@@ -1,0 +1,19 @@
+Exemple d'affichaqe d'une boisson :
+Jus d'oranges pressées (20 cl) à 4.0 euros
+Exemple d'affichage d'une boisson alcoolisée : 
+Bloody Mary (12 cl) à 9.0 euros (degré d'alcool : 14.0°)
+Exemple d'affichage des bières : 
+Bière en bouteille : Orval (33 cl) à 4.0 euros (degré d'alcool : 6.2°)
+Bière pression : Jupiler (33 cl) à 2.5 euros (degré d'alcool : 5.2°)
+Exemple d'affichage d'un vin :
+Vin blanc : Chablis premier cru 2017 (15 cl) à 6.5 euros (degré d'alcool : 13.5°)
+Cépage : chardonnay
+Origine : Bourgogne - France
+Test de l'exception en cas de couleur null : 
+La couleur doit être choisie parmi les valeurs suivantes : rouge, blanc, rosé
+Test de l'exception en cas de couleur invalide non null : 
+La couleur doit être choisie parmi les valeurs suivantes : rouge, blanc, rosé
+Test de l'égalité de deux boissons : 
+jus1.equals(jus2) : true
+jus1.equals(jus3) : false
+jus1.equals(jus3) : false
