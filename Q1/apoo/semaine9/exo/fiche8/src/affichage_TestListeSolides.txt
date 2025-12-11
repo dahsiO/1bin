@@ -1,0 +1,26 @@
+Liste vide : true
+Cube de côté 8 ajouté : true
+Liste contient cube1 : true
+Liste vide : false
+Sphère de rayon 6 ajoutée : true
+Nombre de solides : 2
+Cylindre de rayon 6 et de hauteur 8 ajouté : true
+Liste des solides : 
+Cube de côté 8.0
+Sphère de rayon 6.0
+Cylindre de rayon 6.0 et de hauteur 8.0
+Cube de côté 6 ajouté : true
+Nombre de solides : 4
+Cube de côté 8 ajouté : false
+Nombre de solides : 4
+Cube de côté 7 ajouté : true
+Nombre de solides : 5
+Cube de côté 6 supprimé : true
+Liste des solides : 
+Cube de côté 8.0
+Sphère de rayon 6.0
+Cylindre de rayon 6.0 et de hauteur 8.0
+Cube de côté 7.0
+Plus grand(s) solide(s) de la liste : 
+Sphère de rayon 6.0
+Cylindre de rayon 6.0 et de hauteur 8.0
