@@ -10,7 +10,13 @@ public class EquipeGuerriers {
      */
     public int nombreGuerriersEnVie(){
         //TODO
-        return 0;
+        int nb = 0;
+        for (int i = 0; i < tableGuerriers.length; i++) {
+            if (tableGuerriers[i].getPointsDeVie() > 0) {
+                nb++;
+            }
+        }
+        return nb;
     }
 
 
