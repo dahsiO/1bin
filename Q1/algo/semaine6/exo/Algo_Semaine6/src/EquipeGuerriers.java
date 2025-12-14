@@ -29,7 +29,13 @@ public class EquipeGuerriers {
         // Pour une question d'efficacite, n'utilisez pas la methode nombreGuerriersEnVie()!
         // (La methode nombreGuerriersEnVie() parcourt toujours l'entierete de la table.)
         // Il n'est peut-etre pas necessaire de parcourir l'entierete de la table pour cette methode.
+        for (int i = 0; i < tableGuerriers.length; i++) {
+            if (tableGuerriers[i].getPointsDeVie() > 0){
+                return true;
+            }
+        }
         return false;
+
     }
 
 
@@ -41,6 +47,11 @@ public class EquipeGuerriers {
         //TODO
         // Pour une question d'efficacite, n'utilisez pas les methodes nombreGuerriersEnVie() et auMoins1GuerrierEnVie()
         // Il n'est peut-etre pas necessaire de parcourir l'entierete de la table pour cette methode.
+        for (int i = 0; i < tableGuerriers.length; i++) {
+            if (tableGuerriers[i].getPointsDeVie() >0) {
+                return tableGuerriers[i];
+            }
+        }
         return null;
     }
 
@@ -56,7 +67,12 @@ public class EquipeGuerriers {
             throw new IllegalArgumentException();
         //TODO
         // Pour comparer des String, utilisez la methode equals().
-        return 0;
+        for (int i = 0; i < tableGuerriers.length; i++) {
+            if (tableGuerriers[i].getNom().equals(nomGuerrier)){
+                return tableGuerriers[i].getPointsDeVie();
+            }
+        }
+        return -1;
     }
 
 
@@ -69,7 +85,16 @@ public class EquipeGuerriers {
         //TODO
         // Attention, la dimension d'une table renvoyee doit TOUJOURS correspondre au nombre de donnees qu'elle contient.
         // Pour connaitre cette dimension, utilisez la methode nombreGuerriersEnVie() !
-        return null;
+        Guerrier [] tableGuerrierEnVie = new Guerrier[nombreGuerriersEnVie()];
+        int index = 0;
+        for (int i = 0; i < tableGuerriers.length; i++) {
+            if (tableGuerriers[i].getPointsDeVie() > 0) {
+                tableGuerriers[i] = tableGuerrierEnVie[index];
+                index++;
+            }
+        }
+
+        return tableGuerrierEnVie;
     }
 
     //A NE PAS MODIFIER

@@ -93,13 +93,25 @@ public class Temperatures {
      */
     public double ecartMax(){
         //TODO
-        return 0;
+        double tempMin = tableDesTemperatures[0];
+        double tempMax =tableDesTemperatures[0];
+        for (int i = 0; i < tableDesTemperatures.length; i++) {
+            if (tableDesTemperatures[i] < tempMin) {
+                tempMin = tableDesTemperatures[i];
+            }
+            if (tableDesTemperatures[i] > tempMax){
+                tempMax = tableDesTemperatures[i];
+            }
+
+        }
+        return tempMax - tempMin;
 
         //Cette methode est tres simple !
         //Piste :
         //Pensez a utiliser les 2 methodes precedentes.
 
     }
+
 
     /**
      * calcule le plus grand ecart en valeur absolue de temperature entre 2 jours successifs
@@ -116,12 +128,24 @@ public class Temperatures {
      * @return le plus grand ecart de temperature entre 2 jours successifs
      */
     public double ecartMaxSucc(){
-        //TODO
-        return 0;
+        double ecartMax = 0;
 
-        //valeur absolue --> Math.abs()
+        for (int i = 0; i < tableDesTemperatures.length - 1; i++) {
+            double ecart = Math.abs(tableDesTemperatures[i] - tableDesTemperatures[i + 1]);
+            if (ecart > ecartMax) {
+                ecartMax = ecart;
+            }
+        }
 
+        return ecartMax;
     }
+//
+//            1. **La boucle** : `i < tableDesTemperatures.length - 1` (pas juste `length`)
+//            - Sinon `i+1` dépasserait la taille du tableau !
+//            3. **Valeur absolue** : `Math.abs()` autour de la soustraction
+//   - Sinon un écart négatif ne sera jamais > ecartMax
+
+
 
 
 
@@ -132,7 +156,13 @@ public class Temperatures {
      */
     public int nombreJoursDeGel() {
         //TODO
-        return 0;
+        int gel = 0;
+        for (int i = 0; i < tableDesTemperatures.length; i++) {
+            if (tableDesTemperatures[i] < 0) {
+                gel++;
+            }
+        }
+        return gel;
 
     }
 
@@ -143,8 +173,22 @@ public class Temperatures {
      * @return une table avec les numeros des jours de gel
      */
     public int[] joursDeGel() {
+        int [] tableGel = new int[nombreJoursDeGel()];
+        int index = 0;
+        for (int i = 0; i < tableDesTemperatures.length; i++) {
+            if (tableDesTemperatures[i] < 0) {
+                tableGel[index]  = i + 1;
+                index++;
+            }
+        }
         //TODO
-        return null;
+//        la methode commence par int donc on devrais retourner des int
+//                donc faire attentions a ne pas cree un tableau en double
+//
+//                deplus commencer indexer notre nouvelle table
+//                on reprend le i du fori qui sera lui notre compteur de jour
+
+        return tableGel;
 
     }
 
