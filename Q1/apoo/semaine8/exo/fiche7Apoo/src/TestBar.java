@@ -5,7 +5,14 @@ public class TestBar {
 		Boisson jus1 = new Boisson("Jus d'oranges pressées",20, 4);
 		Boisson jus2 = new Boisson("Jus d'oranges pressées",20, 4);
 		Boisson orval = new Biere("Orval",33,4,6.2,false);
-		Boisson coktail = new BoissonAlcoolisee("Bloody Mary", 12, 9, 14); 
+		Boisson coktail = new BoissonAlcoolisee("Bloody Mary", 12, 9, 14);
+
+
+
+		
+		
+		
+		
 		
 		Carte carte = new Carte();
 		System.out.println("ajout de jus1 à la carte : " + carte.ajouter(jus1));

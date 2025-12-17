@@ -27,6 +27,7 @@ public class TestBoisson {
             System.out.println(iae.getMessage());
         }
 
+
         System.out.println("Test de l'égalité de deux boissons : ");
         Boisson jus2 = new Boisson("Jus d'oranges pressées",20, 5);
         System.out.println("jus1.equals(jus2) : " + jus1.equals(jus2));

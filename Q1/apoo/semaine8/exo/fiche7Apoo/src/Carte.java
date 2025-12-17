@@ -23,9 +23,11 @@ public class Carte {
         return boissons.contains(boisson);
     }
 
+
     public int nombreDeBoissons() {
         return boissons.size();
     }
+
 
     @Override
     public String toString() {
