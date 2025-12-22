@@ -20,6 +20,7 @@ public class Terrain extends CarteDeJeu{
 
     @Override
     public String fournirDetail() {
-        return super.fournirDetail() + "Terrain : " + couleur;
+        return super.fournirDetail() + "Terrain : couleur" + couleur +"\n"+"Terrain : ";
+
     }
 }
