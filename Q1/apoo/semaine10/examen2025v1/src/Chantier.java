@@ -10,7 +10,7 @@ public class Chantier {
     private Salarie chef ;
 	// TODO
     private LocalDateTime dateDeFin;
-    private static int nombreDeChantiers = 0;
+    private static int nombreDeChantiers = 1;
 
     public Chantier(String nom, String adresse) {
         this.nom = nom;
@@ -48,8 +48,9 @@ public class Chantier {
         if (this.estTerminee())return false;
 
         if (nouveauChef.getChantierActuel() != this){
-            this.chef = nouveauChef;
+           return false;
         }
+        this.chef = nouveauChef;
         return true;
     }
     public boolean Terminee() {

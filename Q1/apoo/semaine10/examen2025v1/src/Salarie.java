@@ -15,10 +15,12 @@ public abstract class Salarie  implements Iterable<Chantier>{
         if (chantierActuel.estTerminee()){
              throw new IllegalArgumentException("le chantier est terminee");
         }
-        chantiers.add(chantierActuel);
-        this.chantierActuel = chantierActuel;
-        // Initialiser l'ArrayList AVANT de l'utiliser
+        // ✅ INITIALISER D'ABORD !
         this.chantiers = new ArrayList<>();
+
+        // ✅ PUIS UTILISER !
+        this.chantiers.add(chantierActuel);
+        this.chantierActuel = chantierActuel;
     }
 
     public String getNom() {
@@ -57,6 +59,7 @@ public abstract class Salarie  implements Iterable<Chantier>{
     public int nombreDeChantiers(){
         return this.chantiers.size();
     }
+    abstract double calculerSalaire();
 
 
     @Override
