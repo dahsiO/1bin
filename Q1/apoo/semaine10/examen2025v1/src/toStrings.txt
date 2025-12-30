@@ -1,0 +1,63 @@
+Chantier = toString :
+=====================
+@Override
+public String toString() {
+	String chantier = "Chantier n°"+numero+" : "+nom+" situé "+adresse+'\n'+"Statut : ";
+	if (/* Test si le chantier n'est pas terminé */) {
+        chantier += "en cours";
+    } else {
+        chantier += "terminé le "+dateDeFin;
+    }
+	chantier += '\n'+"Chef de chantier : " ;
+	if (/* Test si le chantier n'a pas de chef */) {
+		chantier += "pas encore choisi";
+	} else {
+		chantier += chef.getNom()+" "+chef.getPrenom();
+	}
+	return chantier ;
+}
+
+Salarie : toString :
+====================
+@Override
+public String toString() {
+	String salarie = prenom + " " + nom ;
+	salarie += "\n"+"Chantier actuel : " +  "Chantier n°"+chantierActuel.getNumero() + " : "+chantierActuel.getNom() ;
+	if (/* Test si le chantier actuel est terminé */) {
+		salarie += " : terminé";
+	} else {
+        salarie += " : en cours" ;
+	}
+	salarie += "\n"+"A déjà travailler sur les chantiers suivants :" ;
+	int num = 1 ;
+	/* Parcours de tous les chantiers sur lesquels le salarié a travaillé */ {
+		salarie += "\n "+num+") Chantier n°"+chantier.getNumero() + " : "+chantier.getNom() ;
+		if (chantier.estTermine()) {
+			salarie += " : terminé";
+		} else {
+			salarie += " : en cours" ;
+		}
+		num++ ;
+	}
+	return salarie ;
+}
+
+Ouvrier : toString :
+====================
+@Override
+public String toString() {
+	String ouvrier =  "Ouvrier " + /* Appel au toString de la classe mère */  ;
+	ouvrier = ouvrier + "\n" + "Spécialité : " + specialite  ;
+	ouvrier = ouvrier + "\n" + "Salaire horaire : " + salaireHoraire ;
+	ouvrier = ouvrier + "\n" + "nombre d'heures prestées : " + nbHeuresPrestees ;
+	return ouvrier;
+}
+
+Employe : toString :
+====================
+@Override
+public String toString() {
+	return "Employé " + /* Appel au toString de la classe mère */ + "\n" + "Salaire mensuel : " + salaireMensuel ;
+}
+
+

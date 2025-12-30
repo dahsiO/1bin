@@ -10,8 +10,14 @@ public class EtudiantCotesTriees{
 	 */
 	public double moyenne(){    
 		//TODO
-		return 0;
+		double sommeDesCotes = 0;
+		for (int i = 0; i < tableCotes.length; i++) {
+			sommeDesCotes += tableCotes[i];
+
+		}
+		return  sommeDesCotes/ tableCotes.length;
 	}
+
 	/**
 	 * methode qui recherche la plus petite cote de l'etudiant
 	 * precondition (a ne pas verifier) : la table contient au moins 1 cote
@@ -19,7 +25,8 @@ public class EtudiantCotesTriees{
 	 */
 	public double min(){
 		//TODO
-		return 0;
+		double min = tableCotes[0];
+		return min;
 	}
 
 	/**
@@ -29,7 +36,8 @@ public class EtudiantCotesTriees{
 	 */
 	public double max(){
 		//TODO
-		return 0;
+		double max = tableCotes[tableCotes.length -1];
+		return max;
 	}
 
 
@@ -40,7 +48,13 @@ public class EtudiantCotesTriees{
 	 */
 	public int nombreEchecs(){
 		//TODO
-		return 0;
+		int compteur = 0;
+		for (int i = 0; i < tableCotes.length; i++) {
+			if (tableCotes[i] < 10){
+				compteur++;
+			}else break;
+		}
+		return compteur;
 	}
 
 
@@ -49,11 +63,10 @@ public class EtudiantCotesTriees{
 	 * precondition (a ne pas verifier) : la table contient au moins 1 cote
 	 * @return true si l'eudiant n'a pas pas d'echec, false sinon
 	 */
-	public boolean aucunEchec(){
-		//TODO
-		return false;
+	public boolean aucunEchec() {
+		if (tableCotes[0] < 10) return false;
+		return true;
 	}
-
 	//A NE PAS MODIFIER
 	//VA SERVIR POUR LES TESTS
 	public EtudiantCotesTriees(int matricule, double[] tableARecopier){

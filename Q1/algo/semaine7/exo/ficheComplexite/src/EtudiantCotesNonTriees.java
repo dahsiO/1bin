@@ -9,7 +9,12 @@ public class EtudiantCotesNonTriees {
      */
     public double moyenne() {
         //TODO
-        return 0;
+        double sommeDesCotes = 0;
+        for (int i = 0; i < tableCotes.length; i++) {
+            sommeDesCotes += tableCotes[i];
+
+        }
+        return  sommeDesCotes/ tableCotes.length;
     }
 
     /**
@@ -19,7 +24,13 @@ public class EtudiantCotesNonTriees {
      */
     public double min(){
         //TODO
-        return 0;
+        double min = tableCotes[0];
+        for (int i = 0; i < tableCotes.length; i++) {
+            if (tableCotes[i] < min){
+                min = tableCotes[i];
+            }
+        }
+        return min;
     }
 
     /**
@@ -29,7 +40,13 @@ public class EtudiantCotesNonTriees {
      */
     public double max(){
         //TODO
-        return 0;
+        double max = tableCotes[0];
+        for (int i = 0; i < tableCotes.length; i++) {
+            if (max < tableCotes[i]){
+                max = tableCotes[i];
+            }
+        }
+        return max;
     }
 
     /**
@@ -39,7 +56,15 @@ public class EtudiantCotesNonTriees {
      */
     public int nombreEchecs(){
         //TODO
-       return 0;
+        int nombreEchec = 0;
+        for (int i = 0; i < tableCotes.length; i++) {
+            if (tableCotes[i] < 10){
+                nombreEchec++;
+            }
+
+        }
+
+       return nombreEchec;
     }
 
     /**
@@ -49,7 +74,12 @@ public class EtudiantCotesNonTriees {
      */
     public boolean aucunEchec(){
         //TODO
-        return false;
+        for (int i = 0; i < tableCotes.length; i++) {
+            if (tableCotes[i] < 10){
+                return false;
+            }
+        }
+        return true;
     }
 
 
