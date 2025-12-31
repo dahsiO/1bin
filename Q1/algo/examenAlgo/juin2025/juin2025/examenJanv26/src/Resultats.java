@@ -24,11 +24,19 @@ public class Resultats {
         }
 
         //TODO
+        //verifier si c est trier et sans doublon
+        for (int i = 0; i < tableAVerifier.length -1; i++) {
+            //plus petit au plus GRAND => matricule
+            if (tableAVerifier[i].getMatricule() >= tableAVerifier[i+1].getMatricule()){
+                return false;
+            }
+
+        }
 
         //pour connaitre le matricule d'un etudiant,
         //utilisez la methode getMatricule() de la classe Etudiant
 
-       return false;
+       return true;
     }
 
 
@@ -40,11 +48,15 @@ public class Resultats {
     public double moyenne() {
 
         //TODO
+        double somme = 0;
+        for (int i = 0; i < tableEtudiants.length; i++) {
+            somme += tableEtudiants[i].getPoints();
 
+        }
         //pour connaitre les points d'un etudiant,
         //utilisez la methode getPoints() de la classe Etudiant
 
-        return 0;
+        return  somme / tableEtudiants.length;
     }
 
 
@@ -54,7 +66,33 @@ public class Resultats {
      * @return la mediane
      */
     public double mediane() {
+        // etape 1 copier le tableau
+        Etudiant[] temp = new Etudiant[tableEtudiants.length];
+        for (int i = 0; i < tableEtudiants.length; i++) {
+            temp[i] = tableEtudiants[i];
 
+        }
+        // etape 2 calculer le nombre etape neccessaire
+        int nbEtape = (tableEtudiants.length/2)+1;
+
+        double mediane = 0;
+        // etape 3 pour chaque etape trouver le min
+        for (int etape = 0; etape < nbEtape; etape++) {
+            double min = temp[0].getPoints(); // utilise ce que tu cree zamel
+            int indexMin = 0;
+
+            for (int i = 0; i < temp.length; i++) {
+                if (temp[i].getPoints() < min){
+                    min = temp[i].getPoints();
+                    indexMin = i;
+                }
+            }
+
+            mediane = min;
+            // Neutraliser avec setPoints (si disponible)
+            temp[indexMin] = new Etudiant(999, "hamid",999);
+
+        }
         //TODO
 
         //suivez l'algorithme impose (cfr enonce)
@@ -62,7 +100,7 @@ public class Resultats {
         //pour connaitre les points d'un etudiant,
         //utilisez la methode getPoints() de la classe Etudiant
 
-        return 0;
+        return mediane;
     }
 
     /**
@@ -77,11 +115,21 @@ public class Resultats {
         if (borneMin > borneMax)
             throw new IllegalArgumentException();
         //TODO
+        //5 et max =15
+        int compteur = 0;
+        for (int i = 0; i < tableEtudiants.length; i++) {
+            if (tableEtudiants[i].getPoints() >=borneMin && tableEtudiants[i].getPoints() <= borneMax){
+                compteur++;
+            }
+
+        }
+
+
 
         //pour connaitre les points d'un etudiant,
         //utilisez la methode getPoints() de la classe Etudiant
 
-        return 0;
+        return compteur;
     }
 
 
@@ -94,14 +142,37 @@ public class Resultats {
      */
     public Etudiant[] donnerTableEtudiantsEnReussite() {
         //TODO
+        for (int i = 0; i < tableEtudiants.length -1; i++) {
+            for (int j = 0; j < tableEtudiants.length -1 ; j++) {
 
+                // { 2 1 3}
+                if (tableEtudiants[j].getMatricule() > tableEtudiants[j + 1].getMatricule()){
+                    // temp = 2
+                    Etudiant temp = tableEtudiants[j];
+                    // tableEtudiant [j]= 1
+                    tableEtudiants[j] = tableEtudiants[j + 1];
+                    // tableEtudiant [j + 1] = temp = 2
+                    tableEtudiants[j + 1] = temp;
+                    // table{ 1 , 2 , 3}
+                }
+            }
+        }
+        int index = 0;
+        Etudiant [] tabreussi = new Etudiant[nombreEtudiantsDansLIntervalle(10,20)];
+        for (int i = 0; i < tableEtudiants.length; i++) {
+            if (tableEtudiants[i].getPoints() >= 10){
+                tabreussi[index] = tableEtudiants[i];
+                index++;
+            }
+
+        }
         //pour connaitre les points d'un etudiant,
         //utilisez la methode getPoints() de la classe Etudiant
 
         //pour connaitre la taille de la table,
         //pensez a utiliser la methode nombreEtudiantsDansLIntervalle() !
 
-       return null;
+       return tabreussi;
     }
 
     //A NE PAS MODIFIER
