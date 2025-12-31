@@ -32,8 +32,5 @@ public class TestEntreprise {
             System.out.println(c2);
 
         }
-
-
-
-    }
+   }
 }
