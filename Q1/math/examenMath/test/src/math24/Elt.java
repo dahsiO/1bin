@@ -1,6 +1,6 @@
 package math24;
 
-/** Classe math24.math23.Elt
+/** Classe math24.math23.math22.Elt
 	 Classe d'objets dont les "valeurs" sont 1,2,3,...,MAXELT,
 	 organisée de manière "circulaire" par les méthodes succ et pred.
 
@@ -60,7 +60,7 @@ public class Elt {
 		return true;
 	}
 
-	/** renvoie le successeur de l'math24.math23.Elt courant dans l'Univers "circulaire";
+	/** renvoie le successeur de l'math24.math23.math22.Elt courant dans l'Univers "circulaire";
    		 le successeur de MAXELT est 1 */
        public Elt succ() {
          if (this.val() < MAXELTVALUE) {
@@ -71,7 +71,7 @@ public class Elt {
          }
       }
    
-      /** renvoie le prédécesseur de l'math24.math23.Elt courant dans l'Univers "circulaire";
+      /** renvoie le prédécesseur de l'math24.math23.math22.Elt courant dans l'Univers "circulaire";
    		 le prédécesseur de 1 est MAXELT */
        public Elt pred() {
          if ( this.val() == 1) {

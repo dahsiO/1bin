@@ -20,12 +20,12 @@ public class Suite extends SuiteDeBase {
 		super(st);
 	}
 
-	/** Constructeur à partir d'un math24.math23.Elt et d'une math24.math23.Suite */
+	/** Constructeur à partir d'un math24.math23.math22.Elt et d'une math24.math23.math22.Suite */
 	public Suite(Elt t, Suite c) {
 		super(t, c);
 	}
 
-	/** Construit la math24.math23.Suite réduite à (x) */
+	/** Construit la math24.math23.math22.Suite réduite à (x) */
 	public Suite(Elt x) {
 		this();
 		this.ajouter(x);
@@ -45,7 +45,7 @@ public class Suite extends SuiteDeBase {
 		return result;
 	}
 
-	/* Renvoie true si l'math24.math23.Elt x est toujours juste avant l'math24.math23.Elt y dans la suite courante
+	/* Renvoie true si l'math24.math23.math22.Elt x est toujours juste avant l'math24.math23.math22.Elt y dans la suite courante
 	 *         false sinon
 	 * Exemples :
 	 * ----------
@@ -60,9 +60,9 @@ public class Suite extends SuiteDeBase {
 	 * this = (8,3,3,4,2)    alors toujoursAvant(3,3)     --> false
 	 * this = (8)            alors toujoursAvant(3,4)     --> true
 	 * this = (3)            alors toujoursAvant(3,4)     --> false
-	 * @param math24.math23.Elt x
-	 * @param math24.math23.Elt y
-	 * @return true si l'math24.math23.Elt x est toujours avant l'math24.math23.Elt y dans la suite courante
+	 * @param math24.math23.math22.Elt x
+	 * @param math24.math23.math22.Elt y
+	 * @return true si l'math24.math23.math22.Elt x est toujours avant l'math24.math23.math22.Elt y dans la suite courante
 	 *         false sinon
 	 * @throw IllegalArgumentException en cas de paramètre invalide
 	 */

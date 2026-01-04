@@ -1,4 +1,4 @@
-package math24;   /** Classe math24.math23.Io
+package math24;   /** Classe math24.math23.math22.Io
 		 Classe de lecture au clavier et de chargement de fichiers de données.
 	
 		 @author M.Marchand

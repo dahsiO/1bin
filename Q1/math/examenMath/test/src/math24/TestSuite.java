@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TestSuite {
 	public static void main(String[] args) {
 		System.out.println("***************************************");
-		System.out.println("* Programme Test pour la classe math24.math23.Suite *");
+		System.out.println("* Programme Test pour la classe math24.math23.math22.Suite *");
 		System.out.println("***************************************");
 		System.out.println() ;
 		System.out.println("Tests de la méthode toujoursAvant :") ;

@@ -1,5 +1,5 @@
-package math23; /** Classe math23.math22.SuiteDeBase. Classe concrète qui sert de base pour la classe math23.math22.Suite.
-    Cette classe fournit les outils de base pour travailler sur des suites de math23.math22.Elt
+package math22; /** Classe math22.SuiteDeBase. Classe concrète qui sert de base pour la classe math22.Suite.
+    Cette classe fournit les outils de base pour travailler sur des suites de math22.Elt
 
 	 @author  M.Marchand && S. Ferneeuw
 	 @version  Mai 2011
@@ -44,7 +44,7 @@ public class SuiteDeBase implements Cloneable, Iterable<Elt>{
 		}
 	}
 
-	/** Constructeur à partir d'un math23.math22.Elt et d'une math23.math22.Suite */
+	/** Constructeur à partir d'un math22.Elt et d'une math22.Suite */
 	public SuiteDeBase(Elt t, SuiteDeBase c) {
 		this(c);
 		if (t == null) throw new IllegalArgumentException();
@@ -151,7 +151,7 @@ public class SuiteDeBase implements Cloneable, Iterable<Elt>{
 	public void couper() {
 		if (this.estVide())
 			throw new MathException(
-					"Opération illégale sur une math23.math22.Suite vide : couper().");
+					"Opération illégale sur une math22.Suite vide : couper().");
 		version = version + 1;
 		this.tete = this.tete.corps.tete;
 		taille--;
@@ -161,7 +161,7 @@ public class SuiteDeBase implements Cloneable, Iterable<Elt>{
 	public Elt tete() {
 		if (this.estVide())
 			throw new MathException(
-					"Opération illégale sur une math23.math22.Suite vide : tête().");
+					"Opération illégale sur une math22.Suite vide : tête().");
 		return this.tete.element;
 	}
 
@@ -169,16 +169,16 @@ public class SuiteDeBase implements Cloneable, Iterable<Elt>{
 	public SuiteDeBase corps() {
 		if (this.estVide())
 			throw new MathException(
-					"Opération illégale sur une math23.math22.Suite vide : corps().");
+					"Opération illégale sur une math22.Suite vide : corps().");
 		return this.tete.corps.clone();
 	}
 
-	/** Renvoie true ssi la math23.math22.Suite courante est vide */
+	/** Renvoie true ssi la math22.Suite courante est vide */
 	public boolean estVide() {
 		return (this.tete == null);
 	}
 
-	/** Renvoie une description parenthèsée de la math23.math22.Suite courante */
+	/** Renvoie une description parenthèsée de la math22.Suite courante */
 	public String toString() {
 		String str = "(";
 		Noeud bal = this.tete;
@@ -193,7 +193,7 @@ public class SuiteDeBase implements Cloneable, Iterable<Elt>{
 		return str + ")";
 	}
 
-	/** Renvoie un itérateur sur la math23.math22.Suite courante */
+	/** Renvoie un itérateur sur la math22.Suite courante */
 	public Iterator<Elt> iterator() {
 		return new SuiteIterator();
 	}

@@ -1,6 +1,6 @@
-package math24;
+package math22;
 
-/** Classe math24.math23.math22.MathException
+/** Classe math22.MathException
 	 Classe d'exceptions (runtime) pour le cours de Math.
 
 	 @author  M.Marchand
