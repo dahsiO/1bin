@@ -1,0 +1,56 @@
+UE :
+====
+
+@Override
+public String toString() {
+	String ue = code+" : "+nom+" du cursus "+cursus+" créée le "+dateCreation ; ;
+	ue += '\n'+"Responsable : " ;
+	if (/* Test si l'UE n'a pas de responsable */) {
+		ue += "pas encore choisi";
+	} else {
+		ue += responsable.getNom()+" "+responsable.getPrenom();
+	}
+    ue += "\n" + "Nombre de professeurs intervenants : "+nbrDeProfesseurs ;
+	return ue ;
+}
+
+Professeur :
+============
+
+@Override
+public String toString() {
+	String professeur = "n°"+numero+" : "+prenom + " " + nom ;
+	professeur += "\n"+"intervient dans les UE suivantes :" ;
+	if (/* Test si la liste des UE est vide */) {
+        professeur += "\n"+"aucune";
+    } else {
+		int num = 1 ;
+		/* Parcours de toutes les UEs sur lesquelles le professeur intervient */ {
+			professeur += "\n " + num + ") " + ue.getCode() + " : " + ue.getNom();
+			num++;
+		}
+	}
+	return professeur ;
+}
+
+
+ProfExterne :
+=============
+
+@Override
+public String toString() {
+	String profExterne =  "Professeur Interne " + /* Appel au toString de la classe mère */    ;
+	profExterne = profExterne + "\n" + "Entreprise : " + entreprise  ;
+	profExterne = profExterne + "\n" + "Salaire horaire : " + salaireHoraire ;
+	profExterne = profExterne + "\n" + "Nombre d'heures prestées : " + nbHeuresPrestees ;
+	return profExterne;
+}
+
+ProfInterne :
+=============
+
+@Override
+public String toString() {
+	return "Prof Interne " + /* Appel au toString de la classe mère */ + "\n" + "Salaire mensuel : " + salaireMensuel +"\n" + "Quotite travail : " + quotiteTravail ;
+}
+
