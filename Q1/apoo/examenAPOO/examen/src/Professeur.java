@@ -28,7 +28,7 @@ public abstract class Professeur implements Iterable<UE> {
     public String getNom() {
         return nom;
     }
-    public boolean intervienDans(UE ue){
+    public boolean intervientDans(UE ue){
         if (ues.contains(ue))return true;
         return false;
     }
