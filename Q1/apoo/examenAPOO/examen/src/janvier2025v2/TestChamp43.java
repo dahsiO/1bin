@@ -1,3 +1,5 @@
+package janvier2025v2;
+
 public class TestChamp43 {
     public static void main(String[] args) {
         //creation de UE

@@ -1,3 +1,5 @@
+package janvier2025v2;
+
 public class ProfInterne extends Professeur{
     public static final int QUOTITE_PAR_DEFAUT = 100;
     private double salaireMensuel;

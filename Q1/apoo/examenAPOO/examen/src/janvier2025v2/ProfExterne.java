@@ -1,3 +1,5 @@
+package janvier2025v2;
+
 public class ProfExterne extends Professeur{
 
     private String entreprise;
