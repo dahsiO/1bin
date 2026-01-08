@@ -1,3 +1,5 @@
+package exoRecapitulatif1;
+
 public class jeuDeSociete extends Jeu {
     private String reglesDuJeu;
     private boolean plateau;

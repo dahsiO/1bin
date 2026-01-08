@@ -1,3 +1,5 @@
+package exoRecapitulatif1;
+
 import java.util.Objects;
 
 public abstract class Jeu {
@@ -12,6 +14,7 @@ public abstract class Jeu {
         this.nbJoueurs = nbJoueurs;
         this.identifiant = nombreDeJeux;
         nombreDeJeux++;
+        this.disponible = true;
     }
 
     public String getNom() {

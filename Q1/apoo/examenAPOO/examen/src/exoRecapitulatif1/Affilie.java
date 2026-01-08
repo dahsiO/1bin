@@ -1,3 +1,5 @@
+package exoRecapitulatif1;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -37,7 +39,7 @@ public class Affilie implements Iterable<Location> {
         if (!aUneLocationEnCours()) {
             throw new IllegalStateException("pas de location en cours");
         }
-        this.locationEnCours.Terminer();
+        this.locationEnCours.terminer();
         locationsPassees.add(locationEnCours);
         this.locationEnCours = null;
     }
@@ -75,12 +77,12 @@ public class Affilie implements Iterable<Location> {
     @Override
     public String toString() {
         String affilie = prenom + " " + nom + '\n';
-        if (aUneLocationEnCours())
+        if (!aUneLocationEnCours())
             affilie = affilie + "Pas de location en cours";
         else
             affilie = affilie + "Location en cours :" + '\n' + "-------------------" + '\n' + this.locationEnCours;
         affilie = affilie + '\n' + "Liste des locations passées :" + '\n' + "-----------------------------";
-        if (/* Test si l'affilié n'a pas encore de location passée */ !aUneLocationEnCours()) {
+        if (/* Test si l'affilié n'a pas encore de location passée */ locationsPassees.isEmpty()) {
             affilie = affilie + '\n' + "Pas encore de location passée";
         } else {/* Parcours des locations passées de l'affilié */
             for (Location locationPassee : locationsPassees) {

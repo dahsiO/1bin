@@ -1,3 +1,5 @@
+package exoRecapitulatif1;
+
 public class jeuVideo extends Jeu {
     private static final String[] CONSOLE_EXISTANTES = {"Switch","Wii","OS","XBOX","PC"};
     public static final int NB_JOUEURS_PAR_DEFAUT = 1;

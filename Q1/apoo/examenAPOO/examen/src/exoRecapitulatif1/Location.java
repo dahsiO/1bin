@@ -1,3 +1,5 @@
+package exoRecapitulatif1;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -17,7 +19,7 @@ public class Location implements Iterable<Jeu>{
     public boolean isTerminee() {
         return terminee;
     }
-    public boolean Terminer(){
+    public boolean terminer(){
         if (terminee) {
             return false;
         }
