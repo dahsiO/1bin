@@ -82,5 +82,4 @@ public abstract class Professeur implements Iterable<UE> {
         }
         return professeur ;
     }
-
 }

@@ -21,6 +21,7 @@ public abstract class Jeu {
         return nom;
     }
 
+
     public int getNbJoueurs() {
         return nbJoueurs;
     }
