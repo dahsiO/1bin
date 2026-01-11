@@ -1,0 +1,63 @@
+JeuDeSociete : toString :
+=========================
+
+@Override
+public String toString() {
+	String jeuDeSociete = "Jeu " ;
+	if (this.plateau)
+		jeuDeSociete = jeuDeSociete+"de plateau " ;
+	else
+		jeuDeSociete = jeuDeSociete+"de société " ;
+	jeuDeSociete = jeuDeSociete+ /* Appel au toString de la classe mère */ +" dont les règles sont" + '\n'+ reglesDuJeu ;
+	return jeuDeSociete ;
+}
+
+JeuVideo : toString :
+=====================
+
+@Override
+public String toString() {
+	return "Jeu vidéo " + /* Appel au toString de la classe mère */ + " sur " + console + " pour un age minimum de " + ageMin + " ans" ;
+}
+
+Location : toString :
+=====================
+
+@Override
+public String toString() {
+	String location = "Location " ;
+	if (/* Test si la location est terminée */)
+		location = location + "terminée :" ;
+	else
+		location = location + "en cours :" ;
+	int i=1 ;
+	/* Parcours de tous les jeux contenus dans la location */ {
+		location = location + '\n' + i+") "+ jeu;
+		i++ ;
+	}
+	return location ;
+}
+
+
+Affilie : toString() :
+======================
+
+@Override
+public String toString() {
+	String affilie = prenom + " " + nom  + '\n' ;
+	if (/* Test si l'affilié n'a pas de location en cours */)
+		affilie = affilie+"Pas de location en cours" ;
+	else
+		affilie = affilie+"Location en cours :" +'\n'+"-------------------"+'\n'+this.locationEnCours;
+	affilie = affilie + '\n'+"Liste des locations passées :" +'\n'+"-----------------------------" ;
+	if (/* Test si l'affilié n'a pas encore de location passée */) {
+		affilie = affilie + '\n'+ "Pas encore de location passée" ;
+	} else {
+		/* Parcours des locations passées de l'affilié */ {
+			affilie = affilie + '\n' + location;
+		}
+	}
+	return affilie ;
+}
+
+
