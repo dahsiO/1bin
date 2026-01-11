@@ -25,9 +25,16 @@ public class EquipeGuerriers {
 
         // A NE PAS MODIFIER :
         tableGuerriers = new Guerrier[nombreGuerriersMax];
-
+        int index =0;
         //TODO
-
+        for (int i = 0; i < tableTousLesGuerriers.length; i++) {
+            if (tableTousLesGuerriers[i].estVivant() && index < nombreGuerriersMax) {
+                tableGuerriers[index] = tableTousLesGuerriers[i];
+                index++;
+            }
+        }
+        // ⬅️ CRITIQUE : Mettre à jour nombreGuerriers !
+        nombreGuerriers = index;
         //pour savoir si un guerrier est vivant
         //utilisez la methode estVivant()
 
@@ -48,7 +55,16 @@ public class EquipeGuerriers {
      */
     public double moyennePointsDeVie(){
         //TODO
-        return 0;
+        int somme = 0;
+        int nbVivant = 0;
+        for (int i = 0; i < nombreGuerriers; i++) {
+            if (tableGuerriers[i].estVivant()){
+                somme += tableGuerriers[i].getPointsDeVie();
+                nbVivant++;
+            }
+        }
+        if (nbVivant == 0)return 0;
+        return (double) somme / nbVivant;
 
         //pour connaitre le nombre de points de vie d'un guerrier,
         //utilisez la methode getPointsDeVie()
@@ -65,9 +81,21 @@ public class EquipeGuerriers {
      *         qui ont des points de vie compris entre les 2 bornes
      */
     public int nombreGuerriersEntre(int nombrePointsDeVie1, int nombrePointsDeVie2){
+        int compteur =0;
+        for (int i = 0; i < nombreGuerriers; i++) {
+            if (nombrePointsDeVie1 < nombrePointsDeVie2){
+                if (tableGuerriers[i].getPointsDeVie() >= nombrePointsDeVie1 && tableGuerriers[i].getPointsDeVie() <= nombrePointsDeVie2){
+                compteur++;
+                }
+            }else {
+                if (tableGuerriers[i].getPointsDeVie() <= nombrePointsDeVie1 && tableGuerriers[i].getPointsDeVie() >= nombrePointsDeVie2){
+                    compteur++;
+                }
+            }
 
+        }
         //TODO
-        return 0;
+        return compteur;
 
         //pour connaitre le nombre de points de vie d'un guerrier,
         //utilisez la methode getPointsDeVie()
@@ -82,7 +110,37 @@ public class EquipeGuerriers {
      */
     public int ecartMaximum() {
         //TODO
-        return 0;
+        // 1. Compter les vivants d'abord
+        int nbVivants = 0;
+        for (int i = 0; i < nombreGuerriers; i++) {
+            if (tableGuerriers[i].estVivant()) {
+                nbVivants++;
+            }
+        }
+
+        // 2. Vérifier si au moins 2 vivants
+        if (nbVivants < 2) {
+            return -1;
+        }
+
+        // 3. Trouver min et max PARMI LES VIVANTS
+        int min = tableGuerriers[0].getPointsDeVie();
+        int max = tableGuerriers[0].getPointsDeVie();
+
+        for (int i = 0; i < nombreGuerriers; i++) {
+            if (tableGuerriers[i].estVivant()) {
+                int pv = tableGuerriers[i].getPointsDeVie();
+
+                if (pv < min) {
+                    min = pv;
+                }
+                if (pv > max) {
+                    max = pv;
+                }
+            }
+        }
+
+        return max - min;
 
         //pour connaitre le nombre de points de vie d'un guerrier,
         //utilisez la methode getPointsDeVie()
@@ -109,7 +167,29 @@ public class EquipeGuerriers {
             throw new IllegalArgumentException();
 
         //TODO
-        return null;
+       // verifier si la table est null
+        if (nombreGuerriers == 0) {
+            return null;
+        }
+        //sauvegarder le geurrier en position 0
+        Guerrier combattant = tableGuerriers[0];
+        //supprimer le guerrier en position 0
+        //decaleer tous les guerrier ver la gauche
+        for (int i = 0; i < nombreGuerriers - 1; i++) {
+            tableGuerriers[i] = tableGuerriers[i + 1];
+        }
+        //go nettaoyer la derniere position et decrementer
+        tableGuerriers[nombreGuerriers -1] = null;
+        nombreGuerriers--;
+        //le guerrier perd des point de vie
+        combattant.retirerPointsDeVie(pointsDeViePerdus);
+        //si le gladiator a survecue le remettre dans les rend de ces freres guerrier
+        if (combattant.estVivant()) {
+            tableGuerriers[nombreGuerriers] = combattant;
+            nombreGuerriers++;
+        }
+
+        return combattant;
 
         //pour diminuer le nombre de points de vie du guerrier,
         //utilisez la methode retirerPointsDeVie()
