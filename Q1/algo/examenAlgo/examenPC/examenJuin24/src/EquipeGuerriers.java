@@ -22,7 +22,14 @@ public class EquipeGuerriers {
             throw new IllegalArgumentException("jeu impossible!");
 
         tableGuerriers = new Guerrier[tableTousLesGuerriers.length];
-
+        int index =0;
+        for (int i = 0; i < tableTousLesGuerriers.length; i++) {
+            if (tableTousLesGuerriers[i].getPointsDeVie() >= pointsDeVieMin) {
+                tableGuerriers[index] = tableTousLesGuerriers[i];
+                index++;
+            }
+        }
+        nombreGuerriers = index;
         //TODO
 
         //Il ne faut pas initialiser l'attribut guerrierAuCombat
@@ -62,7 +69,15 @@ public class EquipeGuerriers {
     public int indiceMeilleurGuerrier() {
 
         //TODO
-        return 0;
+        int indice = 0;
+        int max = tableGuerriers[0].getPointsDeVie();
+        for (int i = 0; i < nombreGuerriers; i++) {
+            if (tableGuerriers[i].getPointsDeVie() > max){
+                max = tableGuerriers[i].getPointsDeVie();
+                indice = i;
+            }
+        }
+        return indice;
 
         //pour connaitre le nombre de points de vie d'un guerrier,
         //utilisez la methode getPointsDeVie()
@@ -80,6 +95,16 @@ public class EquipeGuerriers {
     public void supprimerALIndice(int indice) {
 
         //TODO
+        // 1. Décaler tous les éléments APRÈS indice vers la gauche
+        for (int i = indice; i < nombreGuerriers - 1; i++) {
+            tableGuerriers[i] = tableGuerriers[i + 1];
+        }
+
+        // 2. Nettoyer la dernière position
+        tableGuerriers[nombreGuerriers - 1] = null;
+
+        // 3. Décrémenter le compteur
+        nombreGuerriers--;
 
     }
 
@@ -97,6 +122,9 @@ public class EquipeGuerriers {
             throw new NoSuchElementException();
 
         //TODO
+        guerrierAuCombat = tableGuerriers[indiceMeilleurGuerrier()];
+
+        supprimerALIndice(indiceMeilleurGuerrier());
 
         //contrainte : utilisez les methodes indiceMeilleurGuerrier() et supprimerALIndice()
 
@@ -121,6 +149,13 @@ public class EquipeGuerriers {
 
         //TODO
 
+        //diminuer point de vie
+        guerrierAuCombat.retirerPointsDeVie(pointsDeViePerdus);
+        if (guerrierAuCombat.getPointsDeVie() > 0) {
+            tableGuerriers[nombreGuerriers] = guerrierAuCombat;
+            nombreGuerriers++;
+        }
+        guerrierAuCombat = null;
         //n'oubliez pas de remettre l'attribut guerrierAuCombat a null
 
         //pour diminuer le nombre de points de vie du guerrier,
@@ -141,6 +176,15 @@ public class EquipeGuerriers {
         }
 
         //TODO
+        for (int i = 0; i <nombreGuerriers -1 ; i++) {
+            for (int j = 0; j < nombreGuerriers -1; j++) {
+                if (tableTriee[j].getPointsDeVie() < tableTriee[j + 1].getPointsDeVie()) {
+                    Guerrier temp = tableTriee[j];
+                    tableTriee[j] = tableTriee[j+1];
+                    tableTriee[j+1] = temp;
+                }
+            }
+        }
 
         //CONTRAINTE :
 
