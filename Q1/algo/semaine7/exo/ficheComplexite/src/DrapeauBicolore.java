@@ -8,6 +8,7 @@ public class DrapeauBicolore {
   public DrapeauBicolore(int n) {
     t = new int[n];
     Random r = new Random();
+
     for (int i = 0; i != n; i++) {
       t[i] = r.nextInt();
     }
