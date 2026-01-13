@@ -40,6 +40,14 @@ public class GrilleDepart {
 	public static boolean contientHomonymes(String[] tableNomsPilotes){
 		if(tableNomsPilotes == null)
 			throw new IllegalArgumentException();
+		for (int i = 0; i < tableNomsPilotes.length; i++) {
+			for (int j = i+1; j < tableNomsPilotes.length; j++) {
+				if (tableNomsPilotes[i].equals(tableNomsPilotes[j])) {
+					return true;
+				}
+			}
+		}
+
 		//TODO
 		return false;
 
@@ -55,7 +63,14 @@ public class GrilleDepart {
 	 */
 	public int ecartMaximum() {
 		//TODO
-		return 0;
+		int ecart = 0;
+		for (int i = 0; i < tablePilotes.length -1; i++) {
+			int formule = tablePilotes[i + 1].getMeilleurTemps() - tablePilotes[i].getMeilleurTemps();
+			if (formule > ecart) {
+				ecart = formule;
+			}
+		}
+		return ecart;
 
 		//(rappel : la table contient au minimum 2 pilotes)
 
@@ -67,7 +82,13 @@ public class GrilleDepart {
 	 */
 	public int nombrePilotesEnPhaseDEssais(){
 		//TODO
-		return 0;
+		int compteur = 0;
+		for (int i = 0; i < tablePilotes.length ; i++) {
+			if (tablePilotes[i].getNombreEssais() < MAX_ESSAIS) {
+				compteur++;
+			}
+		}
+		return compteur;
 
 	}
 
@@ -81,7 +102,15 @@ public class GrilleDepart {
 	 */
 	public Pilote[] pilotesEnPhaseDEssais() {
 		// TODO
-		return null;
+		Pilote[] tablePilote1essais = new Pilote[nombrePilotesEnPhaseDEssais()];
+		int index = 0;
+		for (int i = 0; i < tablePilotes.length; i++) {
+			if (tablePilotes[i].getNombreEssais() < MAX_ESSAIS) {
+				tablePilote1essais[index] = tablePilotes[i];
+				index++;
+			}
+		}
+		return tablePilote1essais;
 
 	}
 
@@ -127,7 +156,45 @@ public class GrilleDepart {
 		if(nouveauTemps < 0)
 			throw new IllegalArgumentException();
 		// TODO
-		return false;
+		// 1. Trouver l'indice du pilote
+		int indice = trouverIndice(nomPilote);
+
+		// Si le pilote n'existe pas, on ne peut rien faire
+		if(indice == -1)
+			return false;
+
+		// 2. Vérifier si le nombre max d'essais est atteint
+		if(tablePilotes[indice].getNombreEssais() >= MAX_ESSAIS)
+			return false;
+
+		// 3. Augmenter le nombre d'essais (toujours, si le pilote existe et a des essais restants)
+		tablePilotes[indice].ajouter1Essai();
+
+		// 4. Vérifier si on doit mettre à jour le meilleur temps
+		boolean tempsModifie = false;
+		if(nouveauTemps < tablePilotes[indice].getMeilleurTemps()) {
+			tablePilotes[indice].setMeilleurTemps(nouveauTemps);
+			tempsModifie = true;
+		}
+
+		// 5. Si le temps n'a pas été modifié, pas de réorganisation nécessaire
+		if(!tempsModifie)
+			return false;
+
+		// 6. Réorganiser la grille (tri par insertion)
+		// On remonte le pilote tant que son temps est meilleur que celui d'avant
+		boolean grilleModifiee = false;
+		while(indice > 0 && tablePilotes[indice].getMeilleurTemps() < tablePilotes[indice - 1].getMeilleurTemps()) {
+			// Échanger les pilotes
+			Pilote temp = tablePilotes[indice];
+			tablePilotes[indice] = tablePilotes[indice - 1];
+			tablePilotes[indice - 1] = temp;
+
+			indice--;
+			grilleModifiee = true;
+		}
+
+		return grilleModifiee;
 
 		//Prenez connaissance de la methode trouverIndice() ci-dessus.
 		// ET UTILISEZ-LA !
