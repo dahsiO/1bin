@@ -49,6 +49,9 @@ public class QuestionNPS {
 			}
 
 		}
+		for (int i = 0; i < tableRecue.length; i++) {
+			System.out.println("j ai reussi algo");
+		}
 
 		//Pour connaitre la taille physique de tableReponses :
 		//Pensez a faire un premier parcours de tableRecue pour connaitre le nombre de reponses valides
