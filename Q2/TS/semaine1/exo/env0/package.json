@@ -1,0 +1,25 @@
+{
+  "name": "env0",
+  "version": "1.0.0",
+  "main": "dist/ex1.js",
+  "scripts": {
+    "build": "tsc -p . -w",
+    "run-all": "tsc -p . && node dist/ex1.js",
+    "start": "node dist/ex1.js",
+    "dev": "nodemon dist/ex1.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "description": "Dummy environment to test TS",
+  "author": "Plumat Jerome",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "^22.4.0",
+    "typescript": "^4.4.3",
+    "nodemon": "^2.0.15"
+  }
+}

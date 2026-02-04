@@ -1,0 +1,37 @@
+{
+  "name": "hospital-server",
+  "version": "1.0.0",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc -p . -w",
+    "run-all": "tsc -p . -w; node dist/main.js",
+    "start": "node dist/main.js",
+    "dev": "node --watch dist/main.js",
+    "test": "jest --watchAll"
+  },
+  "description": "A simple hospital server implementation",
+  "author": "Jerome Plumat",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "fs": "^0.0.1-security",
+    "jasmine": "^5.3.0",
+    "jest": "^29.7.0",
+    "node-fetch": "^2.6.6",
+    "supertest": "^7.0.0",
+    "typescript": "^5.6.2",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/cors": "^2.8.17",
+    "@types/jasmine": "^5.1.4",
+    "@types/supertest": "^6.0.2",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^22.4.0",
+    "@types/node-fetch": "^2.6.11"
+  }
+}

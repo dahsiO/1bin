@@ -1,0 +1,2 @@
+# Get the list of doctors
+GET http://localhost:3000/doctors HTTP/1.1
