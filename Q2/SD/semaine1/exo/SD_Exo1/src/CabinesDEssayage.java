@@ -15,7 +15,15 @@ public class CabinesDEssayage {
 	 */
 	public CabinesDEssayage(int nombreCabines){
 		// TODO
-
+		if (nombreCabines <= 0) {
+			throw new IllegalArgumentException("Le nombre de cabines doit être strictement positif");
+		}
+		tableOccupations = new boolean[nombreCabines]; // false par defaut
+		pileNumerosCabinesLibres = new PileImpl<>(nombreCabines);
+		// La numérotation commence à 1
+		for (int i = 1; i <= nombreCabines; i++) {
+			pileNumerosCabinesLibres.push(i);
+		}
 	}
 	
 	/**
@@ -24,8 +32,7 @@ public class CabinesDEssayage {
 	 */
 	public int nombreCabinesLibres(){
 		// TODO
-		return 0;
-
+		return pileNumerosCabinesLibres.taille();
 	}
 	
 	/**
@@ -34,8 +41,19 @@ public class CabinesDEssayage {
 	 */
 	public int attribuerCabineLibre(){
         // TODO
-        return 0;
+		if (pileNumerosCabinesLibres.estVide()) {
+			return -1;
+		}
+		// Retirer la cabine du sommet le pop supprime met renvoie 	aussi le sommet on recupere cette donne quon stoke dans une variable quon renvoie a la fin de la methode
+		int numeroCabine = pileNumerosCabinesLibres.pop();
 
+		// Marquer la cabine comme occupée
+		// Les cabines sont numérotées à partir de 1,
+		// tandis que les tableaux Java sont indexés à partir de 0
+		//donc on fait -1
+		tableOccupations[numeroCabine - 1] = true;
+
+		return numeroCabine;
 	}
 	
 	/**
@@ -46,7 +64,17 @@ public class CabinesDEssayage {
 	 */
 	public void libererCabine(int numeroCabine) {
 		// TODO
-
+		if (numeroCabine > tableOccupations.length) {
+			throw new IllegalArgumentException("le numero de cabine est indisponible");
+		}
+		if (numeroCabine <= 0) {
+			throw new IllegalArgumentException("numero de cabine pas correcte ");
+		}
+		if (tableOccupations[numeroCabine - 1] == false) {
+			throw new IllegalStateException("la cabine est libre ");
+		}
+		tableOccupations[numeroCabine -1] = false;
+		pileNumerosCabinesLibres.push(numeroCabine);
 	}
 
     // A NE PAS RETIRER !

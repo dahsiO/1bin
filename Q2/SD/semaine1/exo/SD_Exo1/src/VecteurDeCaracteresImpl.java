@@ -32,6 +32,9 @@ public class VecteurDeCaracteresImpl implements VecteurDeCaracteres{
 	
 	
 	public boolean estVide() {
+		if (taille == 0) {
+			return true;
+		}
 		return false;
 		//TODO
 
@@ -39,7 +42,13 @@ public class VecteurDeCaracteresImpl implements VecteurDeCaracteres{
 
 	
 	public char element(int rang) throws VecteurOutException {
-		return 0;
+		if (rang < 0 || rang > table.length -1) {
+			throw new VecteurOutException();
+		}
+		if (rang >= taille) {
+			throw new VecteurOutException();
+		}
+		return table[rang];
 		// TODO 
 		// PENSEZ A CONSULTER LA JAVADOC (cfr Interface VecteurDeCaracteres)
 
@@ -53,22 +62,64 @@ public class VecteurDeCaracteresImpl implements VecteurDeCaracteres{
 		// Si la table est pleine, il faut doubler sa capacite
 		// PENSEZ A CONSULTER LA JAVADOC (cfr Interface VecteurDeCaracteres)
 
-	}	
+		if (rang < 0 || rang > taille) {
+			throw new VecteurOutException();
+		}
+		if (taille == table.length) {
+			char[] nouvelleTable = new char[table.length * 2];
+			for (int i = 0; i < table.length; i++) {
+				nouvelleTable[i] = table[i];
+			}
+			table = nouvelleTable;
+		}
+		for (int i = taille - 1; i >= rang; i--) {
+			table[i + 1] = table[i];
+		}
+		table[rang] = caractere;
+		taille++;
+	}
 	
 	public void ajoute(char caractere) {
-		// TODO 
+		// TODO
+		if (taille == table.length) {
+			char[] nouvelleTable = new char[table.length * 2];
+			for (int i = 0; i < table.length; i++) {
+				nouvelleTable[i] = table[i];
+			}
+			table = nouvelleTable;
+		}
+		table[taille] = caractere;
+		taille++;
+
 
 	}
 
 	public char remplace(int rang, char caractere)throws VecteurOutException {
-		return 0;
+		if (rang < 0 || rang > table.length -1) {
+			throw new VecteurOutException();
+		}
+		if (rang >= taille) {
+			throw new VecteurOutException();
+		}
+		char caractereArempl = table[rang];
+		table[rang] = caractere;
+
+		return caractereArempl;
 		// TODO 
 		// PENSEZ A CONSULTER LA JAVADOC (cfr Interface VecteurDeCaracteres)
 
 	}
 
 	public char supprime(int rang) throws VecteurOutException {
-		return 0;
+		if (rang < 0 || rang >= taille) {
+			throw new VecteurOutException();
+		}
+		char charSupprime = table[rang];
+		for (int i = rang; i < taille - 1; i++) {
+			table[i] = table[i + 1];
+		}
+		taille--;
+		return charSupprime;
 		// TODO 
 		// l'ordre des caracteres doit etre conserve --> decalages!!!
 		// il ne peut y avoir des trous

@@ -79,7 +79,6 @@ public class PileDeCaracteresImpl implements PileDeCaracteres{
 			nombreCaracteres++;
 		}
 
-
 		//A NE PAS MODIFIER
 	@Override
 	public String toString() {
