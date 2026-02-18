@@ -1,2 +1,4 @@
 # Get the list of doctors
 GET http://localhost:3000/doctors HTTP/1.1
+# Get a specific doctor by ID
+GET http://localhost:3000/doctors/1 HTTP/1.1
