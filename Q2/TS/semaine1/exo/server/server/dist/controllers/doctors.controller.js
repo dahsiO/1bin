@@ -38,8 +38,10 @@ exports.doctorsController.get("/:id", (req, res) => {
     // 3️⃣ Parcourir la liste avec une boucle for
     for (let i = 0; i < doctors.length; i++) {
         if (doctors[i].id === id) {
+            // transform dto
+            const doctorDTO = doctors_mapper_1.DoctorsMapper.toDTO(doctors[i]);
             // 5️⃣ Docteur trouvé
-            res.status(200).json(doctors[i]);
+            res.status(200).json(doctorDTO);
             return;
         }
     }
