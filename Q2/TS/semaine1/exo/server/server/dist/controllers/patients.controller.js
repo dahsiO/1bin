@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PatientController = void 0;
 const express_1 = require("express");
 const guards_1 = require("../utils/guards");
+const patients_mapper_1 = require("../mappers/patients.mapper");
 exports.PatientController = (0, express_1.Router)();
 // This is a static mock array of patients  
 const patients = [
@@ -41,7 +42,11 @@ const patients = [
  */
 exports.PatientController.get("/", (req, res) => {
     console.log("[GET] /patients/");
-    res.json(patients).status(200);
+    const patientsDTO = [];
+    for (const patient of patients) {
+        patientsDTO.push(patients_mapper_1.PatientsMapper.toDTO(patient));
+    }
+    res.json(patientsDTO).status(200);
 });
 // GET /patients/1  →  retourne le patient avec id=1
 exports.PatientController.get("/:id", (req, res) => {
@@ -49,7 +54,8 @@ exports.PatientController.get("/:id", (req, res) => {
     const id = parseInt(req.params.id);
     const patient = patients.find(p => p.id === id);
     if (patient) {
-        res.json(patient).status(200);
+        const patientDTO = patients_mapper_1.PatientsMapper.toDTO(patient);
+        res.json(patientDTO).status(200);
     }
     else {
         res.status(404).send("Patient not found");
@@ -65,7 +71,8 @@ exports.PatientController.get("/:niss", (req, res) => {
     }
     for (let i = 0; i < patients.length; i++) {
         if (patients[i].niss === niss) {
-            res.json(patients[i]).status(200);
+            const patientDTO = patients_mapper_1.PatientsMapper.toDTO(patients[i]);
+            res.json(patientDTO).status(200);
             return;
         }
     }
@@ -81,8 +88,8 @@ exports.PatientController.get("/:id/short", (req, res) => {
     }
     for (let i = 0; i < patients.length; i++) {
         if (patients[i].id === id) {
-            const { firstName, lastName } = patients[i];
-            res.json({ id, firstName, lastName }).status(200);
+            const patientShortDTO = patients_mapper_1.PatientsMapper.toShortDTO(patients[i]);
+            res.json(patientShortDTO).status(200);
             return;
         }
     }
@@ -94,8 +101,8 @@ exports.PatientController.get("/zip/:zip", (req, res) => {
     const zip = req.params.zip;
     const patientsByZip = patients.filter(p => p.address.zipCode === zip);
     if (patientsByZip.length > 0) {
-        const result = patientsByZip.map(p => ({ id: p.id, firstName: p.firstName, lastName: p.lastName }));
-        res.json(result).status(200);
+        const patientsDTO = patientsByZip.map(p => patients_mapper_1.PatientsMapper.toShortDTO(p));
+        res.json(patientsDTO).status(200);
     }
     else {
         res.status(404).json({ error: "No patients found with this zip code" });
