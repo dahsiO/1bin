@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; connect-src 'self' http://localhost:3000">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <title>Patient Manager</title>
+</head>
+
+<body>
+  <h1 class="mainTitle">Patient Manager</h1>
+  <h2>Create a patient</h2>
+  <div>
+    <form id="createPatientForm">
+      <label for="c_lastName">Last name:</label>
+      <input type="text" id="c_lastName" name="c_lastName" placeholder="Last Name" required>
+      <label for="c_firstName">First name:</label>
+      <input type="text" id="c_firstName" name="c_firstName" placeholder="First Name" required>
+      <label for="c_birthdate">Date of birth:</label>
+      <input type="date" id="c_birthdate" name="c_birthdate" placeholder="Birthdate" required>
+      <label for="c_niss">NISS:</label>
+      <input type="text" id="c_niss" name="c_niss" placeholder="NISS" required>
+      <label for="c_street">Street:</label>
+      <input type="text" id="c_street" name="c_street" placeholder="Street" required>
+      <label for="c_number">Number:</label>
+      <input type="text" id="c_number" name="c_number" placeholder="Number" required>
+      <label for="c_city">City:</label>
+      <input type="text" id="c_city" name="c_city" placeholder="City" required>
+      <label for="c_zipCode">Zipcode:</label>
+      <input type="text" id="c_zipCode" name="c_zipCode" placeholder="Postal Code" required>
+      <label for="c_country">Country:</label>
+      <input type="text" id="c_country" name="c_country" placeholder="Country" required>
+      <label for="c_refDoctor">Referring doctor:</label>
+      <input type="text" id="c_refDoctor" name="c_refDoctor" placeholder="Referring Doctor" required>
+      <button type="submit">Create Patient</button>
+    </form>
+    <p id="infoCreateMessage"></p>
+  </div>
+  <h2>Get a patient</h2>
+  <div>
+    <form id="getPatientForm" onsubmit="">
+      <label for="patientId">Patient ID:</label>
+      <input type="text" id="patientId" name="patientId" required>
+      <button type="submit">Get Patient Info</button>
+    </form>
+  </div>
+  <div id="postPatientForm">
+    <form id="updatePatientForm" onsubmit="">
+      <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" required>
+        <label for="birthdate">BirthDate:</label>
+        <input type="date" id="birthdate" name="birthdate">
+        <label for="niss">NISS:</label>
+        <input type="text" id="niss" name="niss">
+        <label for="address">Address:</label>
+        <label for="street">Street:</label>
+        <input type="text" id="street" name="street">
+        <label for="number">Number:</label>
+        <input type="text" id="number" name="number">
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city">
+        <label for="zipCode">Postal Code:</label>
+        <input type="text" id="zipCode" name="zipCode">
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country">
+        <label for"refDoctor">Referring Doctor:</label>
+        <input type="text" id="refDoctor" name="refDoctor">
+      </div>
+      <button type="submit">Update Patient Info</button>
+    </form>
+  </div>
+  <p id="errorMessage" style="color: red;"></p>
+  <script src="callAPI.js"></script>
+</body>
+
+</html>

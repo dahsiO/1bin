@@ -4,7 +4,8 @@
 
 import { Request, Response, Router } from "express";
 import { isNumber } from "../utils/guards"; 
-import { Doctor } from "../models/doctor.model";
+import { Doctor , DoctorDTO } from "../models/doctor.model";
+import { DoctorsMapper } from "../mappers/doctors.mapper";
 
 export const doctorsController = Router();
 
@@ -20,7 +21,13 @@ const doctors: Doctor[] = [
  */
 doctorsController.get("/", (req: Request, res: Response) => {
   console.log("[GET] /doctors/");
-  res.json(doctors).status(200);
+  
+  const doctorsDTO: DoctorDTO[] = [];
+  for (const i of doctors) {
+    doctorsDTO.push(DoctorsMapper.toDTO(i));
+  }
+  
+  res.status(200).send(doctorsDTO);
 });
 
 
@@ -29,7 +36,7 @@ doctorsController.get("/:id", (req: Request, res: Response) => {
   console.log("[GET] /doctors/:id");
 
     // 1️⃣ Transformer le paramètre en nombre
-  const id = Number(req.params.id);
+  const id = parseInt(req.params.id);
 
   // 2️⃣ Vérifier que c’est bien un nombre valide
   if (!isNumber(id)) {

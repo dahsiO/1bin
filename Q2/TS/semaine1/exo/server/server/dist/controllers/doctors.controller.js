@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.doctorsController = void 0;
 const express_1 = require("express");
 const guards_1 = require("../utils/guards");
+const doctors_mapper_1 = require("../mappers/doctors.mapper");
 exports.doctorsController = (0, express_1.Router)();
 // This is a static mock array of doctors
 const doctors = [
@@ -18,13 +19,17 @@ const doctors = [
  */
 exports.doctorsController.get("/", (req, res) => {
     console.log("[GET] /doctors/");
-    res.json(doctors).status(200);
+    const doctorsDTO = [];
+    for (const i of doctors) {
+        doctorsDTO.push(doctors_mapper_1.DoctorsMapper.toDTO(i));
+    }
+    res.status(200).send(doctorsDTO);
 });
 // GET /doctors/1  →  retourne le docteur avec id=1
 exports.doctorsController.get("/:id", (req, res) => {
     console.log("[GET] /doctors/:id");
     // 1️⃣ Transformer le paramètre en nombre
-    const id = Number(req.params.id);
+    const id = parseInt(req.params.id);
     // 2️⃣ Vérifier que c’est bien un nombre valide
     if (!(0, guards_1.isNumber)(id)) {
         res.status(400).send("ID must be a number");

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:3000; connect-src 'self' http://localhost:3000">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Doctor Information</title>
+</head>
+<body>
+    <h1 class="mainTitle">Doctor Information</h1>
+    <form id="doctorForm" onsubmit="">
+        <label for="doctorId">Enter Doctor ID:</label>
+        <input type="text" id="doctorId" name="doctorId" required>
+        <button type="submit">Get Doctor Info</button>
+    </form>
+    <div id="doctorInfo">
+        <p><strong>Last Name:</strong> <span id="lastName"></span></p>
+        <p><strong>First Name:</strong> <span id="firstName"></span></p>
+        <p><strong>ID:</strong> <span id="id"></span></p>
+        <p><strong>Specialty:</strong> <span id="specialty"></span></p>
+    </div>
+    <p id="errorMessage" style="color: red;"></p>
+    <script src="callAPI.js"></script>
+</body>
+</html>
