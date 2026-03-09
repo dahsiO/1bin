@@ -48,3 +48,24 @@ exports.doctorsController.get("/:id", (req, res) => {
     // 4️⃣ Docteur non trouvé
     res.status(404).send("Doctor not found");
 });
+// cree une route post cree un nouveau docteur
+exports.doctorsController.post("/", (req, res) => {
+    console.log("[POST] /doctors/");
+    const { firstName, lastName, speciality } = req.body;
+    // Validation des données d'entrée
+    if (!firstName || !lastName || !speciality) {
+        res.status(400).send("Missing required fields: firstName, lastName, speciality");
+        return;
+    }
+    // Création du nouveau docteur
+    const newDoctor = {
+        id: doctors.length + 1, // Générer un nouvel ID (simplement en incrémentant la longueur du tableau)
+        firstName,
+        lastName,
+        speciality
+    };
+    // Ajouter le nouveau docteur à la liste
+    doctors.push(newDoctor);
+    // Retourner le docteur créé avec un statut 201
+    res.status(201).json(doctors_mapper_1.DoctorsMapper.toDTO(newDoctor));
+});
