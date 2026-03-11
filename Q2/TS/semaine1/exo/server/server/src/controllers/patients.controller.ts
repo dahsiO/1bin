@@ -111,3 +111,51 @@ PatientController.get("/zip/:zip", (req, res) => {
         res.status(404).json({ error: "No patients found with this zip code" });
     }
 });
+// create a nw route post /patients/ NewPatientDTO convertie en NewPatient a l aide du mapper de la fonction fromNewDTO 
+PatientController.post("/", (req, res) => {
+    console.log("[POST] /patients/");
+    const newPatientDTO = req.body;
+    const newPatient = PatientsMapper.fromNewDTO(newPatientDTO);
+    if (!newPatient) {
+        res.status(400).json({ error: "Invalid patient data" });
+        return;
+    }
+    newPatient.id = patients.length + 1; // Simple ID generation
+    patients.push(newPatient);
+    const patientDTO = PatientsMapper.toDTO(newPatient);
+    res.status(201).json(patientDTO);
+});
+
+// Put /patients/:id update patient by id
+PatientController.put("/:id", (req, res) => {
+    console.log("[PUT] /patients/:id");
+    const id = parseInt(req.params.id);
+    const patientIndex = patients.findIndex(p => p.id === id);
+    if (patientIndex === -1) {
+        res.status(404).json({ error: "Patient not found" });
+        return;
+    }
+    const updatedPatientDTO = req.body;
+    const updatedPatient = PatientsMapper.fromNewDTO(updatedPatientDTO);
+    if (!updatedPatient) {
+        res.status(400).json({ error: "Invalid patient data" });
+        return;
+    }
+    updatedPatient.id = id; // Keep the same ID
+    patients[patientIndex] = updatedPatient;
+    const patientDTO = PatientsMapper.toDTO(updatedPatient);
+    res.json(patientDTO).status(200);
+});
+
+// Delete /patients/:id delete patient by id
+PatientController.delete("/:id", (req, res) => {
+    console.log("[DELETE] /patients/:id");
+    const id = parseInt(req.params.id);
+    const patientIndex = patients.findIndex(p => p.id === id);
+    if (patientIndex === -1) {
+        res.status(404).json({ error: "Patient not found" });
+        return;
+    }   
+    patients.splice(patientIndex, 1);
+    res.status(204).send();
+});

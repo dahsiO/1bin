@@ -3,8 +3,8 @@
  */
 
 import { Request, Response, Router } from "express";
-import { isNumber } from "../utils/guards"; 
-import { Doctor , DoctorDTO } from "../models/doctor.model";
+import { isNumber, isString } from "../utils/guards"; 
+import { Doctor , DoctorDTO, DoctorsFilter } from "../models/doctor.model";
 import { DoctorsMapper } from "../mappers/doctors.mapper";
 
 export const doctorsController = Router();
@@ -29,7 +29,29 @@ doctorsController.get("/", (req: Request, res: Response) => {
   
   res.status(200).send(doctorsDTO);
 });
+// filter by speciality with DoctorsFilter interface
+doctorsController.get("/filter", (req: Request, res: Response) => {
+  console.log("[GET] /doctors/filter");
+  const speciality = req.query.speciality;
+  
+  // Validation de la spécialité
+  if (!isString(speciality)) {
+    res.status(400).send("Speciality must be a string");
+    return;
+  }
+  const doctorsDTO: DoctorsFilter[] = [];
+  for (const doctor of doctors) {
+    if (doctor.speciality.toLowerCase() === speciality.toLowerCase()) {
+      doctorsDTO.push(DoctorsMapper.toDTO(doctor));
+    }
+  }
+  // Retourner les docteurs filtrés
+  
+  res.status(200).json(doctorsDTO);
+});
 
+
+ 
 
 // GET /doctors/1  →  retourne le docteur avec id=1
 doctorsController.get("/:id", (req: Request, res: Response) => {
@@ -85,5 +107,67 @@ doctorsController.post("/", (req: Request, res: Response) => {
   // Retourner le docteur créé avec un statut 201
   res.status(201).json(DoctorsMapper.toDTO(newDoctor));
 });
+// put /doctors/1  →  met à jour le docteur avec id=1
+doctorsController.put("/:id", (req: Request, res: Response) => {
+  console.log("[PUT] /doctors/:id");
+  const id = parseInt(req.params.id);
+  
+  // Validation de l'ID
+  if (!isNumber(id)) {
+    res.status(400).send("ID must be a number");
+    return;
+  }
+  
+  const { firstName, lastName, speciality } = req.body;
+  
+  // Validation des données d'entrée
+  if (!firstName || !lastName || !speciality) {
+    res.status(400).send("Missing required fields: firstName, lastName, speciality");
+    return;
+  }
+  
+  // Trouver le docteur à mettre à jour
+  for (let i = 0; i < doctors.length; i++) {
+    if (doctors[i].id === id) {
+      // Mettre à jour les informations du docteur
+      doctors[i].firstName = firstName;
+      doctors[i].lastName = lastName;
+      doctors[i].speciality = speciality;
+      
+      // Retourner le docteur mis à jour
+      res.status(200).json(DoctorsMapper.toDTO(doctors[i]));
+      return;
+    }
+  }
+  
+  // Docteur non trouvé
+  res.status(404).send("Doctor not found");
+});
 
- 
+// delete /doctors/1  →  supprime le docteur avec id=1
+doctorsController.delete("/:id", (req: Request, res: Response) => {
+  console.log("[DELETE] /doctors/:id");
+  const id = parseInt(req.params.id);
+  
+  // Validation de l'ID
+  if (!isNumber(id)) {
+    res.status(400).send("ID must be a number");
+    return;
+  }
+  
+  // Trouver l'index du docteur à supprimer bloucle for
+  for (let i = 0; i < doctors.length; i++) {
+    if (doctors[i].id === id) {
+      // Supprimer le docteur du tableau
+      doctors.splice(i, 1);
+      
+      // Retourner un statut 204 No Content
+      res.status(204).send();
+      return;
+    }
+  }
+  
+  // Docteur non trouvé
+  res.status(404).send("Doctor not found"); 
+});
+

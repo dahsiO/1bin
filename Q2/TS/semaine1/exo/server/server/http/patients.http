@@ -1,2 +1,30 @@
 
 GET http://localhost:3000/patients/zip/1000 HTTP/1.1
+
+### 
+POST http://localhost:3000/patients HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName": "Marie",
+  "lastName": "Curie",
+  "birthDate": "1867-11-07",
+  "niss": "12345678901",
+  "address": "123 Rue de la Paix, 1000 Brussels",
+  "refDoctor": "Dr. Smith"
+}
+
+### 
+PUT http://localhost:3000/patients/3 HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName": "Oussama",
+  "lastName": "Curie",
+  "birthDate": "1867-11-07",
+  "niss": "12345678901",
+  "address": "123 Rue de la Paix, 1000 Brussels",
+  "refDoctor": "Dr. Smith"
+}
+### delete patient with id 3
+DELETE http://localhost:3000/patients/3 HTTP/1.1

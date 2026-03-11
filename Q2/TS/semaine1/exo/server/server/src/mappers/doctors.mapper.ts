@@ -10,4 +10,15 @@ export class DoctorsMapper {
       speciality: doctor.speciality,
     };
   }
+
+  // toEntity(dto: DoctorDTO): Doctor 
+    public static toEntity(dto: DoctorDTO): Doctor {
+    return {
+      id: dto.id,
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      speciality: dto.speciality,
+    };
+  }
+  
 }

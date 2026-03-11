@@ -108,3 +108,49 @@ exports.PatientController.get("/zip/:zip", (req, res) => {
         res.status(404).json({ error: "No patients found with this zip code" });
     }
 });
+// create a nw route post /patients/ NewPatientDTO convertie en NewPatient a l aide du mapper de la fonction fromNewDTO 
+exports.PatientController.post("/", (req, res) => {
+    console.log("[POST] /patients/");
+    const newPatientDTO = req.body;
+    const newPatient = patients_mapper_1.PatientsMapper.fromNewDTO(newPatientDTO);
+    if (!newPatient) {
+        res.status(400).json({ error: "Invalid patient data" });
+        return;
+    }
+    newPatient.id = patients.length + 1; // Simple ID generation
+    patients.push(newPatient);
+    const patientDTO = patients_mapper_1.PatientsMapper.toDTO(newPatient);
+    res.status(201).json(patientDTO);
+});
+// Put /patients/:id update patient by id
+exports.PatientController.put("/:id", (req, res) => {
+    console.log("[PUT] /patients/:id");
+    const id = parseInt(req.params.id);
+    const patientIndex = patients.findIndex(p => p.id === id);
+    if (patientIndex === -1) {
+        res.status(404).json({ error: "Patient not found" });
+        return;
+    }
+    const updatedPatientDTO = req.body;
+    const updatedPatient = patients_mapper_1.PatientsMapper.fromNewDTO(updatedPatientDTO);
+    if (!updatedPatient) {
+        res.status(400).json({ error: "Invalid patient data" });
+        return;
+    }
+    updatedPatient.id = id; // Keep the same ID
+    patients[patientIndex] = updatedPatient;
+    const patientDTO = patients_mapper_1.PatientsMapper.toDTO(updatedPatient);
+    res.json(patientDTO).status(200);
+});
+// Delete /patients/:id delete patient by id
+exports.PatientController.delete("/:id", (req, res) => {
+    console.log("[DELETE] /patients/:id");
+    const id = parseInt(req.params.id);
+    const patientIndex = patients.findIndex(p => p.id === id);
+    if (patientIndex === -1) {
+        res.status(404).json({ error: "Patient not found" });
+        return;
+    }
+    patients.splice(patientIndex, 1);
+    res.status(204).send();
+});

@@ -23,3 +23,6 @@ export interface NewDoctor {
   lastName: string;
   speciality: string;
 }
+export interface DoctorsFilter {
+  speciality?: string;
+}
