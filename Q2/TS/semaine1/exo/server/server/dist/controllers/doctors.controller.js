@@ -7,6 +7,7 @@ exports.doctorsController = void 0;
 const express_1 = require("express");
 const guards_1 = require("../utils/guards");
 const doctors_mapper_1 = require("../mappers/doctors.mapper");
+const logger_service_1 = require("../services/logger.service");
 exports.doctorsController = (0, express_1.Router)();
 // This is a static mock array of doctors
 const doctors = [
@@ -18,7 +19,7 @@ const doctors = [
  * This function returns all the doctors
  */
 exports.doctorsController.get("/", (req, res) => {
-    console.log("[GET] /doctors/");
+    logger_service_1.LoggerService.info(`[GET] /doctors/`);
     const doctorsDTO = [];
     for (const i of doctors) {
         doctorsDTO.push(doctors_mapper_1.DoctorsMapper.toDTO(i));
@@ -27,7 +28,7 @@ exports.doctorsController.get("/", (req, res) => {
 });
 // filter by speciality with DoctorsFilter interface
 exports.doctorsController.get("/filter", (req, res) => {
-    console.log("[GET] /doctors/filter");
+    logger_service_1.LoggerService.info(`[GET] /doctors/filter`);
     const speciality = req.query.speciality;
     // Validation de la spécialité
     if (!(0, guards_1.isString)(speciality)) {
@@ -45,7 +46,7 @@ exports.doctorsController.get("/filter", (req, res) => {
 });
 // GET /doctors/1  →  retourne le docteur avec id=1
 exports.doctorsController.get("/:id", (req, res) => {
-    console.log("[GET] /doctors/:id");
+    logger_service_1.LoggerService.info("[GET] /doctors/:id");
     // 1️⃣ Transformer le paramètre en nombre
     const id = parseInt(req.params.id);
     // 2️⃣ Vérifier que c’est bien un nombre valide
@@ -68,7 +69,7 @@ exports.doctorsController.get("/:id", (req, res) => {
 });
 // cree une route post cree un nouveau docteur
 exports.doctorsController.post("/", (req, res) => {
-    console.log("[POST] /doctors/");
+    logger_service_1.LoggerService.info("[POST] /doctors/");
     const { firstName, lastName, speciality } = req.body;
     // Validation des données d'entrée
     if (!firstName || !lastName || !speciality) {
@@ -89,7 +90,7 @@ exports.doctorsController.post("/", (req, res) => {
 });
 // put /doctors/1  →  met à jour le docteur avec id=1
 exports.doctorsController.put("/:id", (req, res) => {
-    console.log("[PUT] /doctors/:id");
+    logger_service_1.LoggerService.info("[PUT] /doctors/:id");
     const id = parseInt(req.params.id);
     // Validation de l'ID
     if (!(0, guards_1.isNumber)(id)) {
@@ -119,7 +120,7 @@ exports.doctorsController.put("/:id", (req, res) => {
 });
 // delete /doctors/1  →  supprime le docteur avec id=1
 exports.doctorsController.delete("/:id", (req, res) => {
-    console.log("[DELETE] /doctors/:id");
+    logger_service_1.LoggerService.info("[DELETE] /doctors/:id");
     const id = parseInt(req.params.id);
     // Validation de l'ID
     if (!(0, guards_1.isNumber)(id)) {

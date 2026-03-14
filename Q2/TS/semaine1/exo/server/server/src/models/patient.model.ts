@@ -23,3 +23,12 @@ export interface PatientShortDTO {
   firstName: string;
   lastName: string;
 }
+//newPatientDTO pour la création d'un patient
+export interface NewPatientDTO {
+  firstName: string;
+  lastName: string;
+  birthDate: string; // format "YYYY-MM-DD"
+  niss: string;
+  address: Address;
+  refDoctor: number;
+}

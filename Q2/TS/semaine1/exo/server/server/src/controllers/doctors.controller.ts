@@ -6,6 +6,7 @@ import { Request, Response, Router } from "express";
 import { isNumber, isString } from "../utils/guards"; 
 import { Doctor , DoctorDTO, DoctorsFilter } from "../models/doctor.model";
 import { DoctorsMapper } from "../mappers/doctors.mapper";
+import { LoggerService } from "../services/logger.service";
 
 export const doctorsController = Router();
 
@@ -20,7 +21,7 @@ const doctors: Doctor[] = [
  * This function returns all the doctors
  */
 doctorsController.get("/", (req: Request, res: Response) => {
-  console.log("[GET] /doctors/");
+  LoggerService.info(`[GET] /doctors/`);
   
   const doctorsDTO: DoctorDTO[] = [];
   for (const i of doctors) {
@@ -31,7 +32,7 @@ doctorsController.get("/", (req: Request, res: Response) => {
 });
 // filter by speciality with DoctorsFilter interface
 doctorsController.get("/filter", (req: Request, res: Response) => {
-  console.log("[GET] /doctors/filter");
+  LoggerService.info(`[GET] /doctors/filter`);
   const speciality = req.query.speciality;
   
   // Validation de la spécialité
@@ -55,7 +56,7 @@ doctorsController.get("/filter", (req: Request, res: Response) => {
 
 // GET /doctors/1  →  retourne le docteur avec id=1
 doctorsController.get("/:id", (req: Request, res: Response) => {
-  console.log("[GET] /doctors/:id");
+  LoggerService.info("[GET] /doctors/:id");
 
     // 1️⃣ Transformer le paramètre en nombre
   const id = parseInt(req.params.id);
@@ -84,7 +85,7 @@ doctorsController.get("/:id", (req: Request, res: Response) => {
 
 // cree une route post cree un nouveau docteur
 doctorsController.post("/", (req: Request, res: Response) => {
-  console.log("[POST] /doctors/");
+  LoggerService.info("[POST] /doctors/");
   const { firstName, lastName, speciality } = req.body;
   
   // Validation des données d'entrée
@@ -109,7 +110,7 @@ doctorsController.post("/", (req: Request, res: Response) => {
 });
 // put /doctors/1  →  met à jour le docteur avec id=1
 doctorsController.put("/:id", (req: Request, res: Response) => {
-  console.log("[PUT] /doctors/:id");
+  LoggerService.info("[PUT] /doctors/:id");
   const id = parseInt(req.params.id);
   
   // Validation de l'ID
@@ -146,7 +147,7 @@ doctorsController.put("/:id", (req: Request, res: Response) => {
 
 // delete /doctors/1  →  supprime le docteur avec id=1
 doctorsController.delete("/:id", (req: Request, res: Response) => {
-  console.log("[DELETE] /doctors/:id");
+  LoggerService.info("[DELETE] /doctors/:id");
   const id = parseInt(req.params.id);
   
   // Validation de l'ID

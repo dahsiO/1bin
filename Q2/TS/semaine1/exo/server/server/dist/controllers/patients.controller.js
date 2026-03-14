@@ -4,6 +4,7 @@ exports.PatientController = void 0;
 const express_1 = require("express");
 const guards_1 = require("../utils/guards");
 const patients_mapper_1 = require("../mappers/patients.mapper");
+const logger_service_1 = require("../services/logger.service");
 exports.PatientController = (0, express_1.Router)();
 // This is a static mock array of patients  
 const patients = [
@@ -41,7 +42,7 @@ const patients = [
 /** * This function returns all the patients
  */
 exports.PatientController.get("/", (req, res) => {
-    console.log("[GET] /patients/");
+    logger_service_1.LoggerService.info(`[GET] /patients/`);
     const patientsDTO = [];
     for (const patient of patients) {
         patientsDTO.push(patients_mapper_1.PatientsMapper.toDTO(patient));
@@ -50,7 +51,7 @@ exports.PatientController.get("/", (req, res) => {
 });
 // GET /patients/1  →  retourne le patient avec id=1
 exports.PatientController.get("/:id", (req, res) => {
-    console.log("[GET] /patients/:id");
+    logger_service_1.LoggerService.info(`[GET] /patients/${req.params.id}`);
     const id = parseInt(req.params.id);
     const patient = patients.find(p => p.id === id);
     if (patient) {
@@ -63,7 +64,7 @@ exports.PatientController.get("/:id", (req, res) => {
 });
 //return patient by niss
 exports.PatientController.get("/:niss", (req, res) => {
-    console.log(`[GET] /patients/:niss')`);
+    logger_service_1.LoggerService.info(`[GET] /patients/:niss')`);
     const niss = req.params.niss;
     if (!(0, guards_1.isNiss)(niss)) {
         res.status(400).json({ error: "niss must be in the format 123456-123-45" });
@@ -80,7 +81,7 @@ exports.PatientController.get("/:niss", (req, res) => {
 });
 // create a new route get patient by id short :id/short only return id, firstName and lastName
 exports.PatientController.get("/:id/short", (req, res) => {
-    console.log("[GET] /patients/:id/short");
+    logger_service_1.LoggerService.info("[GET] /patients/:id/short");
     const id = parseInt(req.params.id);
     if (!(0, guards_1.isNumber)(id)) {
         res.status(400).json({ error: "ID must be a number" });
@@ -97,7 +98,7 @@ exports.PatientController.get("/:id/short", (req, res) => {
 });
 // create a new route get patient by zip code : zip/:zip only return id, firstName and lastName of patients with the same zip code
 exports.PatientController.get("/zip/:zip", (req, res) => {
-    console.log("[GET] /patients/zip/:zip");
+    logger_service_1.LoggerService.info("[GET] /patients/zip/:zip");
     const zip = req.params.zip;
     const patientsByZip = patients.filter(p => p.address.zipCode === zip);
     if (patientsByZip.length > 0) {
@@ -110,7 +111,7 @@ exports.PatientController.get("/zip/:zip", (req, res) => {
 });
 // create a nw route post /patients/ NewPatientDTO convertie en NewPatient a l aide du mapper de la fonction fromNewDTO 
 exports.PatientController.post("/", (req, res) => {
-    console.log("[POST] /patients/");
+    logger_service_1.LoggerService.info("[POST] /patients/");
     const newPatientDTO = req.body;
     const newPatient = patients_mapper_1.PatientsMapper.fromNewDTO(newPatientDTO);
     if (!newPatient) {
@@ -124,7 +125,7 @@ exports.PatientController.post("/", (req, res) => {
 });
 // Put /patients/:id update patient by id
 exports.PatientController.put("/:id", (req, res) => {
-    console.log("[PUT] /patients/:id");
+    logger_service_1.LoggerService.info("[PUT] /patients/:id");
     const id = parseInt(req.params.id);
     const patientIndex = patients.findIndex(p => p.id === id);
     if (patientIndex === -1) {
@@ -144,7 +145,7 @@ exports.PatientController.put("/:id", (req, res) => {
 });
 // Delete /patients/:id delete patient by id
 exports.PatientController.delete("/:id", (req, res) => {
-    console.log("[DELETE] /patients/:id");
+    logger_service_1.LoggerService.info("[DELETE] /patients/:id");
     const id = parseInt(req.params.id);
     const patientIndex = patients.findIndex(p => p.id === id);
     if (patientIndex === -1) {

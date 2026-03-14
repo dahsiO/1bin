@@ -1,4 +1,4 @@
-import { Patient, PatientDTO, PatientShortDTO } from "../models/patient.model";
+import { NewPatientDTO, Patient, PatientDTO, PatientShortDTO } from "../models/patient.model";
 
 export class PatientsMapper {
 
@@ -22,7 +22,7 @@ export class PatientsMapper {
     };
   }
   //new method to create a patient fromNewDTO
-  public static fromNewDTO(patientDTO: Omit<PatientDTO, "id">): Patient {
+  public static fromNewDTO(patientDTO: NewPatientDTO): Patient {
     return {
       id: 0, // This will be set by the database or service layer
       firstName: patientDTO.firstName,
