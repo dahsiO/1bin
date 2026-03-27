@@ -63,20 +63,40 @@ public class DequeImplViaTable<E> implements Deque<E> {
 
     @Override
     public E dernier() throws DequeVideException {
-        //TODO
-        return null;
+        if (taille == 0)
+            throw new DequeVideException();
+        return (E) table[(indicePremier + taille - 1) % table.length];
     }
 
     @Override
     public E retirerDernier() throws DequeVideException {
-        //TODO
-        return null;
+        if (taille == 0)
+            throw new DequeVideException();
+        int indiceDernier = (indicePremier + taille - 1) % table.length;
+        Object element = table[indiceDernier];
+        taille--;
+        return (E) element;
     }
 
     @Override
     public void ajouterEnPremier(E element) {
-        //TODO
-
+        if (taille == table.length) {
+            Object[] tableTemp = new Object[table.length * 2];
+            int iTemp = 0;
+            for (int i = indicePremier; i < table.length; i++) {
+                tableTemp[iTemp] = table[i];
+                iTemp++;
+            }
+            for (int i = 0; i < indicePremier; i++) {
+                tableTemp[iTemp] = table[i];
+                iTemp++;
+            }
+            table = tableTemp;
+            indicePremier = 0;
+        }
+        indicePremier = (indicePremier - 1 + table.length) % table.length;
+        table[indicePremier] = element;
+        taille++;
     }
 
 }
