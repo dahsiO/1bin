@@ -10,7 +10,15 @@ public class DrapeauBelge {
 	 */
 	public DrapeauBelge() {
 		//TODO
+		NoeudCouleur rouge = new NoeudCouleur('r');
+		NoeudCouleur jaune = new NoeudCouleur('j');
+		NoeudCouleur noir  = new NoeudCouleur('n');
+		noir.suivant  = jaune;
+		jaune.suivant = rouge;
+		// rouge.suivant = null (par défaut)
 
+		this.premierNoir   = noir;
+		this.dernierJaune  = jaune;
 	}
 
 	/**
@@ -22,7 +30,25 @@ public class DrapeauBelge {
 	public void ajouter(char couleur){
 		// TODO
 
-	}
+		NoeudCouleur nouveau = new NoeudCouleur(couleur);
+		if (couleur == 'n') {
+			// Insérer après premierNoir
+			nouveau.suivant = premierNoir.suivant;
+			premierNoir.suivant = nouveau;
+
+		} else if (couleur == 'j') {
+			// Insérer après dernierJaune, et mettre à jour dernierJaune
+			nouveau.suivant = dernierJaune.suivant;
+			dernierJaune.suivant = nouveau;
+			dernierJaune = nouveau;  // le nouveau devient le dernier jaune
+
+		} else if (couleur == 'r') {
+			// Insérer juste après dernierJaune (= avant les rouges)
+			nouveau.suivant = dernierJaune.suivant;
+			dernierJaune.suivant = nouveau;
+		}
+		else throw new IllegalArgumentException();
+}
 
 	// A NE PAS MODIFIER. VA SERVIR POUR LES TESTS
 	public String toString(){
