@@ -18,6 +18,9 @@ public class Patrouille {
 			throw new IllegalArgumentException();
 	
 		// TODO
+		this.nomPatrouille = nomPatrouille;
+		this.tete = new Noeud(CP);
+		this.nombreScouts = 1;
 	}
 	
 	public int getNombreScouts(){
@@ -35,6 +38,15 @@ public class Patrouille {
 			throw new IllegalArgumentException();
 
 		// TODO
+		Noeud nouveau = new Noeud(scout);
+		nouveau.suivant = tete.suivant;  // le nouveau pointe vers ce qui était après le CP
+		tete.suivant = nouveau;          // le CP pointe vers le nouveau scout
+		nombreScouts++;
+		/*
+		* **Visualisation :**
+			Avant :  [CP] → [Scout2] → [Scout3] → null
+			Après :  [CP] → [NouveauScout] → [Scout2] → [Scout3] → null
+		* */
 	}
 	
 

@@ -21,19 +21,29 @@ public class PileImplChainee<E> implements Pile<E>{
 
 
 	public E sommet() throws PileVideException {
-		return null;
+		if (estVide()) {
+			throw new PileVideException();
+		}
+		return sommet.element;
 		//TODO
 	}
 
 
 	public E pop() throws PileVideException {
-		return null;
+		if (estVide()) {
+			throw new PileVideException();
+		}
+		E element = sommet.element;
+		sommet = sommet.suivant;
+		taille--;
+		return element;
 		//TODO
 	}
 
 
 	public void push(E element) {
-		//TODO
+		sommet = new Noeud(element, sommet);
+		taille++;
 	}
 
 	// A NE PAS MODIFIER --> POUR LES TESTS!!!

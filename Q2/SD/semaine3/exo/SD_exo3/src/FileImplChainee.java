@@ -21,18 +21,37 @@ public class FileImplChainee<E> implements File<E>{
 
 	public E premier()throws FileVideException{
 		//TODO
-		return null;
+		if (taille == 0) {
+			throw new FileVideException();
+		}
+		return tete.element;
 	}
 
 
 	public E defile() throws FileVideException{
-		//TODO
-		return null;
+		if (estVide()) {
+			throw new FileVideException();
+		}
+		E element = tete.element;
+		tete = tete.suivant;
+		if (tete == null) {
+			queue = null;
+		}
+		taille--;
+		return element;
 	}
 
 
 	public void enfile(E element){
-		//TODO
+		Noeud nouveau = new Noeud(element);
+		if (estVide()) {
+			tete = nouveau;
+			queue = nouveau;
+		} else {
+			queue.suivant = nouveau;
+			queue = nouveau;
+		}
+		taille++;
 	}
 
 
