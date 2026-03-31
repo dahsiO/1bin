@@ -18,6 +18,19 @@ public class  ServeurImpressions {
 		for (int i = 0; i < 10; i++) {
 			tableFilesDAttente[i] = new ArrayDeque<>();
 		}
+//		[ demande.getPrioriter = 0...9
+//				[] => 0
+//				[] => 1
+//				[] => 2
+//				[] => 3
+//				[] => 4
+//				[] => 5 .addLast
+//				[] => 6
+//				[] => 7
+//				[] => 8
+//				[] => 9
+//		]
+
 	}
 	
 	/**
