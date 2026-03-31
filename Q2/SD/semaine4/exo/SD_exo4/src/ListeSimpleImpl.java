@@ -28,12 +28,15 @@ public class ListeSimpleImpl<E> implements ListeSimple<E> {
     // renvoie l element contenu dans le noeud de tete
     public E premier() throws ListeVideException {
         // TODO
-        return null;
+        if (estVide()) throw new ListeVideException();
+        return tete.element;
     }
 
 
     // insere un nouveau noeud en tete de liste avec l element
     public void insererEnTete(E element) {
+        tete = new Noeud(element, tete);
+        taille++;
         // TODO
 
     }
@@ -41,6 +44,12 @@ public class ListeSimpleImpl<E> implements ListeSimple<E> {
 
     // verifie la presence d un noeud contenant l element passe en parametre
     public boolean contient(E element) {
+        Noeud courant = tete;
+        while (courant != null) {
+            if (courant.element.equals(element))
+                return true;
+            courant = courant.suivant;
+        }
         // TODO
         return false;
 
@@ -50,6 +59,15 @@ public class ListeSimpleImpl<E> implements ListeSimple<E> {
     // insere un nouveaud noeud apres le noeud contenant la premiere occurrence de l'element passe en parametre
     public boolean insererApres(E element, E elementAInserer) {
         // TODO
+        Noeud courant = tete;
+        while (courant != null) {
+            if (courant.element.equals(element)) {
+                courant.suivant = new Noeud(elementAInserer, courant.suivant);
+                taille++;
+                return true;
+            }
+            courant = courant.suivant;
+        }
         return false;
 
     }
@@ -58,9 +76,29 @@ public class ListeSimpleImpl<E> implements ListeSimple<E> {
     //supprime le noeud contenant la premiere occurrence de l'element passe en parametre
     public boolean supprimer(E element) {
         // TODO
-        return false;
+        if (estVide()) {
+            return false;
+        }
+        // Cas 1 : l'élément est en tête
+        if (tete.element.equals(element)) {
+            tete = tete.suivant;
+            taille--;
+            return true;
+        }
 
+        // Cas 2 : l'élément est ailleurs → on garde le précédent
+        Noeud precedent = tete;
+        while (precedent.suivant != null) {
+            if (precedent.suivant.element.equals(element)) {
+                precedent.suivant = precedent.suivant.suivant;  // court-circuit
+                taille--;
+                return true;
+            }
+            precedent = precedent.suivant;
+        }
+        return false;
     }
+
 
     @Override
     public Iterator<E> iterator() {
