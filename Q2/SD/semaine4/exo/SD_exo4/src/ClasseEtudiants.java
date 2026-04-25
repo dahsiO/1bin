@@ -16,6 +16,13 @@ public class ClasseEtudiants{
 	 */
 	public ClasseEtudiants(int nombreSeries,String[] noms){
 		// TODO
+		if (nombreSeries <= 0) {
+			throw new IllegalArgumentException();
+		}
+		if (noms.length == 0) {
+			throw new IllegalArgumentException();
+		}
+
 
 	}
 	
@@ -28,7 +35,11 @@ public class ClasseEtudiants{
 	 */
 	public SerieEtudiants getSerieEtudiants(int numeroSerie)throws IllegalArgumentException{
 		// TODO
-		return null;
+		if (tableSeries.length < numeroSerie || numeroSerie < 1) {
+			throw new IllegalArgumentException();
+		}
+
+		return tableSeries[numeroSerie];
 	}
 	
 	
@@ -38,7 +49,8 @@ public class ClasseEtudiants{
 	 */
 	public int nombreSeries(){
 		// TODO
-		return 0;
+
+		return tableSeries.length;
 	}
 		
 	/**
@@ -49,7 +61,16 @@ public class ClasseEtudiants{
 	 */
 	public int numeroSerie(String nom){
 		// TODO
-		return 0;
+		if (nom == null || nom == "") {
+			throw new IllegalArgumentException();
+		}
+		for (int i = 0; i < tableSeries.length; i++) {
+			if (tableSeries[i].contientEtudiant(nom)) {
+				return tableSeries[i].getNumeroSerie();
+			}
+
+		}
+		return -1;
 
 	}
 	
@@ -64,6 +85,11 @@ public class ClasseEtudiants{
 	 */
 	public boolean changerSerie(String nom, int nouveauNumeroSerie){
 		// TODO
+		if (nom == null || nom == "") {
+			throw new IllegalArgumentException();
+		}
+
+
 		return false;
 	}
 	

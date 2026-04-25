@@ -4,23 +4,19 @@ public class SerieEtudiants {
 	
 	private int numeroSerie;
 	private LinkedList<String> listeEtudiants;
-	
-	/**
-	 * construit une serie contenant 0 etudiant
-	 * @param numero le numero de la serie
-	 * @throws IllegalArgumentException si le numero < 1 
-	 */
-	public SerieEtudiants(int numero) {
-		// TODO
-	}
 
+	public SerieEtudiants(int numero) {
+		if (numero < 1) throw new IllegalArgumentException();
+		this.numeroSerie = numero;
+		this.listeEtudiants = new LinkedList<>();
+	}
 	/**
 	 * renvoie le numero de la serie
 	 * @return le numero de la serie
 	 */
 	public int getNumeroSerie(){
 		// TODO
-		return 0;
+		return this.numeroSerie;
 	}
 	
 	/**
@@ -29,9 +25,9 @@ public class SerieEtudiants {
 	 */
 	public int nombreEtudiants(){
 		// TODO
-		return 0;
+		return this.listeEtudiants.size();
 	}
-	
+
 
 	/**
 	 * verifie la presence d'un etudiant dans la serie
@@ -41,6 +37,12 @@ public class SerieEtudiants {
 	 */
 	public boolean contientEtudiant(String nom){
 		// TODO
+		if (nom == null || nom == ""){
+			throw new IllegalArgumentException();
+		}
+		if (listeEtudiants.contains(nom)){
+			return true;
+		}
 		return false;
 	}
 	
@@ -55,6 +57,8 @@ public class SerieEtudiants {
 	 */
 	public void ajouterEtudiant(String nom){
 		// TODO
+		if (nom == null || nom.isEmpty()) throw new IllegalArgumentException();
+		listeEtudiants.addFirst(nom);
 	}
 
 	
@@ -65,12 +69,11 @@ public class SerieEtudiants {
 	 * @throws IllegalArgumentException si le nom est null ou vide
 	 */
 	public boolean supprimerEtudiant(String nom){
-		// TODO
-		return false;
+		if (nom == null || nom.isEmpty()) throw new IllegalArgumentException();
+		return listeEtudiants.remove(nom);
 	}
 
 	public String toString(){
-		return "serie n°"+numeroSerie+" "+listeEtudiants.toString();
+		return "serie nï¿½"+numeroSerie+" "+listeEtudiants.toString();
 	}
-
 }

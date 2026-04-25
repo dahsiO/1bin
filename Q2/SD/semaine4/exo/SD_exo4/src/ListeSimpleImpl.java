@@ -122,7 +122,7 @@ public class ListeSimpleImpl<E> implements ListeSimple<E> {
         // verifie si le noeud "next" est null
         public boolean hasNext() {
             // TODO
-            return false;
+            return noeudNext != null;
 
         }
 
@@ -132,9 +132,12 @@ public class ListeSimpleImpl<E> implements ListeSimple<E> {
         // le noeud "next" passe au noeud suivant
         public E next() {
             // TODO
-            // pensez a consulter la JAVADOC de la classe Iterator!!!
-            return null;
-
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+            E element = noeudNext.element;
+            noeudNext = noeudNext.suivant;
+            return element;
         }
     }
 
