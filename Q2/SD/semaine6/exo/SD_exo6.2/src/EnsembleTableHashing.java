@@ -20,6 +20,18 @@ public class EnsembleTableHashing<E> implements Ensemble<E>{
      */
 	public EnsembleTableHashing(int capacite){	
 		// TODO
+		if (capacite <= 0) {
+			throw new IllegalArgumentException();
+		}
+		// construit une liste avec la taille physique
+		tableListes = new ListeSimpleImpl[capacite];
+		// pour chaque liste cree une sous list
+		for (int i = 0; i <capacite ; i++) {
+			tableListes[i] = new ListeSimpleImpl<>();
+			// initialiser la taille a zero
+			taille = 0;
+		}
+
 
 	}
 
@@ -53,18 +65,34 @@ public class EnsembleTableHashing<E> implements Ensemble<E>{
 		// solution pbm compris entre 0 et taille physique : % taille physique
 		// solution pbm negatif : Math.abs()
 
-		return false;
+		int i =  Math.abs(element.hashCode()) % tableListes.length;
+		return tableListes[i].contient(element); // if true
 	}
 
 	public boolean ajouter(E element) {
 		// TODO
+		int i =  Math.abs(element.hashCode()) % tableListes.length;
+		if (!tableListes[i].contient(element)){
+			tableListes[i].insererEnTete(element);
+			taille ++;
+			return true;
+		}
 		 return false;
 	}
 
 	public boolean enlever(E element) {
 		// TODO
-		 return false;
+		int i =  Math.abs(element.hashCode()) % tableListes.length;
+		if (tableListes[i].contient(element)){
+			tableListes[i].supprimer(element);
+			taille --;
+			return true;
+
+		}
+		return false;
 	}
+
+
 	
 	
 	public String toString(){

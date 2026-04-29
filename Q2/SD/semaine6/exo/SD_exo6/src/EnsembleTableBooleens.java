@@ -22,27 +22,38 @@ public class EnsembleTableBooleens<E> implements Ensemble<E>{
 
     public int taille(){
         // TODO
-        return 0;
+        return taille;
     }
 	
 	public boolean estVide(){
 		// TODO
-		return false;
+
+		return taille == 0; // true
 	}
 
 	public boolean contient(E element){
 		// TODO
-		return false;
+		//math.abs force la valeur a etre positif car le hash peut avoir une valeur negatif
+		return table[Math.abs(element.hashCode()) % table.length];
 	}
 
 	public boolean ajouter(E element){
 		// TODO
-        return false;
+
+		int i = Math.abs(element.hashCode()) % table.length;
+		if (table[i]) return false;
+		table[i] = true;
+		taille++;
+		return true;
 	}
 
 	public boolean enlever(E element){
 		// TODO
-		return false;
+		int i = Math.abs(element.hashCode()) % table.length;
+		if (!table[i]) return false;
+		table[i] = false;
+		taille--;
+		return true;
 	}
 
 

@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class Parking {
@@ -7,6 +8,7 @@ public class Parking {
 	// construit un ensembleVoitures vide
 	public Parking(){
 		// TODO
+		ensembleVoitures = new HashSet<>();
 
 	}
 
@@ -17,9 +19,12 @@ public class Parking {
 	 *
 	 */
 	public boolean ajouterVoiture(Voiture voiture){
-		return false;
+		if (!ensembleVoitures.contains(voiture)) {
+			ensembleVoitures.add(voiture);
+			return true;
+		}
 		// TODO
-
+		return false;
 	}
 
 	
@@ -28,8 +33,8 @@ public class Parking {
 	 * @param voiture la voiture a verifier
 	 * @return true si la voiture est presente, false sinon
 	 */
-	public boolean voitureAutorisee(Voiture voiture){	
-		return false;
+	public boolean voitureAutorisee(Voiture voiture){
+		return ensembleVoitures.contains(voiture);//true
 		// TODO
 
 	}
@@ -40,6 +45,10 @@ public class Parking {
 	 * @return true si la voiture etait presente, false sinon
 	 */
 	public boolean retirerVoiture(Voiture voiture){
+		if (ensembleVoitures.contains(voiture)) {
+			ensembleVoitures.remove(voiture);
+			return true;
+		}
 		return false;
 		// TODO
 
@@ -51,12 +60,19 @@ public class Parking {
 	 * cette table doit etre triee par ordre alphabetique
 	 * @return une table avec les plaques de voitures autorisees
 	 */
-	public String[] tableTrieePlaques(){
-
+	public String[] tableTrieePlaques() {
+		String[] table = new String[ensembleVoitures.size()];
+		int i = 0;
+		// pour chaque voiture de l ensemble
+		for (Voiture v : ensembleVoitures) {
+			table[i] = v.getNumPlaque();
+			i++;
+		}
+		Arrays.sort(table);
+		return table;
 		// piste la classe Arrays possede une methode static sort
 		// qui trie la table passee en parametre !
 
-		return null;
 		//TODO
 
 	}
