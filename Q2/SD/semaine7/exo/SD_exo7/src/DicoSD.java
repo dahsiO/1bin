@@ -17,7 +17,7 @@ public class DicoSD {
      * @return true si sd est present, false sinon
      */
     public boolean contient(String sd){
-        return false;
+        return mapSDUrls.containsKey(sd); // true
         //TODO
 
     }
@@ -31,11 +31,31 @@ public class DicoSD {
 	 * @return true si cette association n'etait pas encore presente dans le dico, false sinon
 	 */
 	public boolean ajouter(String sd, String url){
-		return false;
-        //TODO
+		// si SD absente => on cree un enouvelles liste avec l url dedans, on l'ajoute a la map
+		if (!mapSDUrls.containsKey(sd)) {
+			LinkedList<String> liste = new LinkedList<>();
+			liste.add(url);
+			mapSDUrls.put(sd, liste);
+			return true;
+		}
+		// sinon ca veut dire que sd etais deja present
+		LinkedList<String> liste = mapSDUrls.get(sd);
+		// ont verifie si url est deja dedans
+		if (liste.contains(url)) return false; // false si dedja dedans
+		// sinon ont l ajoute apres return true
+		liste.add(url);
+		return true;
+		//TODO
+		/*
+		* si la key est pas utiliser on rajoute notre key + value  simple
+		* si la key est deja utiliser => on recupere la value a la quelle il est rattacher
+		* si c est la value == url  bah return false ca veut dire que la key + value exite deja dansla map on a rien a ajouter
+		* sinon on rajoute notre value a la key et voila
+		* */
+	}
 
 
-    }
+
 
 	
 	/**
@@ -44,7 +64,8 @@ public class DicoSD {
 	 * @return une chaine de caracteres avec les urls selon le format : [urlPile1, urlPile2] ou [] si la structure de donnees n'existe pas
 	 */
 	public String lesURLs(String sd){
-		return null;
+		if (!mapSDUrls.containsKey(sd)) return "[]";
+		return mapSDUrls.get(sd).toString();
 		//TODO
 
     }
@@ -57,7 +78,12 @@ public class DicoSD {
 	 * @return true si l'association etait presente dans le dico, false sinon
 	 */
 	public boolean supprimer(String sd, String url){
-		return false;
+		if (!mapSDUrls.containsKey(sd)) return false;
+		LinkedList<String> liste = mapSDUrls.get(sd);
+		if (!liste.contains(url)) return false;
+		liste.remove(url);
+		if (liste.isEmpty()) mapSDUrls.remove(sd);
+		return true;
 		//TODO
     }
 

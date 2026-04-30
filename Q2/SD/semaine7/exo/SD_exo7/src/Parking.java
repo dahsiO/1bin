@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 
 
@@ -18,7 +19,13 @@ public class Parking {
 	 * @return true si la voiture n'etait pas encore presente, false sinon
 	 */
 	public boolean ajouterVoiture(String plaque, Proprietaire proprietaire){
-		return false;
+		if (mapVoitures.containsKey(plaque)) {
+			return false;
+		}
+		mapVoitures.put(plaque,proprietaire);
+		return true;
+
+
 		// TODO
 
 	}
@@ -30,7 +37,8 @@ public class Parking {
 	 * @return true si la voiture est presente dans le map, false sinon
 	 */
 	public boolean voitureAutorisee(String plaque){
-		return false;
+
+		return mapVoitures.containsKey(plaque);// true
 		// TODO
 
 	}
@@ -41,7 +49,10 @@ public class Parking {
 	 * @return le proprietaire ou null si la plaque n'est pas dans le map
 	 */
 	public Proprietaire donnerProprietaire(String plaque){
-		return null;
+		if (!mapVoitures.containsKey(plaque)){
+			return null;
+		}
+		return mapVoitures.get(plaque);
 		// TODO
 
 	}
@@ -52,7 +63,12 @@ public class Parking {
 	 * @return true si la voiture etait presente, false sinon
 	 */
 	public boolean retirerVoiture(String plaque){
-		return false;
+		if (!mapVoitures.containsKey(plaque)) {
+			return false;// la voiture n est pas presente
+		}
+		// si  present bah c est supp  et renvooie truuuuuuue
+		mapVoitures.remove(plaque);
+		return true;
 		// TODO
 
 	}
@@ -64,14 +80,21 @@ public class Parking {
 	 * @return une table avec les plaques de voitures autorisees
 	 */
 	public String[] tableTrieePlaques(){
-
+		String [] table = new String[mapVoitures.size()];
+		mapVoitures.keySet();
+		int i = 0;
+		for (String plaque : mapVoitures.keySet()) {
+			table[i] = plaque;
+			i++;
+		}
+		Arrays.sort(table);
 		// pistes :
 		// utilisez la methode keySet() !
 		// pour trier une table, utilisez la methode static sort de la classe Arrays
 		// cette methode trie la table passee en parametre !
         	// le cout de cette methode de tri est O(NlogN)
 
-		return null;
+		return table;
 		//TODO
 
 	}
