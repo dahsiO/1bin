@@ -7,6 +7,12 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 	private HashMap<E, Noeud> mapElementNoeud;
 
 	public ListeSDImpl () {
+		mapElementNoeud = new HashMap<>();
+		teteS = new Noeud();
+		queueS = new Noeud();
+		// Chainage initial : teteS <-> queueS
+		teteS.suivant    = queueS;
+		queueS.precedent = teteS;
 		//TODO
 
 	}
@@ -17,56 +23,93 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 	public boolean estVide () {
 		//TODO
-		return false;
+		return taille()==0;//true
 	
 	}
 
 	public boolean contient (E element) {
 		//TODO
-		return false;
-
+		return mapElementNoeud.containsKey(element);
 	}
 
 	public E premier() {
 		//TODO
-		return null;
+		return teteS.suivant.element;
 
 	}
 
 	public E dernier() {
 		//TODO
-		return null;
+		return queueS.precedent.element;
 
 	}
 
 	public E donnerPrecedent (E element) {
 		//TODO
-		return null;
+		if (!mapElementNoeud.containsKey(element) || teteS.suivant.element == element) {
+			return null;
+		}
+		Noeud n = mapElementNoeud.get(element);
+		return n.precedent.element;
 
 	}
-
+	// -------------------------------------------------------
+	// Méthode utilitaire : insère newNoeud juste après pivot
+	// -------------------------------------------------------
 	public E donnerSuivant (E element) {
 		//TODO
-		return null;
-
+		Noeud n = mapElementNoeud.get(element);
+		if (n == null || n.suivant == queueS) return null;
+		return n.suivant.element;
 	}
 
 	public boolean insererEnTete (E element){
 		//TODO
-		return false;
+		if (mapElementNoeud.containsKey(element)) {
+			return false;
+		}
+		Noeud n = new Noeud(element);
 
+		// Rebrancher : teteS <-> n <-> ancienPremier
+		n.precedent      = teteS;
+		n.suivant        = teteS.suivant;
+		teteS.suivant.precedent = n;
+		teteS.suivant    = n;
+
+		mapElementNoeud.put(element, n);  // on met n, pas teteS
+		return true;
 	}
-
 	public boolean insererEnQueue (E element) {
+		if (mapElementNoeud.containsKey(element)) {
+			return false;
+		}
+		Noeud n = new Noeud(element);
 		//TODO
-		return false;
+		n.precedent = queueS;
+		n.suivant = queueS.suivant;
+
+
+		mapElementNoeud.put(element, n);  // on met n, pas teteS
+		return true;
 
 	}
 
 	public boolean insererApres (E element, E elementAInserer) {
-		//TODO
-		return false;
+		if (mapElementNoeud.containsKey(elementAInserer)) return false;
+		// recuperer le noeud du pivot
+		Noeud pivot = mapElementNoeud.get(element);
+		if (pivot == null) return false;
 
+		Noeud n = new Noeud(elementAInserer);
+
+		// pivot <-> n <-> ancienSuivant
+		n.precedent             = pivot;
+		n.suivant               = pivot.suivant;
+		pivot.suivant.precedent = n;
+		pivot.suivant           = n;
+
+		mapElementNoeud.put(elementAInserer, n);
+		return true;
 	}
 
 	public boolean insererAvant (E element, E elementAInserer) {
