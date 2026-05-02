@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulation pas-à-pas du Code Java avec Position Dynamique des Nœuds</title>
+  <style>
+    /* ---------------------- Mise en page ---------------------- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 20px;
+    }
+    /* Conteneur général avec 3 panneaux (Code, Arbre, Stack) */
+    #panels {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 20px auto;
+      width: 90%;
+    }
+    /* Panneau du Code Java */
+    #codePanel {
+      width: 30%;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: monospace;
+      background-color: #f7f7f7;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    #codePanel .codeLine {
+      margin: 2px 0;
+      padding: 2px;
+    }
+    /* Conteneur de l'Arbre (au centre) */
+    #treeContainer {
+      width: 35%;
+      height: 500px;
+      border: 1px solid #ccc;
+      position: relative;
+      background-color: #fff;
+      overflow: hidden; /* pour éviter les débordements */
+    }
+    /* Panneau de la Stack Trace */
+    #stackPanel {
+      width: 30%;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #f7f7f7;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    #stackPanel ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    /* Styles pour les nœuds (non-null) */
+    .node {
+      position: absolute; /* on les place en x,y calculés */
+      width: 50px;
+      height: 50px;
+      border: 2px solid #000;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 50px;
+      background-color: #fff;
+      transition: background-color 0.3s, border-color 0.3s;
+      font-size: 14px;
+    }
+    /* Nœud null (marker) */
+    .nullNode {
+      width: 30px;
+      height: 30px;
+      border: 2px dashed gray;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 30px;
+      background-color: #eee;
+      font-size: 16px;
+    }
+    /* Surlignage lors de la simulation */
+    .highlightSim {
+      background-color: yellow !important;
+      border-color: orange !important;
+    }
+    /* Lignes reliant les nœuds */
+    .line {
+      position: absolute;
+      background-color: #000;
+      height: 2px;
+      transform-origin: 0 0;
+    }
+    /* Bouton et résultats */
+    #controlPanel {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Simulation pas-à-pas du Code Java – Position Dynamique des Nœuds</h2>
+  
+  <div id="panels">
+    <!-- Panneau du Code Java -->
+    <div id="codePanel">
+      <h3>Code Java</h3>
+      <div class="codeLine" data-line="1">1: public int somme() {</div>
+      <div class="codeLine" data-line="2">2:     return somme(racine);</div>
+      <div class="codeLine" data-line="3">3: }</div>
+      <div class="codeLine" data-line="4">4: private int somme(Noeud n) {</div>
+      <div class="codeLine" data-line="5">5:     if(n == null) {</div>
+      <div class="codeLine" data-line="6">6:         return 0;</div>
+      <div class="codeLine" data-line="7">7:     }</div>
+      <div class="codeLine" data-line="8">8:     // Calcul de la somme</div>
+      <div class="codeLine" data-line="9">9:     int left = somme(n.gauche);</div>
+      <div class="codeLine" data-line="10">10:    int right = somme(n.droit);</div>
+      <div class="codeLine" data-line="11">11:    return n.entier + left + right;</div>
+      <div class="codeLine" data-line="12">12: }</div>
+    </div>
+    
+    <!-- Panneau de l'Arbre -->
+    <div id="treeContainer"></div>
+    
+    <!-- Panneau de la Stack Trace -->
+    <div id="stackPanel">
+      <h3>Stack Trace</h3>
+      <ul id="stackTrace"></ul>
+    </div>
+  </div>
+
+  <!-- Contrôles -->
+  <div id="controlPanel">
+    <button id="stepButton">Step</button>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    /***********************************************************************
+     *                      Partie 0 : Données
+     ***********************************************************************/
+    // Exemple d'arbre binaire
+    // (pas de coordonnées fixes, elles seront calculées dynamiquement)
+    const myTree = {
+      entier: 100,
+      gauche: {
+        entier: 20,
+        gauche: {
+          entier: 5,
+          gauche: null,
+          droite: null
+        },
+        droite: {
+          entier: 30,
+          gauche: null,
+          droite: null
+        }
+      },
+      droite: {
+        entier: 200,
+        gauche: null,
+        droite: null
+      }
+    };
+
+    /***********************************************************************
+     *             Partie 1 : Calcul dynamique des positions (layout)
+     ***********************************************************************/
+    /**
+     * Fonction qui compte le nombre total de nœuds non-null dans l'arbre.
+     */
+    function countNodes(tree) {
+      if (!tree) return 0;
+      return 1 + countNodes(tree.gauche) + countNodes(tree.droite);
+    }
+
+    /**
+     * Fonction qui détermine la profondeur maximale (hauteur) de l'arbre.
+     */
+    function maxDepth(tree) {
+      if (!tree) return 0;
+      return 1 + Math.max(maxDepth(tree.gauche), maxDepth(tree.droite));
+    }
+
+    let currentX = 0;   // Compteur pour l'ordre in-order
+    /**
+     * Parcours in-order pour attribuer à chaque nœud (non-null) des coord. (x, y)
+     *  - depth indique la profondeur actuelle
+     *  - xSpacing : l'espacement horizontal entre colonnes
+     *  - ySpacing : l'espacement vertical entre rangs
+     */
+    function assignPositions(node, depth, xSpacing, ySpacing) {
+      if (!node) return;
+      // Parcours gauche
+      assignPositions(node.gauche, depth + 1, xSpacing, ySpacing);
+
+      currentX++;
+      // Position en x selon currentX, position en y selon la profondeur
+      node.x = currentX * xSpacing;
+      node.y = depth * ySpacing + 20; // +20 pour un léger décalage
+
+      // Parcours droit
+      assignPositions(node.droite, depth + 1, xSpacing, ySpacing);
+    }
+
+    /**
+     * Calcule les coordonnées de tout l'arbre en fonction de la taille
+     * du conteneur #treeContainer.
+     */
+    function computeLayout(root) {
+      const container = document.getElementById("treeContainer");
+      const totalWidth = container.offsetWidth;
+      const totalHeight = container.offsetHeight;
+
+      // Nombre total de nœuds non-null
+      const totalNodes = countNodes(root);
+      // Profondeur max de l'arbre
+      const depthMax = maxDepth(root);
+
+      // On évite la division par zéro
+      if (totalNodes < 1) return;
+
+      // On définit l'espacement horizontal / vertical
+      const xSpacing = totalWidth / (totalNodes + 1);
+      const ySpacing = (totalHeight - 40) / depthMax; // -40 pour laisser une marge
+
+      currentX = 0; // on réinitialise le compteur
+      assignPositions(root, 0, xSpacing, ySpacing);
+    }
+
+    /***********************************************************************
+     *        Partie 2 : Construction d'une structure interne "Noeud"
+     *        => On ajoute id, gauche, droite, etc.
+     ***********************************************************************/
+    let globalNodeId = 1;  // pour créer un identifiant unique par nœud
+    function buildNodeStructure(treeData) {
+      if (!treeData) return null;
+      const node = {
+        entier: treeData.entier,
+        id: "node-" + (globalNodeId++),
+        gauche: buildNodeStructure(treeData.gauche),
+        droite: buildNodeStructure(treeData.droite)
+      };
+      return node;
+    }
+
+    // On construit l'arbre exploitable par la simulation
+    const root = buildNodeStructure(myTree);
+
+    // On calcule dynamiquement les positions
+    computeLayout(root);
+
+    /***********************************************************************
+     *        Partie 3 : Rendu graphique (similaire aux versions précédentes)
+     ***********************************************************************/
+    const treeContainer = document.getElementById("treeContainer");
+
+    function createNodeElement(node) {
+      // Création d'un div
+      const div = document.createElement("div");
+      div.classList.add("node");
+      div.id = node.id;
+      div.style.left = node.x + "px";
+      div.style.top = node.y + "px";
+      div.innerText = node.entier;
+      treeContainer.appendChild(div);
+      return div;
+    }
+
+    function drawLine(x1, y1, x2, y2, color = "#000") {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+      const line = document.createElement("div");
+      line.classList.add("line");
+      line.style.width = length + "px";
+      line.style.left = x1 + "px";
+      line.style.top = y1 + "px";
+      line.style.transform = `rotate(${angle}deg)`;
+      line.style.backgroundColor = color;
+      treeContainer.appendChild(line);
+    }
+
+    function drawNullIndicator(parentNode, side) {
+      const offsetX = 40;
+      const offsetY = 80;
+      // On calcule la position du marker en fonction de la position du parent
+      let x, y;
+      if (side === "gauche") {
+        x = parentNode.x + 25 - offsetX;
+      } else {
+        x = parentNode.x + 25 + offsetX;
+      }
+      y = parentNode.y + offsetY;
+
+      const nullDiv = document.createElement("div");
+      nullDiv.classList.add("node", "nullNode");
+      // On place le marker
+      nullDiv.style.left = x + "px";
+      nullDiv.style.top = y + "px";
+      nullDiv.innerText = "/";
+      nullDiv.id = parentNode.id + "-null-" + side;
+      treeContainer.appendChild(nullDiv);
+
+      // Ligne grise
+      const startX = parentNode.x + 25;
+      const startY = parentNode.y + 50;
+      const endX = x + 15;
+      const endY = y;
+      drawLine(startX, startY, endX, endY, "gray");
+    }
+
+    function renderTree(node) {
+      if (!node) return;
+      // On dessine d'abord le nœud
+      createNodeElement(node);
+
+      // S'il a un fils gauche
+      if (node.gauche !== null) {
+        drawLine(node.x + 25, node.y + 50, node.gauche.x + 25, node.gauche.y);
+        renderTree(node.gauche);
+      } else {
+        // marker null
+        drawNullIndicator(node, "gauche");
+      }
+      // S'il a un fils droit
+      if (node.droite !== null) {
+        drawLine(node.x + 25, node.y + 50, node.droite.x + 25, node.droite.y);
+        renderTree(node.droite);
+      } else {
+        drawNullIndicator(node, "droite");
+      }
+    }
+
+    // Rendu initial
+    renderTree(root);
+
+    /***********************************************************************
+     *   Partie 4 : Flèche de retour (SVG) et simulation somme() récursive
+     ***********************************************************************/
+    function drawReturnArrow(childNode, parentNode, value, childSide) {
+      let childElem;
+      if (childNode === null) {
+        childElem = document.getElementById(parentNode.id + "-null-" + childSide);
+      } else {
+        childElem = document.getElementById(childNode.id);
+      }
+      const parentElem = document.getElementById(parentNode.id);
+      if (!childElem || !parentElem) return;
+
+      const childRect = childElem.getBoundingClientRect();
+      const parentRect = parentElem.getBoundingClientRect();
+      const containerRect = treeContainer.getBoundingClientRect();
+
+      let cx = childRect.left + childRect.width / 2 - containerRect.left;
+      let cy = childRect.top + childRect.height / 2 - containerRect.top;
+      let px = parentRect.left + parentRect.width / 2 - containerRect.left;
+      let py = parentRect.top + parentRect.height / 2 - containerRect.top;
+
+      const offsetChild = (childNode === null) ? 15 : 25;
+      const offsetParent = 25;
+      let dx = px - cx;
+      let dy = py - cy;
+      let L = Math.sqrt(dx * dx + dy * dy);
+      if (L === 0) L = 1;
+      const startX = cx + (dx / L) * offsetChild;
+      const startY = cy + (dy / L) * offsetChild;
+      const endX = px - (dx / L) * offsetParent;
+      const endY = py - (dy / L) * offsetParent;
+
+      const sign = (childRect.left < parentRect.left) ? -1 : 1;
+      const midX = (startX + endX) / 2;
+      const midY = (startY + endY) / 2;
+      const controlX = midX + sign * 50;
+      const controlY = midY - 40;
+
+      let svg = document.getElementById("arrowSVG");
+      if (!svg) {
+        svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("id", "arrowSVG");
+        svg.setAttribute(
+          "style",
+          "position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"
+        );
+        treeContainer.appendChild(svg);
+      }
+      if (!document.getElementById("arrowHead")) {
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
+        marker.setAttribute("id", "arrowHead");
+        marker.setAttribute("markerWidth", "10");
+        marker.setAttribute("markerHeight", "7");
+        marker.setAttribute("refX", "0");
+        marker.setAttribute("refY", "3.5");
+        marker.setAttribute("orient", "auto");
+        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        polygon.setAttribute("points", "0 0, 10 3.5, 0 7");
+        polygon.setAttribute("fill", "red");
+        marker.appendChild(polygon);
+        defs.appendChild(marker);
+        svg.appendChild(defs);
+      }
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      const pathD = `M ${startX},${startY} Q ${controlX},${controlY} ${endX},${endY}`;
+      path.setAttribute("d", pathD);
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", "red");
+      path.setAttribute("stroke-width", "2");
+      path.setAttribute("marker-end", "url(#arrowHead)");
+      svg.appendChild(path);
+
+      const labelX = (controlX + midX) / 2;
+      const labelY = (controlY + midY) / 2;
+      const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("x", labelX);
+      label.setAttribute("y", labelY - 5);
+      label.setAttribute("fill", "blue");
+      label.setAttribute("font-size", "14");
+      label.textContent = value;
+      svg.appendChild(label);
+    }
+
+    // Simulation : stack-based, en français
+    let simStack = [];
+    // On initialise la pile avec un appel "check" sur la racine
+    simStack.push({
+      node: root,
+      stage: "check",
+      leftResult: undefined,
+      rightResult: undefined,
+      returnValue: undefined
+    });
+
+    // Traduction des étapes
+    const stageMapping = {
+      "check": "vérification",
+      "leftCall": "appel gauche",
+      "afterLeftCall": "retour gauche",
+      "rightCall": "appel droit",
+      "afterRightCall": "retour droit",
+      "compute": "calcul",
+      "nullReturn": "retour null"
+    };
+
+    function getLineForStage(frame) {
+      if (!frame.node) {
+        if (frame.stage === "check") return 5;
+        if (frame.stage === "nullReturn") return 6;
+      } else {
+        switch (frame.stage) {
+          case "check": return 5;
+          case "leftCall": return 9;
+          case "afterLeftCall": return 9;
+          case "rightCall": return 10;
+          case "afterRightCall": return 10;
+          case "compute": return 11;
+          default: return 5;
+        }
+      }
+    }
+
+    function updateUI() {
+      const stackTraceElem = document.getElementById("stackTrace");
+      stackTraceElem.innerHTML = "";
+      simStack.forEach((frame) => {
+        const li = document.createElement("li");
+        if (frame.node) {
+          li.textContent = `somme(${frame.node.entier}) [${stageMapping[frame.stage]}]`;
+        } else {
+          li.textContent = `somme(null) [${stageMapping[frame.stage]}] (côté : ${frame.side})`;
+        }
+        stackTraceElem.appendChild(li);
+      });
+
+      // Surlignage du code
+      document.querySelectorAll("#codePanel .codeLine").forEach((line) => {
+        line.style.backgroundColor = "";
+      });
+      if (simStack.length > 0) {
+        const topFrame = simStack[simStack.length - 1];
+        const lineNum = getLineForStage(topFrame);
+        const codeLineElem = document.querySelector(
+          `#codePanel .codeLine[data-line='${lineNum}']`
+        );
+        if (codeLineElem) {
+          codeLineElem.style.backgroundColor = "#ffeb3b";
+        }
+      }
+
+      // Mise à jour du highlight sur les nœuds
+      document.querySelectorAll(".node").forEach((n) => {
+        n.classList.remove("highlightSim");
+      });
+      if (simStack.length > 0) {
+        const topFrame = simStack[simStack.length - 1];
+        if (topFrame.node) {
+          const nodeElem = document.getElementById(topFrame.node.id);
+          if (nodeElem) {
+            nodeElem.classList.add("highlightSim");
+          }
+        } else if (topFrame.side && simStack.length > 1) {
+          const parent = simStack[simStack.length - 2].node;
+          if (parent) {
+            const nullElem = document.getElementById(
+              parent.id + "-null-" + topFrame.side
+            );
+            if (nullElem) nullElem.classList.add("highlightSim");
+          }
+        }
+      }
+    }
+
+    function step() {
+      if (simStack.length === 0) return;
+      const current = simStack[simStack.length - 1];
+
+      // Cas d'un nœud null
+      if (current.node === null) {
+        if (current.stage === "check") {
+          current.stage = "nullReturn";
+          updateUI();
+          return;
+        } else if (current.stage === "nullReturn") {
+          current.returnValue = 0;
+          // Flèche de retour
+          if (simStack.length > 1) {
+            const parentFrame = simStack[simStack.length - 2];
+            if (parentFrame.node) {
+              drawReturnArrow(null, parentFrame.node, 0, current.side);
+            }
+          } else {
+            document.getElementById("result").innerText = "Somme totale : 0";
+          }
+          simStack.pop();
+          // Remontée de la valeur 0
+          if (simStack.length > 0) {
+            const parent = simStack[simStack.length - 1];
+            if (
+              parent.stage === "afterLeftCall" &&
+              parent.leftResult === undefined
+            ) {
+              parent.leftResult = 0;
+            } else if (
+              parent.stage === "afterRightCall" &&
+              parent.rightResult === undefined
+            ) {
+              parent.rightResult = 0;
+            }
+          }
+          updateUI();
+          return;
+        }
+      }
+
+      // Cas d'un nœud non null
+      switch (current.stage) {
+        case "check":
+          current.stage = "leftCall";
+          break;
+        case "leftCall":
+          current.stage = "afterLeftCall";
+          simStack.push({
+            node: current.node.gauche,
+            stage: "check",
+            side: "gauche",
+            leftResult: undefined,
+            rightResult: undefined,
+            returnValue: undefined,
+          });
+          break;
+        case "afterLeftCall":
+          current.stage = "rightCall";
+          break;
+        case "rightCall":
+          current.stage = "afterRightCall";
+          simStack.push({
+            node: current.node.droite,
+            stage: "check",
+            side: "droite",
+            leftResult: undefined,
+            rightResult: undefined,
+            returnValue: undefined,
+          });
+          break;
+        case "afterRightCall":
+          current.stage = "compute";
+          break;
+        case "compute":
+          const leftVal = current.leftResult !== undefined ? current.leftResult : 0;
+          const rightVal = current.rightResult !== undefined ? current.rightResult : 0;
+          const result = current.node.entier + leftVal + rightVal;
+          current.returnValue = result;
+
+          // Flèche de retour
+          if (simStack.length > 1) {
+            const parentFrame = simStack[simStack.length - 2];
+            if (parentFrame.node) {
+              drawReturnArrow(current.node, parentFrame.node, result);
+            }
+          } else {
+            document.getElementById("result").innerText = "Somme totale : " + result;
+          }
+
+          simStack.pop();
+          // Transmission du résultat au parent
+          if (simStack.length > 0) {
+            const parent = simStack[simStack.length - 1];
+            if (
+              parent.stage === "afterLeftCall" &&
+              parent.leftResult === undefined
+            ) {
+              parent.leftResult = result;
+            } else if (
+              parent.stage === "afterRightCall" &&
+              parent.rightResult === undefined
+            ) {
+              parent.rightResult = result;
+            }
+          }
+          break;
+      }
+      updateUI();
+    }
+
+    document.getElementById("stepButton").addEventListener("click", step);
+    updateUI();
+
+    // Optionnel : recalculer le layout et redessiner si la fenêtre est redimensionnée
+    // (Cela nécessiterait de tout ré-initialiser. Pour l'exemple, nous n'avons pas
+    //  implémenté l'écoute d'événement "resize".)
+  </script>
+</body>
+</html>
