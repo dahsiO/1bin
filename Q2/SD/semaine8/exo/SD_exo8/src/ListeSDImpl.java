@@ -114,22 +114,55 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 	public boolean insererAvant (E element, E elementAInserer) {
 		//TODO
-		return false;
+		if (mapElementNoeud.containsKey(elementAInserer)) return false;
+		Noeud pivot = mapElementNoeud.get(element);
+		if (pivot == null) return false;
+
+		Noeud n = new Noeud(elementAInserer);
+
+		// ancienPrecedent <-> n <-> pivot
+		n.suivant                = pivot;
+		n.precedent              = pivot.precedent;
+		pivot.precedent.suivant  = n;
+		pivot.precedent          = n;
+
+		mapElementNoeud.put(elementAInserer, n);
+		return true;
 
 	}
 
 
 	public boolean supprimer (E element) {
 		//TODO
-		return false;
+		Noeud n = mapElementNoeud.get(element);
+		if (n == null) return false;
 
+		// court-circuiter n
+		n.precedent.suivant = n.suivant;
+		n.suivant.precedent = n.precedent;
+
+		mapElementNoeud.remove(element);
+		return true;
 	}
+
 
 	
 	public boolean permuter (E element1, E element2) {
 
 		//TODO
-		return false;
+		Noeud n1 = mapElementNoeud.get(element1);
+		Noeud n2 = mapElementNoeud.get(element2);
+		if (n1 == null || n2 == null) return false;
+
+		// échanger les éléments dans les nœuds, pas les nœuds eux-mêmes
+		n1.element = element2;
+		n2.element = element1;
+
+		// corriger la map
+		mapElementNoeud.put(element1, n2);
+		mapElementNoeud.put(element2, n1);
+		return true;
+
 
 		// REMARQUE : CE SONT LES VALEURS QUI SONT PERMUTEES, PAS LES NOEUDS!!!
 		// Il est donc inutile de revoir le chainage
@@ -139,7 +172,7 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 	public Iterator<E> iterator() {
 		//TODO
-		return null;
+		return new IterateurImpl();
 		// il faut renvoyer un objet de type Iterator :
 		//return new IterateurImpl();
 		// completez la classe interne IterateurImpl !
@@ -189,12 +222,13 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 		private IterateurImpl() {
 			//TODO
+			noeudCourant = teteS.suivant;
 
 		}
 
 		public boolean hasNext() {
 			//TODO
-			return false;
+			return noeudCourant != queueS;
 
 		}
 
@@ -202,7 +236,10 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 		// le noeud courant passe au noeud suivant
 		public E next() {
 			//TODO
-			return null;
+			E element = noeudCourant.element;
+			noeudCourant = noeudCourant.suivant;
+			return element;
+
 
 		}
 
