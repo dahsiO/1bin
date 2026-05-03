@@ -1,3 +1,5 @@
+import java.util.HashSet;
+
 public class ExpressionArithmetique extends ArbreDeCaracteres {
 	
 	/**
@@ -15,7 +17,13 @@ public class ExpressionArithmetique extends ArbreDeCaracteres {
 	public ExpressionArithmetique(char c, ArbreDeCaracteres ag, ArbreDeCaracteres ad) {
 		super(c, ag, ad);
 	}
-	
+	// -------------------------------------------------------
+	// Méthode utilitaire : est-ce un opérateur valide ?
+	// On l'utilise pour valider le paramètre dans nombreOperations()
+	// -------------------------------------------------------
+	private boolean estOperateur(char c) {
+		return c == '+' || c == '-' || c == '*' || c == '/';
+	}
 	
 	/**
 	 * calcule le nombre d'operations correspondant au type d'operateur passe en parametre que contient l'expression arithmetique
@@ -27,10 +35,24 @@ public class ExpressionArithmetique extends ArbreDeCaracteres {
 	 * @return le nombre d'operations
 	 * @throws IllegalArgumentException si le caractere passe en parametre n'est pas un operateur (+,-,*,/)
 	 */
-	public int nombreOperations(char operateur)  {
-		// TODO	
-		return 0;
+	public int nombreOperations(char operateur) {
+		if (!estOperateur(operateur)) {
+			throw new IllegalArgumentException(
+					"'" + operateur + "' n'est pas un opérateur (+,-,*,/)");
+		}
+		return nombreOperations(racine, operateur);
 	}
+
+	private int nombreOperations(NoeudCaractere n, char operateur) {
+		if (n == null) return 0;                              // arbre vide
+
+		int courant = (n.caractere == operateur) ? 1 : 0;      // ce nœud compte-t-il ?
+
+		return courant
+				+ nombreOperations(n.gauche, operateur)          // sous-arbre gauche
+				+ nombreOperations(n.droit,  operateur);         // sous-arbre droit
+	}
+
 
 
 	/**
@@ -40,10 +62,20 @@ public class ExpressionArithmetique extends ArbreDeCaracteres {
 	 */
 	public boolean uniquementDesAdditions(){
 		// TODO
-		return false;
+		return uniquementDesAdditions(racine);// depart de la recur c est la racine
 	}
-	
-
+	private boolean uniquementDesAdditions(NoeudCaractere n) {
+		if (n == null) {
+			return true;
+		}
+		if (estOperateur(n.caractere) && n.caractere != '+') {
+			return false;
+		}
+		// Sinon on vérifie les deux sous-arbres avec &&
+		// (si l'un des deux retourne false, tout retourne false)
+		return uniquementDesAdditions(n.gauche)
+				&& uniquementDesAdditions(n.droit);
+	}
 	/**
 	 * calcule le nombre d'entiers differents contenus dans l'expression arithmetique
 	 * Par ex : exp2 contient 3 entiers differents : 1, 4 et 8
@@ -58,8 +90,23 @@ public class ExpressionArithmetique extends ArbreDeCaracteres {
 		//suggestion:
 		//introduisez une methode void remplirEnsemble()
 		// TODO
-		return 0;
+		HashSet<Character> ensemble = new HashSet<>();
+		remplirEnsemble(racine, ensemble);
+		return ensemble.size();
 	}
+
+	private void remplirEnsemble(NoeudCaractere n, HashSet<Character> ensemble) {
+		if (n == null) return;                             // arbre vide : rien à faire
+
+		// On ajoute uniquement les chiffres (feuilles), pas les opérateurs
+		if (!estOperateur(n.caractere)) {
+			ensemble.add(n.caractere);                     // HashSet ignore les doublons
+		}
+
+		remplirEnsemble(n.gauche, ensemble);
+		remplirEnsemble(n.droit,  ensemble);
+	}
+
 
 
 	/**
@@ -73,7 +120,27 @@ public class ExpressionArithmetique extends ArbreDeCaracteres {
 		// (int)'0' = 48  (int)'1' = 49  (int)'2' = 50 ...  (int)'9' = 57
 		// Le cast (int) n'est pas obligatoire
 		// TODO
-		return 0;	
+
+		return resultat(racine);
+	}
+
+	private double resultat(NoeudCaractere n) {
+		// Cas terminal : feuille = chiffre
+		// '3' - '0' = 51 - 48 = 3
+		if (!estOperateur(n.caractere)) {
+			return n.caractere - '0';
+		}
+
+		double gauche = resultat(n.gauche);
+		double droit  = resultat(n.droit);
+
+		switch (n.caractere) {
+			case '+': return gauche + droit;
+			case '-': return gauche - droit;
+			case '*': return gauche * droit;
+			case '/': return gauche / droit;
+			default:  throw new IllegalStateException("Opérateur inconnu : " + n.caractere);
+		}
 	}
 	
 
@@ -84,7 +151,22 @@ public class ExpressionArithmetique extends ArbreDeCaracteres {
 	 */
 	public String notationInfixe() {
 		// TODO
-		return null;	
+		return notationInfixe(racine);
+	}
+
+	private String notationInfixe(NoeudCaractere n) {
+		if (n == null) return "";
+
+		// Cas terminal : feuille = chiffre, on retourne juste le caractère
+		if (!estOperateur(n.caractere)) {
+			return String.valueOf(n.caractere);
+		}
+
+		// Nœud opérateur : (gauche  OP  droit)
+		return "(" + notationInfixe(n.gauche)
+				+ n.caractere
+				+ notationInfixe(n.droit)
+				+ ")";
 	}
 	
 }
