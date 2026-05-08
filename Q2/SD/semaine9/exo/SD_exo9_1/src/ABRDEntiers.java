@@ -35,6 +35,7 @@ public class ABRDEntiers {
 	public void insere(int entier) {
 		//TODO
 
+
 	}
 
 
