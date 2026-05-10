@@ -34,9 +34,46 @@ public class ABRDEntiers {
 	 */
 	public void insere(int entier) {
 		//TODO
-
+		racine = insere(racine,entier);
 
 	}
+	/*
+	* 8
+     / \
+    3   10
+     \
+      5
+      *
+      *Je reformule juste pour bien ancrer, avec l'arbre final :
+		Étape 1 — insere(racine=8, 9) : n n'est pas null, 9 > 8 (le else), donc on appelle n.droit = insere(10, 9).
+		Étape 2 — insere(10, 9) : n n'est pas null, 9 <= 10, donc on appelle n.gauche = insere(null, 9).
+		Étape 3 — insere(null, 9) : cas de base, on renvoie new NoeudEntier(9).
+		Remontée :
+
+		Étape 2 récupère le nouveau nœud → (nœud 10).gauche = nœud 9 → renvoie le nœud 10.
+		Étape 1 récupère le nœud 10 (inchangé) → (nœud 8).droit = nœud 10 → renvoie le nœud 8.
+		La méthode publique fait racine = nœud 8 (inchangée).
+
+		Arbre final :
+			   8
+			  / \
+			 3   10
+			  \  /
+			   5 9
+	* */
+	private NoeudEntier insere(NoeudEntier n , int entier){
+		if (n == null) {
+			return new NoeudEntier(entier);
+		}
+		if (entier <= n.entier) {
+			n.gauche = insere(n.gauche,entier);
+		}else {
+			n.droit = insere(n.droit, entier);
+		}
+		return n;
+	}
+
+
 
 
 	/**
