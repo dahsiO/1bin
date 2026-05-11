@@ -34,21 +34,21 @@ public class ArbreDEntiers implements Iterable<Integer>{
 	}
 	
 	public Iterator<Integer> postIterateur () {
-		return null;
-		//Cet iterateur s’implemente de facon similaire a l’iterateur en pre-ordre.
+		//Cet iterateur sï¿½implemente de facon similaire a lï¿½iterateur en pre-ordre.
 		//TODO
+		return new PostIterateur();
 	}
 
 	// iterateur in ordre
 	// Cet iterateur a ete selectionne comme iterateur par defaut
 	public Iterator<Integer> iterator () {
-		return null;
-		//Cet iterateur s’implemente de facon similaire a l’iterateur en pre-ordre.
+		return new InIterateur();
+		//Cet iterateur sï¿½implemente de facon similaire a lï¿½iterateur en pre-ordre.
 		//TODO
 	}
 	
 	public Iterator<Integer> iterateurParNiveau () {
-		return null;
+		return new IterateurParNiveau();
 		//Cet iterateur s'implemente en utilisant une file de Noeud
 		//Lisez bien l'enonce
 		//TODO
@@ -80,29 +80,114 @@ public class ArbreDEntiers implements Iterable<Integer>{
 		public PreIterateur () {
 			fileDEntiers = new ArrayDeque<Integer>(taille);
 			remplirFile(racine);
-			//La classe PreIterator possede un attribut : une file d’entiers (ArrayDeque<Integer>).
-			//Le constructeur de la classe va s’occuper de remplir cette file avec tous les entiers contenus dans l’arbre.
+			//La classe PreIterator possede un attribut : une file dï¿½entiers (ArrayDeque<Integer>).
+			//Le constructeur de la classe va sï¿½occuper de remplir cette file avec tous les entiers contenus dans lï¿½arbre.
 			//Il construit la file et appelle la methode recursive remplirFile()
 		}
 		
 		private void remplirFile (NoeudEntier n) {
 			// TODO
-			//C’est la methode remplirFile() qui se charge de remplir la file.
-			//Il s’agit d’une methode recursive !
-			//Le but de cet iterateur est de parcourir l’arbre en pre-ordre !
-			//Il faut donc « enfiler » les objets dans la file de facon a respecter ce parcours.
+			//Cï¿½est la methode remplirFile() qui se charge de remplir la file.
+			//Il sï¿½agit dï¿½une methode recursive !
+			//Le but de cet iterateur est de parcourir lï¿½arbre en pre-ordre !
+			//Il faut donc ï¿½ enfiler ï¿½ les objets dans la file de facon a respecter ce parcours.
+			if (n == null) return;
+			fileDEntiers.add(n.entier);
+			remplirFile(n.gauche);
+			remplirFile(n.droit);
 		}
 
 		public boolean hasNext () {
-			return false;
+			return !fileDEntiers.isEmpty();
 			// TODO
 			//cette methode verifie si la file est non vide.
 		}
 
 		public Integer next () {
-			return 0;
-			// TODO
-			//cette methode "defile"
+			if (!hasNext()) throw new NoSuchElementException();
+			return fileDEntiers.poll();
+		}
+	}
+	private class PostIterateur implements Iterator<Integer> {
+
+		private ArrayDeque<Integer> fileDEntiers;
+
+		public PostIterateur () {
+			fileDEntiers = new ArrayDeque<Integer>(taille);
+			remplirFile(racine);
+		}
+
+		private void remplirFile (NoeudEntier n) {
+			if (n == null) return;
+			remplirFile(n.gauche);
+			remplirFile(n.droit);
+			fileDEntiers.add(n.entier);
+		}
+
+		public boolean hasNext () {
+			return !fileDEntiers.isEmpty();
+		}
+
+		public Integer next () {
+			if (!hasNext()) throw new NoSuchElementException();
+			return fileDEntiers.poll();
+		}
+	}
+
+	private class InIterateur implements Iterator<Integer> {
+
+		private ArrayDeque<Integer> fileDEntiers;
+
+		public InIterateur () {
+			fileDEntiers = new ArrayDeque<Integer>(taille);
+			remplirFile(racine);
+		}
+
+		private void remplirFile (NoeudEntier n) {
+			if (n == null) return;
+			remplirFile(n.gauche);
+			fileDEntiers.add(n.entier);
+			remplirFile(n.droit);
+		}
+
+		public boolean hasNext () {
+			return !fileDEntiers.isEmpty();
+		}
+
+		public Integer next () {
+			if (!hasNext()) throw new NoSuchElementException();
+			return fileDEntiers.poll();
+		}
+	}
+
+	private class IterateurParNiveau implements Iterator<Integer> {
+
+		private ArrayDeque<Integer> fileDEntiers;
+
+		public IterateurParNiveau () {
+			fileDEntiers = new ArrayDeque<Integer>(taille);
+			remplirFile();
+		}
+
+		private void remplirFile () {
+			if (racine == null) return;
+			ArrayDeque<NoeudEntier> fileDeTravail = new ArrayDeque<NoeudEntier>();
+			fileDeTravail.add(racine);
+			while (!fileDeTravail.isEmpty()) {
+				NoeudEntier courant = fileDeTravail.poll();
+				fileDEntiers.add(courant.entier);
+				if (courant.gauche != null) fileDeTravail.add(courant.gauche);
+				if (courant.droit != null) fileDeTravail.add(courant.droit);
+			}
+		}
+
+		public boolean hasNext () {
+			return !fileDEntiers.isEmpty();
+		}
+
+		public Integer next () {
+			if (!hasNext()) throw new NoSuchElementException();
+			return fileDEntiers.poll();
 		}
 	}
 
