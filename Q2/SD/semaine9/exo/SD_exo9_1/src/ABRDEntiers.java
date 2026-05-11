@@ -83,8 +83,21 @@ public class ABRDEntiers {
 	 */
 	public boolean contient(int entier) {
 		//TODO
-		return false;
+		return contient(racine , entier);
 
+	}
+	private boolean contient(NoeudEntier n , int entier){
+		if (n == null) {
+			return false; // tous parcourue rien trouver
+		}
+		if (entier == n.entier) {
+			return true;// trouver
+		}
+		if (entier < n.entier) {
+			return contient(n.gauche,entier);
+		}else {
+				return contient(n.droit, entier);
+		}
 	}
 
 	/**
@@ -97,8 +110,12 @@ public class ABRDEntiers {
 		// Cette methode peut etre ecrite de facon iterative
 		// Ou se trouve le plus petit entier dans l'arbre ?
 		// Reflechissez !
-		return 0;
-
+		if (estVide()) throw new ArbreVideException();
+		NoeudEntier n = racine;
+		while (n.gauche != null) {
+			n = n.gauche;
+		}
+		return n.entier;
 	}
 
 	/**
@@ -110,17 +127,31 @@ public class ABRDEntiers {
 		// La methode supprimeMin() est plus simple que la methode supprime()
 		// Le noeud qui contient le plus petit entier n'a pas de fils gauche
 		// Reflechissez !
+		if (estVide()) throw new ArbreVideException();
+		racine = supprimeMin(racine);
+	}
 
+	private NoeudEntier supprimeMin(NoeudEntier n) {
+		if (n.gauche == null) {
+			return n.droit;
+		}
+		n.gauche = supprimeMin(n.gauche);
+		return n;
 	}
 	/**
 	 * renvoie la hauteur de l'arbre
 	 * @return la hauteur de l'arbre ou -1 si l'arbre est vide
 	 */
 	public int hauteur() {
-		//TODO
-		// Ex C
-		return 0;
-	}
+			return hauteur(racine);
+		}
+
+		private int hauteur(NoeudEntier n) {
+			if (n == null) {
+				return -1;
+			}
+			return 1 + Math.max(hauteur(n.gauche), hauteur(n.droit));
+		}
 
 
 	/**
