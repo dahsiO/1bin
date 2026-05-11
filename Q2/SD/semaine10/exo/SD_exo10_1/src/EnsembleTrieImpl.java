@@ -19,21 +19,47 @@ public class EnsembleTrieImpl<E extends Comparable> implements EnsembleTrie<E> {
 	public E min() {
 		//TODO
 		//le min se trouve dans le noeud (feuille) le plus a gauche
-		return null;
+		if (estVide()) return null;
+		Noeud n = racine;
+		while (n.gauche != null) {
+			n = n.gauche;
+		}
+		return n.element;
 	}
 
 	public boolean contient(E element) {
 		//TODO
-		return false;
+		return contient(racine, element);
 
+	}
+	private boolean contient(Noeud n,E element){
+		if (n == null) {
+			return false;
+		}
+		int cmp = element.compareTo(n.element);
+		if (cmp == 0) {
+			return true;
+		}
+		if (cmp < 0) {
+			return contient(n.gauche,element);
+		}else return contient(n.droit, element);
 	}
 
 	public boolean ajouter(E element) {
-		//TODO
-		return false;
-
+		int tailleAvant = taille;
+		racine = ajouter(racine, element);
+		return taille > tailleAvant;
 	}
 
+	private Noeud ajouter(Noeud n, E element) {
+		if (n == null) { taille++; return new Noeud(element); }
+		int cmp = element.compareTo(n.element);
+		if (cmp == 0) return n;  // déjà présent, on ne fait rien
+		if (cmp < 0) n.gauche = ajouter(n.gauche, element);
+		else n.droit = ajouter(n.droit, element);
+		return n;
+	}
+	
 	public E predecesseur(E element) {
 		//TODO
 		//defi !

@@ -1,7 +1,5 @@
 import java.util.Scanner;
 import java.util.HashSet;
-
-
 public class GestionEtudiants {
 	//private static Scanner scanner = new Scanner(System.in);
 	private static MonScanner scanner = new MonScanner("InputA.txt");
@@ -33,8 +31,6 @@ public class GestionEtudiants {
 				break;
 			}
 		} while (choix >= 1 && choix <= 2 );
-
-
 	}
 
 	private static void tous() {
@@ -56,6 +52,4 @@ public class GestionEtudiants {
 		System.out.println();
 		ensembleEtudiants.add(new Etudiant(numero,nom,prenom));
 	}
-
-
 }
