@@ -50,7 +50,8 @@ public class ListeAoutImplV1<E> implements ListeAout<E> {
         if(element==null)
             throw new IllegalArgumentException();
         //TODO
-        return false;
+
+        return  arrayList.contains(element);
     }
 
 
@@ -59,14 +60,16 @@ public class ListeAoutImplV1<E> implements ListeAout<E> {
         if(n < 1 || n > taille())
             throw new IllegalArgumentException();
         //TODO
-        return null;
+
+        return  arrayList.get(n -1);
     }
 
 
     @Override
     public E supprimerDernier() {
         //TODO
-        return null;
+       if (estVide())return null;
+        return arrayList.removeLast();
     }
 
     // A NE PAS MODIFIER

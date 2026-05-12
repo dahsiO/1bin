@@ -60,11 +60,30 @@ public class Brocante {
 	 */
 	public boolean reserverPhase1(String demandeur, int numeroEmplacement) {
 		//TODO
-		return false;
+		if (demandeur == null || numeroEmplacement < 1 || numeroEmplacement >= tableEmplacements.length) {
+			throw new IllegalArgumentException();
+		}
+		if (phase != 1) {
+			throw new IllegalStateException();
+		}
+		// L'emplacement doit être libre
+		if (tableEmplacements[numeroEmplacement].getNomRiverain() != null) {
+			return false;
+		}
+		// Le demandeur doit être un riverain connu
+		if (!mapRiverains.containsKey(demandeur)) {
+			return false;
+		}
+		// Le riverain ne doit pas avoir déjà 3 emplacements
+		if (mapRiverains.get(demandeur).size() >= 3) {
+			return false;
+		}
 
-
+		// Tout est bon : on réserve
+		tableEmplacements[numeroEmplacement].setNomRiverain(demandeur);
+		mapRiverains.get(demandeur).add(numeroEmplacement);
+		return true;
 	}
-
 	/**
 	 * a comme effet de passer de la phase 1 a la phase 2
 	 * si deja en phase 2, rien ne doit etre fait
@@ -72,8 +91,15 @@ public class Brocante {
 	public void changerPhase() {
 		//TODO
 		//Pensez a remplir la file!!!
-
-
+		if (phase == 2) {
+			return;
+		}
+		phase = 2;
+		for (int i = 0; i < tableEmplacements.length; i++) {
+			if (tableEmplacements[i].getNomRiverain() == null) {
+				fileEmplacementsLibres.addLast(tableEmplacements[i]);
+			}
+		}
 	}
 
 	/**
@@ -88,10 +114,17 @@ public class Brocante {
 	 */
 	public int reserverPhase2(String demandeur) {
 		//TODO
-		return -1;
+		if (demandeur == null) throw new IllegalArgumentException();
+		if (phase != 2) throw new IllegalStateException();
 
+		if (!mapRiverains.containsKey(demandeur)) return -1; // pas un riverain
+		if (fileEmplacementsLibres.isEmpty()) return -1; // plus de place
+
+		Emplacement emp = fileEmplacementsLibres.poll();
+		emp.setNomRiverain(demandeur);
+		mapRiverains.get(demandeur).add(emp.getNumeroEmplacement());
+		return emp.getNumeroEmplacement();
 	}
-
 
 	//Pour le debug
 	public String donnerTableEmplacements() {

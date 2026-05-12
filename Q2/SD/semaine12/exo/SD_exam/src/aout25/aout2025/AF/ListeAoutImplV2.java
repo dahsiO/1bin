@@ -59,6 +59,14 @@ public class ListeAoutImplV2<E> implements ListeAout<E> {
         if(element==null)
             throw new IllegalArgumentException();
         //TODO
+        Noeud courant = teteS;
+        while (courant != queueS) {
+            if (courant.element == element) {
+                return true;
+            }
+            courant = courant.suivant;
+        }
+
         return false;
     }
 
@@ -67,13 +75,22 @@ public class ListeAoutImplV2<E> implements ListeAout<E> {
         if(n < 1 || n > taille())
             throw new IllegalArgumentException();
         //TODO
-        return null;
+
+        return mapPositionNoeud.get(n).element;
     }
 
     @Override
     public E supprimerDernier() {
         //TODO
-        return null;
+        if (estVide()) return null;
+        Noeud dernier = queueS.precedent;
+
+        int position = taille();
+        // detacher
+        dernier.precedent.suivant = queueS;
+        queueS.precedent = dernier.precedent;
+
+        return   mapPositionNoeud.remove(position).element;
     }
 
 

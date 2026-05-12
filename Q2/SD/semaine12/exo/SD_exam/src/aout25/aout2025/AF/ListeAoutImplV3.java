@@ -60,7 +60,16 @@ public class ListeAoutImplV3<E> implements ListeAout<E> {
         if (element == null)
             throw new IllegalArgumentException();
         //TODO
-        return false;
+        return contient(racine , element);
+    }
+    private boolean contient(Noeud noeud, E element){
+        if (noeud == null){
+            return false; // soit la racine est null ou parcouru toute l arbre
+        }
+        if (noeud.element == element) {
+            return true; // trouver bigo
+        }
+        return contient(noeud.droit, element) || contient(noeud.gauche , element);
     }
 
 
@@ -69,14 +78,55 @@ public class ListeAoutImplV3<E> implements ListeAout<E> {
         if (n < 1 || n > taille)
             throw new IllegalArgumentException();
         //TODO
-        return null;
+
+        return donnerNieme(racine,0,n-1);
+    }
+    private E donnerNieme(Noeud noeud,int indiceCourant,int indiceCible){
+        if (noeud == null) {
+            return null;
+        }
+        if (indiceCourant == indiceCible) return noeud.element;
+        E resultat = donnerNieme(noeud.gauche , 2* indiceCourant + 1,indiceCible);
+        if (resultat != null) return resultat;
+        return donnerNieme(noeud.droit,2*indiceCourant +2,indiceCible);
     }
 
     @Override
     public E supprimerDernier() {
         //TODO
-        return null;
+        if (estVide()) return null;
+
+        if (taille == 1) {
+            E element = (E) racine.element;
+            racine = null;
+            taille = 0;
+            return element;
+        }
+
+        E element = supprimerDernier(racine, 0, taille - 1);
+        taille--;
+        return element;
     }
+
+    private E supprimerDernier(Noeud noeud, int indiceCourant, int indiceCible) {
+        if (noeud == null) return null; // ← AJOUT
+        // On est sur le parent du dernier nœud
+        if (2 * indiceCourant + 1 == indiceCible) { // dernier = fils gauche
+            E element = (E) noeud.gauche.element;
+            noeud.gauche = null;
+            return element;
+        }
+        if (2 * indiceCourant + 2 == indiceCible) { // dernier = fils droit
+            E element = (E) noeud.droit.element;
+            noeud.droit = null;
+            return element;
+        }
+        // Sinon on continue à descendre
+        E resultat = supprimerDernier(noeud.gauche, 2 * indiceCourant + 1, indiceCible);
+        if (resultat != null) return resultat;
+        return supprimerDernier(noeud.droit, 2 * indiceCourant + 2, indiceCible);
+    }
+
 
     public class Noeud {
 
