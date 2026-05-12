@@ -59,7 +59,7 @@ public class EnsembleTrieImpl<E extends Comparable> implements EnsembleTrie<E> {
 		else n.droit = ajouter(n.droit, element);
 		return n;
 	}
-	
+
 	public E predecesseur(E element) {
 		//TODO
 		//defi !
