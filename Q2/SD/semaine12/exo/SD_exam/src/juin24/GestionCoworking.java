@@ -1,3 +1,7 @@
+package juin24;
+
+import aout25.aout2025.AF.MonScanner;
+
 import java.util.Arrays;
 
 public class GestionCoworking {

@@ -1,3 +1,5 @@
+package juin24;
+
 import java.util.ArrayDeque;
 import java.util.Iterator;
 
@@ -13,8 +15,18 @@ public class ABRPrenoms implements Iterable<String> {
     public boolean contientHomonymes() {
         //TODO
         //contrainte : implementation recursive
-        return false;
 
+        return contientHomonymes(racine);
+
+    }
+    private boolean contientHomonymes(Noeud n){
+        if (n == null) {
+            return false;// tous parcourue ou racine null
+        }
+        if (n.nombreOccurrences > 1){
+            return true;
+        }
+        return contientHomonymes(n.droit) || contientHomonymes(n.gauche);
     }
 
 
@@ -29,8 +41,15 @@ public class ABRPrenoms implements Iterable<String> {
             throw new IllegalArgumentException();
         //TODO
         //contrainte : implementation recursive
-        return 0;
+        return nombreOccurrences(racine,prenom);
 
+    }
+    private int nombreOccurrences(Noeud n,String prenom){
+        if (n == null) return 0; // pas trouvé
+        int cmp = prenom.compareTo(n.prenom);
+        if (cmp == 0) return n.nombreOccurrences; // trouvé
+        if (cmp < 0) return nombreOccurrences(n.gauche, prenom);
+        return nombreOccurrences(n.droit, prenom);
     }
 
 
@@ -77,7 +96,14 @@ public class ABRPrenoms implements Iterable<String> {
         private void remplirFile(Noeud noeud) {
             //TODO
             //Suivez bien les indications de l'enonce
-
+            if (noeud == null) {
+                return;
+            }
+            remplirFile(noeud.gauche);
+            for (int i = 0; i < noeud.nombreOccurrences; i++) {
+                filePrenoms.add(noeud.prenom);
+            }
+            remplirFile(noeud.droit);
         }
 
         public boolean hasNext() {

@@ -1,3 +1,5 @@
+package juin24;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +23,14 @@ public class Coworking {
 	public Coworking(int nombreBureaux, String[] tableSocietes){
 
 		//TODO
-
+		if (nombreBureaux <= 0 || tableSocietes == null || tableSocietes.length == 0) {
+			throw new IllegalArgumentException();
+		}
+		tableSocietes = new String[nombreBureaux];
+		mapSocietes = new HashMap<>();
+		for (String societe : tableSocietes) {
+			mapSocietes.put(societe,new HashSet<>());
+		}
 	}
 	
 	/**
