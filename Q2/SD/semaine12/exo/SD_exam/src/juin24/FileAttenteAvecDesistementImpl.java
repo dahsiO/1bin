@@ -1,3 +1,6 @@
+package juin24;
+
+import java.awt.*;
 import java.util.HashMap;
 
 public class FileAttenteAvecDesistementImpl<E> implements FileAttenteAvecDesistement<E> {
@@ -25,14 +28,40 @@ public class FileAttenteAvecDesistementImpl<E> implements FileAttenteAvecDesiste
 	@Override
 	public boolean enfile(E element) {
 		//TODO
-		return false;
+		if (element == null)
+			throw new IllegalArgumentException();
+		if (mapElementNoeud.containsKey(element))
+			return false;
 
+		// Créer le nouveau nœud
+		Noeud noeud = new Noeud(element);
+
+		// L'insérer juste avant la sentinelle de queue
+		Noeud avant = queue.precedent;
+		noeud.precedent = avant;
+		noeud.suivant = queue;
+		avant.suivant = noeud;
+		queue.precedent = noeud;
+
+		// L'enregistrer dans la map
+		mapElementNoeud.put(element, noeud);
+		return true;
 	}
 
 	@Override
 	public E defile() {
 		//TODO
-		return null;
+		if (mapElementNoeud.isEmpty()) {
+			return null;
+		}
+		Noeud supp = tete.suivant;
+		//detache
+		tete.suivant = supp.suivant;
+		supp.suivant.precedent = tete;
+		//retire
+		mapElementNoeud.remove(supp.element);
+		// return
+		return tete.suivant.element;
 
 	}
 

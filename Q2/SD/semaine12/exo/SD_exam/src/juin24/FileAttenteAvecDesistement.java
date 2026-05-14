@@ -1,3 +1,4 @@
+package juin24;
 
 public interface FileAttenteAvecDesistement<E> {
 
