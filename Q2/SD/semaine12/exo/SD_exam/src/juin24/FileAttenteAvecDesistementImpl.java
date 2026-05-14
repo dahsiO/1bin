@@ -61,14 +61,21 @@ public class FileAttenteAvecDesistementImpl<E> implements FileAttenteAvecDesiste
 		//retire
 		mapElementNoeud.remove(supp.element);
 		// return
-		return tete.suivant.element;
+		return supp.element;
 
 	}
 
 	@Override
 	public boolean desister(E element) {
 		//TODO
-		return false;
+		if (!mapElementNoeud.containsKey(element)) {
+			return false;
+		}
+		Noeud cible = mapElementNoeud.get(element);
+		cible.precedent.suivant = cible.suivant;
+		cible.suivant.precedent = cible.precedent;
+		mapElementNoeud.remove(element);
+		return true;
 
 	}
 

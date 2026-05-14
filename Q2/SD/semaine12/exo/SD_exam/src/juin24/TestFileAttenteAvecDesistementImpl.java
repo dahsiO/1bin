@@ -1,3 +1,5 @@
+package juin24;
+
 import java.util.Scanner;
 
 public class TestFileAttenteAvecDesistementImpl {
