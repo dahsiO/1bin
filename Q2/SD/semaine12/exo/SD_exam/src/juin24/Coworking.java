@@ -45,8 +45,12 @@ public class Coworking {
 	 * @throws IllegalArgumentException si la societe est null et/ou si le numero de bureau n'existe pas
 	 */
 	public boolean attribuer(String societe,int numeroBureau){
-
-		//TODO
+		if (societe == null || numeroBureau < 0 || numeroBureau > tableBureaux.length) {
+			throw new IllegalArgumentException();
+		}
+		if (!mapSocietes.containsKey(societe)){
+			return false;
+		}
 		return false;
 
 	}
