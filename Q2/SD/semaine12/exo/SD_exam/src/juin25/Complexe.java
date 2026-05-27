@@ -1,3 +1,5 @@
+package juin25;
+
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,7 +35,7 @@ public class Complexe {
 	 */
 	public int nombreStudiosLibres(){
 		//TODO
-		return 0;
+		return 	fileStudiosLibres.size();
 	}
 
 
@@ -45,7 +47,10 @@ public class Complexe {
 	 */
 	public ProducteurMusique getProducteurMusique(int numeroProducteurMusique){
 		//TODO
-		return null;
+		if (mapProducteursMusiquePresents.isEmpty() || !mapProducteursMusiquePresents.containsKey(numeroProducteurMusique)){
+			return null;
+		}
+		return mapProducteursMusiquePresents.get(numeroProducteurMusique);
 	}
 
 
@@ -60,6 +65,12 @@ public class Complexe {
 	 */
 	public int attribuerStudio(int numeroProducteurMusique, String nomProducteurMusique) {
 		// TODO
+		if (fileStudiosLibres.isEmpty()) {
+			return -1;
+		}
+		if (!mapProducteursMusiquePresents.containsKey(nomProducteurMusique)) {
+			//mapProducteursMusiquePresents.put(mapProducteursMusiquePresents.size(), )
+		}
 		return 0;
 	}
 

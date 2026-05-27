@@ -1,3 +1,5 @@
+package juin25;
+
 import java.util.HashSet;
 
 public class ListeAMImplV1<E> implements ListeAM<E> {
@@ -49,6 +51,9 @@ public class ListeAMImplV1<E> implements ListeAM<E> {
         if(element==null)
             throw new IllegalArgumentException();
         //TODO
+        for (int i = 0; i < taille; i++) {
+            if (table[i].equals(element))return true;
+        }
         return false;
 
     }
@@ -59,7 +64,7 @@ public class ListeAMImplV1<E> implements ListeAM<E> {
         if(n < 1 || n > taille)
             throw new IllegalArgumentException();
         //TODO
-        return null;
+        return table[n-1];
 
     }
 
@@ -67,7 +72,13 @@ public class ListeAMImplV1<E> implements ListeAM<E> {
     @Override
     public E supprimerDernier() {
         //TODO
-        return null;
+        if (estVide()) {
+            return null;
+        }
+        E element = table[taille-1];
+        table[taille-1] = null;
+        taille--;
+        return element;
 
     }
 

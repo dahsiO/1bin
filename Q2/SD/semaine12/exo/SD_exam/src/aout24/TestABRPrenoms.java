@@ -1,3 +1,5 @@
+package aout24;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 

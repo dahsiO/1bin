@@ -1,5 +1,8 @@
+package aout24;
+
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class FileAttenteSDImpl<E> implements FileAttenteSD<E> {
 
@@ -37,15 +40,35 @@ public class FileAttenteSDImpl<E> implements FileAttenteSD<E> {
     @Override
     public boolean enfile(E element) {
         //TODO
-        return false;
+        if (ensemble.contains(element)) {
+            return false;
+        }
+        Noeud noeud = new Noeud(element);
+        if (queue == null) {
+            tete = noeud;
+            queue = noeud;
+        }else {
+        queue.suivant = noeud;
+        queue = noeud;
+        }
+        ensemble.add(element);
+        return true;
 
     }
 
     @Override
     public E defile() {
         //TODO
-        return null;
-
+        if (ensemble.isEmpty()) {
+            return null;
+        }
+        Noeud supp = tete;          // 1. on memorise le noeud a retirer
+        tete = tete.suivant;        // 2. la tete avance
+        if (tete == null) {         // 3. APRES : si la file est devenue vide
+            queue = null;           //    on reinitialise queue
+        }
+        ensemble.remove(supp.element);
+        return supp.element;
     }
 
     @Override
@@ -60,13 +83,14 @@ public class FileAttenteSDImpl<E> implements FileAttenteSD<E> {
         // Au depart le noeud "next" est le noeud de tete
         private IterateurImpl() {
             //TODO
+            noeudNext = tete;
         }
 
         @Override
         // verifie si le noeud "next" est null
         public boolean hasNext() {
             // TODO
-            return false;
+            return noeudNext != null;
         }
 
         @Override
@@ -74,7 +98,12 @@ public class FileAttenteSDImpl<E> implements FileAttenteSD<E> {
         // le noeud "next" passe au noeud suivant
         public E next() {
             // TODO
-            return null;
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            E element = noeudNext.element;     // on lit l'element courant
+            noeudNext = noeudNext.suivant;     // on avance le curseur
+            return element;
         }
 
     }

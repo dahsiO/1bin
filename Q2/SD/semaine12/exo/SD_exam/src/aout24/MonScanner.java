@@ -1,4 +1,6 @@
-import java.util.Scanner; 
+package aout24;
+
+import java.util.Scanner;
 import java.io.File;
 import java.io.InputStream ;
 import java.util.InputMismatchException;

@@ -1,3 +1,4 @@
+package aout24;
 
 public interface FileAttenteSD<E> extends Iterable<E> {
 

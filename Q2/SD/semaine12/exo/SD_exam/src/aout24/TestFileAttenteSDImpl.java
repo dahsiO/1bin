@@ -1,3 +1,5 @@
+package aout24;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;

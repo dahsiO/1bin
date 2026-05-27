@@ -1,3 +1,5 @@
+package aout24;
+
 import java.util.ArrayList;
 
 public class ABRPrenoms {
@@ -11,8 +13,14 @@ public class ABRPrenoms {
     public int nombreEnfants(){
         //TODO
         //contrainte : implementation recursive
-        return 0;
+        return nombreEnfants(racine);
 
+    }
+    private int nombreEnfants(Noeud noeud){
+        if (noeud == null){
+            return 0;
+        }
+        return noeud.nombreOccurrences + nombreEnfants(noeud.gauche) + nombreEnfants(noeud.droit);
     }
 
     /**
@@ -25,26 +33,46 @@ public class ABRPrenoms {
             throw new IllegalArgumentException();
         //TODO
         //contrainte : implementation recursive
-        return false;
+        return contient(racine , prenom);
 
+    }
+    private boolean contient(Noeud noeud, String prenom){
+        if (noeud == null) {
+            return false;// fin de parcourt ou vide
+        }
+        if (noeud.prenom.equals(prenom)) {
+            return true; // trouver bingo
+        }
+
+        return contient(noeud.gauche,prenom) || contient(noeud.droit,prenom);
     }
 
     /**
      * construit une liste de type ArrayList avec les prenoms des enfants
-     * Cette liste doit contenir autant de prenoms qu’il y a d’occurrences
+     * Cette liste doit contenir autant de prenoms quï¿½il y a dï¿½occurrences
      * Cette liste doit etre triee selon l'ordre alphabetique
      * @return une liste avec les prenoms des enfants
      */
     public ArrayList toArrayList(){
         //TODO
-
+        ArrayList<String> liste = new ArrayList<>();
+        remplir(racine, liste);
+        return liste;
+    }
         //contrainte : implementation recursive
 
         //contrainte : pour que cette liste respecte l'ordre alphabetique,
         //vous devez parcourir l'arbre selon un bon ordre.
         //Vous ne pouvez pas passer par une methode de tri
-
-        return null;
+    private void remplir(Noeud noeud,ArrayList<String>list){
+        if (noeud == null) {
+            return;
+        }  
+        remplir(noeud.gauche,list);
+        for (int i = 0; i < noeud.nombreOccurrences; i++) {
+            list.add(noeud.prenom);
+        }
+        remplir(noeud.droit,list);
     }
 
     // classe interne

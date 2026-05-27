@@ -102,30 +102,26 @@ public class ListeAoutImplV3<E> implements ListeAout<E> {
             taille = 0;
             return element;
         }
-
-        E element = supprimerDernier(racine, 0, taille - 1);
+        ArrayDeque<Noeud> file = new ArrayDeque<>();
+        file.add(racine);
+        for (int i = 0; i < taille/2-1 ; i++) {
+            Noeud courant = file.poll();
+            if (courant.gauche != null) file.add(courant.gauche);
+            if (courant.droit != null) file.add(courant.droit);
+        }
+        Noeud parent = file.peek();
+        E element;
+        if (parent.droit != null) {
+            element = parent.droit.element;
+            parent.droit = null;
+        }else {
+            element = parent.gauche.element;
+            parent.gauche = null;
+        }
         taille--;
         return element;
     }
 
-    private E supprimerDernier(Noeud noeud, int indiceCourant, int indiceCible) {
-        if (noeud == null) return null; // ← AJOUT
-        // On est sur le parent du dernier nœud
-        if (2 * indiceCourant + 1 == indiceCible) { // dernier = fils gauche
-            E element = (E) noeud.gauche.element;
-            noeud.gauche = null;
-            return element;
-        }
-        if (2 * indiceCourant + 2 == indiceCible) { // dernier = fils droit
-            E element = (E) noeud.droit.element;
-            noeud.droit = null;
-            return element;
-        }
-        // Sinon on continue à descendre
-        E resultat = supprimerDernier(noeud.gauche, 2 * indiceCourant + 1, indiceCible);
-        if (resultat != null) return resultat;
-        return supprimerDernier(noeud.droit, 2 * indiceCourant + 2, indiceCible);
-    }
 
 
     public class Noeud {

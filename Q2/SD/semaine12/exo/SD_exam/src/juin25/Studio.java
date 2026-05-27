@@ -1,3 +1,4 @@
+package juin25;
 
 public class Studio {
 	

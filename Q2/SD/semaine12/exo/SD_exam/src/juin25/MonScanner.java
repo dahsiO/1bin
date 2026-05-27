@@ -1,3 +1,5 @@
+package juin25;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.InputMismatchException;

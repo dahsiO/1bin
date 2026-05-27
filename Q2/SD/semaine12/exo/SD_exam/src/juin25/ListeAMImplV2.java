@@ -1,3 +1,6 @@
+package juin25;
+
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -58,8 +61,18 @@ public class ListeAMImplV2<E> implements ListeAM<E> {
         if (element == null)
             throw new IllegalArgumentException();
         //TODO
-        return false;
 
+        return contient(racine,element);
+
+    }
+    private boolean contient(Noeud noeud, E element){
+        if (noeud == null){
+            return false; // soit finie le parcourt ou juste l arbre est vide
+        }
+        if (noeud.element == element) {
+            return true;//bingo
+        }//sinon cherche
+        return contient(noeud.droit,element) || contient(noeud.gauche,element);
     }
 
     @Override
@@ -67,7 +80,14 @@ public class ListeAMImplV2<E> implements ListeAM<E> {
         if (n < 1 || n > taille)
             throw new IllegalArgumentException();
         //TODO
-        return null;
+        ArrayDeque<Noeud> file = new ArrayDeque<>(); // demander en consigne
+        file.add(racine);
+        for (int i = 0; i < n - 1; i++) {
+            Noeud courant = file.poll();                          // defile
+            if (courant.gauche != null) file.add(courant.gauche); // gauche d'abord
+            if (courant.droit  != null) file.add(courant.droit);  // puis droite
+        }
+        return file.peek().element;                               // tete = Nieme
 
         // contrainte : suivez l'algorithme propose (cfr enonce)
     }
@@ -75,8 +95,28 @@ public class ListeAMImplV2<E> implements ListeAM<E> {
     @Override
     public E supprimerDernier() {
         //TODO
-        return null;
-
+        //cas 1 c est vide  => return null
+        if (estVide()) return null;
+        if (taille == 1) { // cas 2 un seul element  == juste la racine a supp
+            E e = racine.element; // stock l element
+            racine = null; // edit la element APRES l'avoir stocker sinon tu écrases la valeur initiale
+            taille = 0;// decrement de -1 donc == 0
+            return e;// retourne la element stol
+        }
+        ArrayDeque<Noeud> file = new ArrayDeque<>(); // cas 3 +que un element
+        file.add(racine);
+        for (int i = 0; i < taille / 2 - 1; i++) { // formule du prof
+            Noeud x = file.poll(); // on defile
+            if (x.gauche != null) file.add(x.gauche);
+            if (x.droit  != null) file.add(x.droit);
+            // on s'arrête au parent
+        }
+        Noeud parent = file.peek();
+        E element;
+        if (parent.droit != null) { element = parent.droit.element; parent.droit = null; }
+        else                      { element = parent.gauche.element; parent.gauche = null; }
+        taille--;
+        return element;
         // contrainte : suivez l'algorithme propose (cfr enonce)
     }
 

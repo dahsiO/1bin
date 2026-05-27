@@ -1,3 +1,5 @@
+package juin25;
+
 public interface ListeAM<E>{
 	
 	/**

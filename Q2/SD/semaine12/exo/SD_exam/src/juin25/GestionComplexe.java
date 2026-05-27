@@ -1,3 +1,5 @@
+package juin25;
+
 import java.util.Scanner;
 
 public class GestionComplexe {

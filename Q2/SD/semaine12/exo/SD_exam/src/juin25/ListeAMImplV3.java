@@ -1,3 +1,5 @@
+package juin25;
+
 import java.util.HashSet;
 
 public class ListeAMImplV3<E> implements ListeAM<E> {
@@ -57,6 +59,7 @@ public class ListeAMImplV3<E> implements ListeAM<E> {
         if(element==null)
             throw new IllegalArgumentException();
         //TODO
+        if (ensembleElementsPresents.contains(element))return true;
         return false;
 
     }
@@ -66,14 +69,26 @@ public class ListeAMImplV3<E> implements ListeAM<E> {
         if(n < 1 || n > taille())
             throw new IllegalArgumentException();
         //TODO
-        return null;
+        //une torpie
+        Noeud torpie = teteS.suivant;
+        for (int i = 0; i < n-1; i++) {
+            torpie = torpie.suivant;
+        }
+        return torpie.element;
 
     }
 
     @Override
     public E supprimerDernier() {
         //TODO
-        return null;
+        if (estVide()) return null;            // ou throw, selon ta convention
+
+        Noeud noeud = queueS.precedent;        // dernier vrai nœud
+        noeud.precedent.suivant = noeud.suivant;   // le précédent pointe vers queueS
+        noeud.suivant.precedent = noeud.precedent; // queueS pointe vers le précédent
+
+        ensembleElementsPresents.remove(noeud.element);
+        return noeud.element;
     }
 
 

@@ -1,3 +1,5 @@
+package aout24;
+
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,8 +30,16 @@ public class FlexOffice {
 			throw new IllegalArgumentException();
 
 		//TODO
-
-
+		tableBureaux = new String[nombreBureaux];
+		mapEmployes = new HashMap<>();
+		for (String employe : tableEmployes) {
+			mapEmployes.put(employe,-1);
+		}
+		pileBureauxLibres = new ArrayDeque<>();
+		for (int i = 0; i < nombreBureaux; i++) {
+			pileBureauxLibres.push(i);
+		}
+		//phase 1 deja declarer
 	}
 	
 	/**
@@ -54,8 +64,20 @@ public class FlexOffice {
 			throw new IllegalStateException();
 
 		//TODO
-		return false;
-
+		if (tableBureaux[numeroBureau] != null) {
+			return false;// le bureau doit etre libre
+		}
+		if (!mapEmployes.containsKey(employe)) {
+			return false;// si l employer exite pas
+		}
+		if (mapEmployes.get(employe) != -1) {
+			return false; //si l employer a deja une reservation
+		}
+		//si tous est occ
+		tableBureaux[numeroBureau] = employe;
+		mapEmployes.put(employe,numeroBureau);
+		pileBureauxLibres.remove(numeroBureau);
+		return true;
 	}
 
 	/**
@@ -68,9 +90,13 @@ public class FlexOffice {
 
 		if(employe==null)
 			throw new IllegalArgumentException();
-		//TODO
-		return -1;
+		if (employe == null)
+			throw new IllegalArgumentException();
 
+		if (!mapEmployes.containsKey(employe)) {
+			return -1;                       // employe inexistant
+		}
+		return mapEmployes.get(employe);     // son bureau, ou -1 s'il n'en a pas
 	}
 
 	/**
