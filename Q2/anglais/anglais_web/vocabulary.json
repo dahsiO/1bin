@@ -1,0 +1,3004 @@
+{
+  "meta": {
+    "total": 425,
+    "chapters": [
+      "Introduction to Computer Science",
+      "Jobs in Computer Science",
+      "Fields Impacted by CS",
+      "CS or IT",
+      "Computer Parts",
+      "Introduction to Innovation",
+      "Patents, Copyrights & IP",
+      "Social Media & Platforms",
+      "Introduction to Robotics",
+      "Fields Impacted by Robotics"
+    ],
+    "categories": [
+      "Idiomatic expressions",
+      "Idioms",
+      "Vocabulary",
+      "Verbs",
+      "Phrasal verbs",
+      "Important verbs to know",
+      "Terminology",
+      "Expressions worth remembering!"
+    ]
+  },
+  "vocabulary": [
+    {
+      "id": 1,
+      "en": "Algorithm",
+      "fr": "Algorithme",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 2,
+      "en": "Artificial Intelligence (AI)",
+      "fr": "Intelligence Artificielle (IA)",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 3,
+      "en": "Machine Learning",
+      "fr": "Apprentissage Automatique",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 4,
+      "en": "Data Analysis",
+      "fr": "Analyse de Données",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 5,
+      "en": "Cybersecurity",
+      "fr": "Cybersécurité",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 6,
+      "en": "Software Development",
+      "fr": "Développement de Logiciels",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 7,
+      "en": "Programming Languages",
+      "fr": "Langages de Programmation",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 8,
+      "en": "Cloud Computing",
+      "fr": "Informatique en Nuage",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 9,
+      "en": "Networking",
+      "fr": "Réseautage",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 10,
+      "en": "Computer Hardware",
+      "fr": "Matériel Informatique",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 11,
+      "en": "Operating System",
+      "fr": "Système d'Exploitation",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 12,
+      "en": "Databases",
+      "fr": "Bases de Données",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 13,
+      "en": "Encryption",
+      "fr": "Cryptage / Chiffrement",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 14,
+      "en": "Debugging",
+      "fr": "Débogage",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 15,
+      "en": "Computational Thinking",
+      "fr": "Pensée Informatique",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 16,
+      "en": "Big Data",
+      "fr": "Big Data / Données Massives",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 17,
+      "en": "Human-Computer Interaction",
+      "fr": "Interaction Homme-Machine",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 18,
+      "en": "Internet of Things (IoT)",
+      "fr": "Internet des Objets (IdO)",
+      "category": "Terminology",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 19,
+      "en": "Problem-Solving",
+      "fr": "Résolution de Problèmes",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 20,
+      "en": "Logical Reasoning",
+      "fr": "Raisonnement Logique",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 21,
+      "en": "Critical Thinking",
+      "fr": "Pensée Critique",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 22,
+      "en": "Teamwork",
+      "fr": "Travail d'Équipe",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 23,
+      "en": "Innovation",
+      "fr": "Innovation",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 24,
+      "en": "Research",
+      "fr": "Recherche",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 25,
+      "en": "Ethics",
+      "fr": "Éthique",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 26,
+      "en": "Security Risks",
+      "fr": "Risques de Sécurité",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 27,
+      "en": "Malware",
+      "fr": "Logiciel Malveillant",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 28,
+      "en": "Ransomware",
+      "fr": "Rançongiciel",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 29,
+      "en": "Phishing",
+      "fr": "Hameçonnage",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 30,
+      "en": "Career Opportunities",
+      "fr": "Opportunités de Carrière",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 31,
+      "en": "Job Market",
+      "fr": "Marché de l'Emploi",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 32,
+      "en": "Median Salary",
+      "fr": "Salaire Médian",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 33,
+      "en": "Diversity",
+      "fr": "Diversité",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 34,
+      "en": "Cloud Storage",
+      "fr": "Stockage en Nuage",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 35,
+      "en": "System Optimization",
+      "fr": "Optimisation des Systèmes",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 36,
+      "en": "Practical Applications",
+      "fr": "Applications Pratiques",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 37,
+      "en": "To analyze",
+      "fr": "Analyser",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 38,
+      "en": "To program",
+      "fr": "Programmer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 39,
+      "en": "To optimize",
+      "fr": "Optimiser",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 40,
+      "en": "To debug",
+      "fr": "Déboguer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 41,
+      "en": "To encrypt",
+      "fr": "Chiffrer / Crypter",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 42,
+      "en": "To store",
+      "fr": "Stocker",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 43,
+      "en": "To retrieve",
+      "fr": "Récupérer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 44,
+      "en": "To innovate",
+      "fr": "Innover",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 45,
+      "en": "To interact",
+      "fr": "Interagir",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 46,
+      "en": "To develop",
+      "fr": "Développer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 47,
+      "en": "To solve",
+      "fr": "Résoudre",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 48,
+      "en": "To think critically",
+      "fr": "Réfléchir de manière critique",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 49,
+      "en": "To apply",
+      "fr": "Appliquer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 50,
+      "en": "To ensure",
+      "fr": "Assurer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 51,
+      "en": "To identify",
+      "fr": "Identifier",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 52,
+      "en": "To connect",
+      "fr": "Connecter",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 53,
+      "en": "To maintain",
+      "fr": "Maintenir",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 54,
+      "en": "To troubleshoot",
+      "fr": "Dépanner",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 55,
+      "en": "To build",
+      "fr": "Construire",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 56,
+      "en": "To compute",
+      "fr": "Calculer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 57,
+      "en": "To understand",
+      "fr": "Comprendre",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 58,
+      "en": "To collaborate",
+      "fr": "Collaborer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 59,
+      "en": "To integrate",
+      "fr": "Intégrer",
+      "category": "Important verbs to know",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 60,
+      "en": "To log out",
+      "fr": "Se déconnecter",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 61,
+      "en": "To log in",
+      "fr": "Se connecter",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 62,
+      "en": "To plug in",
+      "fr": "Brancher",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 63,
+      "en": "To scroll down",
+      "fr": "Faire défiler vers le bas",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 64,
+      "en": "To set up",
+      "fr": "Configurer / Installer",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 65,
+      "en": "To shut down",
+      "fr": "Éteindre",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 66,
+      "en": "To back up",
+      "fr": "Sauvegarder",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 67,
+      "en": "To boot up",
+      "fr": "Démarrer",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 68,
+      "en": "To run into",
+      "fr": "Rencontrer (un problème)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 69,
+      "en": "To break down",
+      "fr": "Tomber en panne",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 70,
+      "en": "Back to the drawing board",
+      "fr": "Retour à la case départ",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 71,
+      "en": "The ball is in your court",
+      "fr": "La balle est dans votre camp",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 72,
+      "en": "Up and running",
+      "fr": "Fonctionnel / En marche",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 73,
+      "en": "A piece of cake",
+      "fr": "Un jeu d’enfant / Très facile",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 74,
+      "en": "In the same boat",
+      "fr": "Être dans le même bateau",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 75,
+      "en": "Bite the bullet",
+      "fr": "Prendre sur soi / Serrer les dents",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 76,
+      "en": "Cutting corners",
+      "fr": "Faire des économies (au détriment de la qualité)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 77,
+      "en": "Burn the midnight oil",
+      "fr": "Travailler tard dans la nuit",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 78,
+      "en": "To throw in the towel",
+      "fr": "Jeter l’éponge",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 79,
+      "en": "To hit the nail on the head",
+      "fr": "Mettre le doigt dessus / Viser juste",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Computer Science"
+    },
+    {
+      "id": 80,
+      "en": "Sort out",
+      "fr": "Résoudre / Trier",
+      "category": "Phrasal verbs",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 81,
+      "en": "Run into",
+      "fr": "Rencontrer (un problème)",
+      "category": "Phrasal verbs",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 82,
+      "en": "Log in",
+      "fr": "Se connecter",
+      "category": "Phrasal verbs",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 83,
+      "en": "Set up",
+      "fr": "Configurer / Installer",
+      "category": "Phrasal verbs",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 84,
+      "en": "Back up",
+      "fr": "Sauvegarder",
+      "category": "Phrasal verbs",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 85,
+      "en": "In the pipeline",
+      "fr": "En cours de préparation",
+      "category": "Idiomatic expressions",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 86,
+      "en": "Hit the wall",
+      "fr": "Se heurter à un obstacle",
+      "category": "Idiomatic expressions",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 87,
+      "en": "The nuts and bolts",
+      "fr": "Les rouages / Les bases essentielles",
+      "category": "Idiomatic expressions",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 88,
+      "en": "Pull the plug",
+      "fr": "Mettre fin à quelque chose (litt. débrancher)",
+      "category": "Idiomatic expressions",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 89,
+      "en": "a thirst for learning",
+      "fr": "une soif de connaissance",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 90,
+      "en": "to tinker with something",
+      "fr": "chipoter à qql chose",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 91,
+      "en": "the pervasiveness",
+      "fr": "le caractère invasif de qql chose",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 92,
+      "en": "to have a knack for + VERB-ING",
+      "fr": "avoir un certain talent pour ...",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 93,
+      "en": "the network",
+      "fr": "le réseau",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 94,
+      "en": "technology",
+      "fr": "la technologie",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 95,
+      "en": "a broad knowledge",
+      "fr": "une vaste connaissance",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 96,
+      "en": "to repair",
+      "fr": "réparer",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 97,
+      "en": "a median income",
+      "fr": "un revenu moyen",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 98,
+      "en": "to complete",
+      "fr": "compléter",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 99,
+      "en": "interpersonal",
+      "fr": "interpersonnel",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 100,
+      "en": "a trend",
+      "fr": "une mode",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 101,
+      "en": "to propose",
+      "fr": "Suggérer \nDemander en mariage (autre signification)",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 102,
+      "en": "to expect something from someone",
+      "fr": "Attendre quelque chose de qqln",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 103,
+      "en": "to hire",
+      "fr": "embaucher",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 104,
+      "en": "the need",
+      "fr": "le besoin",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 105,
+      "en": "a breach",
+      "fr": "une brèche",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 106,
+      "en": "to occur",
+      "fr": "avoir lieu, se dérouler",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 107,
+      "en": "a problem-solving skill",
+      "fr": "une compétence de résolution de problème",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 108,
+      "en": "a purpose",
+      "fr": "un objectif",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 109,
+      "en": "a specification",
+      "fr": "une spécification",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 110,
+      "en": "to anticipate",
+      "fr": "anticiper",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 111,
+      "en": "to enhance",
+      "fr": "améliorer, accroître",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 112,
+      "en": "the staff",
+      "fr": "le personnel",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 113,
+      "en": "to prevent something from happening",
+      "fr": "empêcher qql chose de se produire",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 114,
+      "en": "the implementation",
+      "fr": "l'implémentation, l'intégration",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 115,
+      "en": "to coordinate",
+      "fr": "coordonner",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 116,
+      "en": "According to...",
+      "fr": "Selon...",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 117,
+      "en": "a tip",
+      "fr": "un conseil\n(un pourboire, dans un autre contexte)",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 118,
+      "en": "the employment",
+      "fr": "l'emploi",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 119,
+      "en": "a cyberattack",
+      "fr": "une cyberattaque",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 120,
+      "en": "the hardware",
+      "fr": "le hardware",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 121,
+      "en": "a leader",
+      "fr": "un meneur, un chef",
+      "category": "Vocabulary",
+      "chapter": "Jobs in Computer Science"
+    },
+    {
+      "id": 122,
+      "en": "To cut corners",
+      "fr": "Raccourcir les étapes / Faire des compromis",
+      "category": "Idiomatic expressions",
+      "chapter": "Fields Impacted by CS"
+    },
+    {
+      "id": 123,
+      "en": "A blessing in disguise",
+      "fr": "Un mal pour un bien / Une bénédiction cachée",
+      "category": "Idiomatic expressions",
+      "chapter": "Fields Impacted by CS"
+    },
+    {
+      "id": 124,
+      "en": "To bite the bullet",
+      "fr": "Avaler la pilule / Prendre son courage à deux mains",
+      "category": "Idiomatic expressions",
+      "chapter": "Fields Impacted by CS"
+    },
+    {
+      "id": 125,
+      "en": "To break the ice",
+      "fr": "Briser la glace / Détendre l'atmosphère",
+      "category": "Idiomatic expressions",
+      "chapter": "Fields Impacted by CS"
+    },
+    {
+      "id": 126,
+      "en": "To go back to the drawing board",
+      "fr": "Repartir à zéro / Refaire les plans",
+      "category": "Idiomatic expressions",
+      "chapter": "Fields Impacted by CS"
+    },
+    {
+      "id": 127,
+      "en": "Computer scientists",
+      "fr": "Scientifiques en informatique",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 128,
+      "en": "Computational applications",
+      "fr": "Applications computationnelles",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 129,
+      "en": "Algorithms",
+      "fr": "Algorithmes",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 130,
+      "en": "Software",
+      "fr": "Logiciels",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 131,
+      "en": "Operating systems",
+      "fr": "Systèmes d'exploitation",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 132,
+      "en": "Code",
+      "fr": "Code",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 133,
+      "en": "Discrete mathematics",
+      "fr": "Mathématiques discrètes",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 134,
+      "en": "Linear mathematics",
+      "fr": "Mathématiques linéaires",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 135,
+      "en": "Software design and development",
+      "fr": "Conception et développement de logiciels",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 136,
+      "en": "Machine",
+      "fr": "Machine",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 137,
+      "en": "Systems engineer",
+      "fr": "Ingénieur système",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 138,
+      "en": "Applications software developer",
+      "fr": "Développeur d'applications logicielles",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 139,
+      "en": "Web developer",
+      "fr": "Développeur web",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 140,
+      "en": "Database",
+      "fr": "Base de données",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 141,
+      "en": "Hardware-to-software integration",
+      "fr": "Intégration matériel-logiciel",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 142,
+      "en": "Microchips",
+      "fr": "Microprocesseurs",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 143,
+      "en": "Routers",
+      "fr": "Routeurs",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 144,
+      "en": "Video cards",
+      "fr": "Cartes graphiques",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 145,
+      "en": "Network",
+      "fr": "Réseau",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 146,
+      "en": "Cyberattacks",
+      "fr": "Cyberattaques",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 147,
+      "en": "Database administrator",
+      "fr": "Administrateur de base de données",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 148,
+      "en": "Information technology (IT)",
+      "fr": "Technologie de l'information (TI)",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 149,
+      "en": "Network architect",
+      "fr": "Architecte réseau",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 150,
+      "en": "Systems administrator",
+      "fr": "Administrateur systèmes",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 151,
+      "en": "IT security analyst",
+      "fr": "Analyste en sécurité informatique",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 152,
+      "en": "Database administrator (DBA)",
+      "fr": "Administrateur de base de données (DBA)",
+      "category": "Terminology",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 153,
+      "en": "Focus on",
+      "fr": "Se concentrer sur",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 154,
+      "en": "Understand",
+      "fr": "Comprendre",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 155,
+      "en": "Invent",
+      "fr": "Inventer",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 156,
+      "en": "Manipulate",
+      "fr": "Manipuler",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 157,
+      "en": "Transfer",
+      "fr": "Transférer",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 158,
+      "en": "Study",
+      "fr": "Étudier",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 159,
+      "en": "Create",
+      "fr": "Créer",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 160,
+      "en": "Design",
+      "fr": "Concevoir",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 161,
+      "en": "Build",
+      "fr": "Construire",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 162,
+      "en": "Function",
+      "fr": "Fonctionner",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 163,
+      "en": "Program",
+      "fr": "Programmer",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 164,
+      "en": "Monitor",
+      "fr": "Surveiller",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 165,
+      "en": "Integrate",
+      "fr": "Intégrer",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 166,
+      "en": "Deal with",
+      "fr": "Traiter avec",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 167,
+      "en": "Support",
+      "fr": "Soutenir",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 168,
+      "en": "Apply",
+      "fr": "Appliquer",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 169,
+      "en": "Construct",
+      "fr": "Construire",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 170,
+      "en": "Prevent",
+      "fr": "Prévenir",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 171,
+      "en": "Troubleshoot",
+      "fr": "Dépanner",
+      "category": "Verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 172,
+      "en": "Break down",
+      "fr": "Tomber en panne",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 173,
+      "en": "Key in",
+      "fr": "Saisir (au clavier)",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 174,
+      "en": "Go down",
+      "fr": "Tomber / Descendre (d'un système)",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 175,
+      "en": "Shut down",
+      "fr": "Éteindre / Arrêter",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 176,
+      "en": "Boot up",
+      "fr": "Démarrer (un ordinateur)",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 177,
+      "en": "Hack into",
+      "fr": "Pirater (un système)",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 178,
+      "en": "Plug in",
+      "fr": "Brancher",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 179,
+      "en": "Figure out",
+      "fr": "Résoudre / Comprendre / Trouver la solution",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 180,
+      "en": "Turn on",
+      "fr": "Allumer",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 181,
+      "en": "Hook up",
+      "fr": "Connecter / Raccorder",
+      "category": "Phrasal verbs",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 182,
+      "en": "Cut corners",
+      "fr": "Rogner sur les coûts / Faire des économies au détriment de la qualité",
+      "category": "Idiomatic expressions",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 183,
+      "en": "Bug in the systems",
+      "fr": "Un bug dans les systèmes",
+      "category": "Idiomatic expressions",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 184,
+      "en": "Hold the fort",
+      "fr": "Tenir le fort / Gérer la situation",
+      "category": "Idiomatic expressions",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 185,
+      "en": "Crash and burn",
+      "fr": "Échouer lamentablement",
+      "category": "Idiomatic expressions",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 186,
+      "en": "Behind the scenes",
+      "fr": "Dans les coulisses",
+      "category": "Idiomatic expressions",
+      "chapter": "CS or IT"
+    },
+    {
+      "id": 187,
+      "en": "a component",
+      "fr": "une composante",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 188,
+      "en": "the central processing unit (CPU)",
+      "fr": "le processeur",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 189,
+      "en": "the monitor",
+      "fr": "l'écran",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 190,
+      "en": "the LCD display",
+      "fr": "l'écran LCD",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 191,
+      "en": "LED / Light-emitting diode",
+      "fr": "Une LED / diode lumineuse",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 192,
+      "en": "a flat-panel display",
+      "fr": "un écran plat",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 193,
+      "en": "the CRT display",
+      "fr": "l'écran cathodique",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 194,
+      "en": "the keyboard",
+      "fr": "le clavier",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 195,
+      "en": "a shortcut",
+      "fr": "un raccourci",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 196,
+      "en": "the spacebar",
+      "fr": "la barre espace",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 197,
+      "en": "the thumb",
+      "fr": "le pouce",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 198,
+      "en": "the trackpad",
+      "fr": "le pavé tactile",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 199,
+      "en": "the power cord",
+      "fr": "le câble d'alimentation",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 200,
+      "en": "the audio port",
+      "fr": "le port audio",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 201,
+      "en": "a connection port",
+      "fr": "le port de connexion",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 202,
+      "en": "the modem",
+      "fr": "le modem",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 203,
+      "en": "the peripheral",
+      "fr": "le périphérique",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 204,
+      "en": "the expansion card",
+      "fr": "la carte d'extension",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 205,
+      "en": "the button",
+      "fr": "le bouton",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 206,
+      "en": "the slot",
+      "fr": "la fiche de connexion",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 207,
+      "en": "the printer",
+      "fr": "l'imprimante",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 208,
+      "en": "the inkjet",
+      "fr": "le jet d'encre",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 209,
+      "en": "all-in-one",
+      "fr": "tout en un",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 210,
+      "en": "the scanner",
+      "fr": "le scanner",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 211,
+      "en": "the motherboard",
+      "fr": "la carte mère",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 212,
+      "en": "a computer case",
+      "fr": "une tour d'ordinateur",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 213,
+      "en": "the CPU socket",
+      "fr": "le socket (ou support) du processeur",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 214,
+      "en": "a silicon chip",
+      "fr": "une puce silicone",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 215,
+      "en": "the heat sink",
+      "fr": "le dissipateur thermique",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 216,
+      "en": "short-term memory",
+      "fr": "mémoire à court terme",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 217,
+      "en": "long-term storage",
+      "fr": "le stockage de longue durée",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 218,
+      "en": "the ethernet",
+      "fr": "l'ethernet",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 219,
+      "en": "wireless (adj)",
+      "fr": "sans fil",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 220,
+      "en": "a dongle",
+      "fr": "\"un dongle (périphérique matériel pouvant se connecter à un port d'entrée / sortie. Ce peut être un support de stockage (une clé USB par exemple), un adaptateur WIFI, un émetteur de synchronisation pour lunettes 3D, etc.)\"",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 221,
+      "en": "an expansion slot",
+      "fr": "un port d'extension",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 222,
+      "en": "in combination with",
+      "fr": "en combinaison avec ...",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 223,
+      "en": "at the top-right corner",
+      "fr": "En haut à droite",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 224,
+      "en": "a screenshot",
+      "fr": "une capture d'écran",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 225,
+      "en": "a numeric keypad",
+      "fr": "le pavé numérique",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 226,
+      "en": "the backspace key",
+      "fr": "la touche retour",
+      "category": "Terminology",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 227,
+      "en": "to save a file",
+      "fr": "sauvegarder un fichier",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 228,
+      "en": "to point to something",
+      "fr": "pointer vers quelque chose",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 229,
+      "en": "to click on something",
+      "fr": "cliquer sur quelque chose",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 230,
+      "en": "to rotate",
+      "fr": "opérer une rotation, tourner",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 231,
+      "en": "to be touch-sensitive",
+      "fr": "être sensible au toucher",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 232,
+      "en": "to come with",
+      "fr": "être accompagné de",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 233,
+      "en": "to improve performance",
+      "fr": "améliorer la performance",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 234,
+      "en": "to load",
+      "fr": "charger",
+      "category": "Verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 235,
+      "en": "to double as",
+      "fr": "également faire office de...",
+      "category": "Phrasal verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 236,
+      "en": "to vary from ... to ...",
+      "fr": "Varier de ... à ...",
+      "category": "Phrasal verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 237,
+      "en": "to hack into",
+      "fr": "pirater (un système)",
+      "category": "Phrasal verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 238,
+      "en": "to figure out",
+      "fr": "résoudre / comprendre / trouver la solution",
+      "category": "Phrasal verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 239,
+      "en": "to start up",
+      "fr": "démarrer",
+      "category": "Phrasal verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 240,
+      "en": "to turn off / to turn on",
+      "fr": "Eteindre / Allumer",
+      "category": "Phrasal verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 241,
+      "en": "to fill out",
+      "fr": "remplir / compléter",
+      "category": "Phrasal verbs",
+      "chapter": "Computer Parts"
+    },
+    {
+      "id": 242,
+      "en": "Product",
+      "fr": "Produit (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 243,
+      "en": "Service",
+      "fr": "Service (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 244,
+      "en": "Customer",
+      "fr": "Client(e) (m./f.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 245,
+      "en": "Feedback",
+      "fr": "Retour d'information (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 246,
+      "en": "Growth",
+      "fr": "Croissance (f.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 247,
+      "en": "Development",
+      "fr": "Développement (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 248,
+      "en": "Market",
+      "fr": "Marché (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 249,
+      "en": "Competitors",
+      "fr": "Concurrents (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 250,
+      "en": "R&D (Research and Development)",
+      "fr": "Recherche et développement (f.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 251,
+      "en": "Demand",
+      "fr": "Demande (f.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 252,
+      "en": "Efficiency",
+      "fr": "Efficacité (f.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 253,
+      "en": "Profit",
+      "fr": "Profit (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 254,
+      "en": "Lifestyle",
+      "fr": "Mode de vie (m.)",
+      "category": "Terminology",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 255,
+      "en": "Listen to",
+      "fr": "Écouter",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 256,
+      "en": "Target",
+      "fr": "Cibler",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 257,
+      "en": "Review",
+      "fr": "Revoir",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 258,
+      "en": "Consider",
+      "fr": "Envisager",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 259,
+      "en": "Try",
+      "fr": "Essayer",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 260,
+      "en": "Improve",
+      "fr": "Améliorer",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 261,
+      "en": "Increase",
+      "fr": "Augmenter",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 262,
+      "en": "Reduce",
+      "fr": "Réduire",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 263,
+      "en": "Make",
+      "fr": "Faire",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 264,
+      "en": "Change",
+      "fr": "Changer",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 265,
+      "en": "Introduce",
+      "fr": "Introduire",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 266,
+      "en": "Realize",
+      "fr": "Réaliser",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 267,
+      "en": "Develop",
+      "fr": "Développer",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 268,
+      "en": "Serve",
+      "fr": "Servir",
+      "category": "Verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 269,
+      "en": "Risk",
+      "fr": "Risque (m.)",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 270,
+      "en": "Better",
+      "fr": "Meilleur(e)",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 271,
+      "en": "Successful",
+      "fr": "Réussi(e)",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 272,
+      "en": "Impressive",
+      "fr": "Impressionnant(e)",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 273,
+      "en": "Options",
+      "fr": "Options (f.)",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 274,
+      "en": "Healthier",
+      "fr": "Plus sain(e)",
+      "category": "Vocabulary",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 275,
+      "en": "Keep up with",
+      "fr": "Suivre le rythme de / Rester à jour avec",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 276,
+      "en": "Come up with",
+      "fr": "Trouver (une idée, une solution)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 277,
+      "en": "Carry out",
+      "fr": "Mener à bien / Exécuter",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 278,
+      "en": "Look into",
+      "fr": "Examiner / Investiguer",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 279,
+      "en": "Work out",
+      "fr": "Résoudre / Trouver une solution",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 280,
+      "en": "Build on",
+      "fr": "Développer / S'appuyer sur",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 281,
+      "en": "Roll out",
+      "fr": "Lancer / Déployer",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 282,
+      "en": "Follow up on",
+      "fr": "Faire un suivi / Suivre l’évolution",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 283,
+      "en": "Go ahead with",
+      "fr": "Donner le feu vert / Poursuivre",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 284,
+      "en": "A lightbulb moment",
+      "fr": "Un moment d'illumination",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 285,
+      "en": "A game-changer",
+      "fr": "Un élément révolutionnaire",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 286,
+      "en": "Think outside the box",
+      "fr": "Penser différemment / Sortir des sentiers battus",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 287,
+      "en": "The sky’s the limit",
+      "fr": "Le ciel est la limite",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 288,
+      "en": "Break the mold",
+      "fr": "Casser le moule",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Innovation"
+    },
+    {
+      "id": 289,
+      "en": "Cover all your bases",
+      "fr": "Couvrir tous les aspects",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 290,
+      "en": "A double-edged sword",
+      "fr": "Une arme à double tranchant",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 291,
+      "en": "Dot the i’s and cross the t’s",
+      "fr": "Vérifier tous les détails",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 292,
+      "en": "Behind closed doors",
+      "fr": "Derrière des portes closes",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 293,
+      "en": "Keep something under wraps",
+      "fr": "Garder quelque chose sous silence",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 294,
+      "en": "Off the record",
+      "fr": "Officiellement / Non officiel",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 295,
+      "en": "A grey area",
+      "fr": "Une zone floue / Zone d’incertitude",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 296,
+      "en": "Go the extra mile",
+      "fr": "Aller plus loin / Faire des efforts supplémentaires",
+      "category": "Idiomatic expressions",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 297,
+      "en": "Apply for",
+      "fr": "Postuler pour / Demander",
+      "category": "Phrasal verbs",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 298,
+      "en": "Bring up",
+      "fr": "Aborder / Soulever (une question)",
+      "category": "Phrasal verbs",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 299,
+      "en": "Get around",
+      "fr": "Contourner / Trouver une solution de contournement",
+      "category": "Phrasal verbs",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 300,
+      "en": "Look after",
+      "fr": "S’occuper de / Veiller sur",
+      "category": "Phrasal verbs",
+      "chapter": "Patents, Copyrights & IP"
+    },
+    {
+      "id": 301,
+      "en": "Attention",
+      "fr": "Attention",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 302,
+      "en": "Neurobiology",
+      "fr": "Neurobiologie",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 303,
+      "en": "Cognitive load",
+      "fr": "Charge cognitive",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 304,
+      "en": "Parietal cortex",
+      "fr": "Cortex pariétal",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 305,
+      "en": "Frontal cortex",
+      "fr": "Cortex frontal",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 306,
+      "en": "Distractions",
+      "fr": "Distractions",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 307,
+      "en": "Notification",
+      "fr": "Notification",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 308,
+      "en": "Productivity",
+      "fr": "Productivité",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 309,
+      "en": "Focus",
+      "fr": "Concentration",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 310,
+      "en": "Task switching",
+      "fr": "Changement de tâche",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 311,
+      "en": "Multitasking",
+      "fr": "Multitâche",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 312,
+      "en": "Mental effort",
+      "fr": "Effort mental",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 313,
+      "en": "Decision-making",
+      "fr": "Prise de décision",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 314,
+      "en": "Overwhelmed",
+      "fr": "Débordé / Accablé",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 315,
+      "en": "Stress",
+      "fr": "Stress",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 316,
+      "en": "Social bonds",
+      "fr": "Liens sociaux",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 317,
+      "en": "Casual conversations",
+      "fr": "Conversations informelles",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 318,
+      "en": "Connected",
+      "fr": "Connecté",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 319,
+      "en": "Cognitive effort",
+      "fr": "Effort cognitif",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 320,
+      "en": "Digital devices",
+      "fr": "Appareils numériques",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 321,
+      "en": "Smartphone addiction",
+      "fr": "Addiction au smartphone",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 322,
+      "en": "Do not disturb mode",
+      "fr": "Mode ne pas déranger",
+      "category": "Terminology",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 323,
+      "en": "To be bombarded with (emails, spams...)",
+      "fr": "Être bombardé d'(emails, spams...)",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 324,
+      "en": "To check emails",
+      "fr": "Vérifier ses e-mails",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 325,
+      "en": "To switch tasks",
+      "fr": "Passer d’une tâche à l’autre",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 326,
+      "en": "To maintain focus",
+      "fr": "Garder sa concentration",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 327,
+      "en": "To stay focused",
+      "fr": "Rester concentré",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 328,
+      "en": "To draw attention away",
+      "fr": "Détourner l’attention",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 329,
+      "en": "To deplete energy",
+      "fr": "Épuiser son énergie",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 330,
+      "en": "To rely on technology",
+      "fr": "Dépendre de la technologie",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 331,
+      "en": "To set notifications",
+      "fr": "Régler les notifications",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 332,
+      "en": "To boost productivity",
+      "fr": "Augmenter la productivité",
+      "category": "Verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 333,
+      "en": "Scroll through",
+      "fr": "Faire défiler (du contenu sur un écran)",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 334,
+      "en": "Sign up",
+      "fr": "S'inscrire",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 335,
+      "en": "Share out",
+      "fr": "Partager, diffuser",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 336,
+      "en": "Take down",
+      "fr": "Supprimer, retirer",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 337,
+      "en": "Blow up",
+      "fr": "Devenir viral, exploser en popularité",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 338,
+      "en": "Tune in",
+      "fr": "Regarder/écouter une émission en direct",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 339,
+      "en": "Opt out of",
+      "fr": "Se désinscrire de, refuser de participer",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 340,
+      "en": "Block out",
+      "fr": "Ignorer, bloquer (les distractions)",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 341,
+      "en": "Jump on",
+      "fr": "Saisir une opportunité, surfer sur une tendance",
+      "category": "Phrasal verbs",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 342,
+      "en": "Caught red-handed",
+      "fr": "Pris la main dans le sac",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 343,
+      "en": "Spill the beans",
+      "fr": "Vendre la mèche / Révéler un secret",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 344,
+      "en": "Hit the nail on the head",
+      "fr": "Mettre dans le mille",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 345,
+      "en": "Bite off more than you can chew",
+      "fr": "Avoir les yeux plus gros que le ventre",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 346,
+      "en": "Barking up the wrong tree",
+      "fr": "Faire fausse route",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 347,
+      "en": "Jump on the bandwagon",
+      "fr": "Suivre la tendance / Prendre le train en marche",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 348,
+      "en": "Let the cat out of the bag",
+      "fr": "Révéler un secret / Vendre la mèche",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 349,
+      "en": "Under the weather",
+      "fr": "Ne pas être dans son assiette",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 350,
+      "en": "Pull someone's leg",
+      "fr": "Faire marcher quelqu'un",
+      "category": "Expressions worth remembering!",
+      "chapter": "Social Media & Platforms"
+    },
+    {
+      "id": 351,
+      "en": "Well-oiled machine",
+      "fr": "Machine bien huilée (fonctionne parfaitement)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 352,
+      "en": "In full swing",
+      "fr": "En plein essor (fonctionne à plein régime)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 353,
+      "en": "The brain of the operation",
+      "fr": "Le cerveau de l'opération (la personne clé)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 354,
+      "en": "Go off track",
+      "fr": "Sortir du droit chemin (dévier de l’objectif)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 355,
+      "en": "A glitch in the system",
+      "fr": "Un bug dans le système (un problème technique)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 356,
+      "en": "Push the envelope",
+      "fr": "Repousser les limites (innover, dépasser les attentes)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 357,
+      "en": "Get the ball rolling",
+      "fr": "Mettre la machine en marche (démarrer un projet)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 358,
+      "en": "At the cutting edge",
+      "fr": "À la pointe de la technologie (très avancé, innovant)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 359,
+      "en": "On the same wavelength",
+      "fr": "Sur la même longueur d'onde (être en accord)",
+      "category": "Idiomatic expressions",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 360,
+      "en": "Android",
+      "fr": "Android",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 361,
+      "en": "Humanoid Robot",
+      "fr": "Robot Humanoïde",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 362,
+      "en": "Deviant Android",
+      "fr": "Android Déviant",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 363,
+      "en": "Sentience",
+      "fr": "Sensibilité",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 364,
+      "en": "Civil Rights Movement",
+      "fr": "Mouvement des Droits Civiques",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 365,
+      "en": "Simulation",
+      "fr": "Simulation",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 366,
+      "en": "Intelligence (in machines)",
+      "fr": "Intelligence (dans les machines)",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 367,
+      "en": "Consciousness",
+      "fr": "Conscience",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 368,
+      "en": "Enslaving",
+      "fr": "Réduire en esclavage",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 369,
+      "en": "Neo-noir",
+      "fr": "Néo-noir",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 370,
+      "en": "Revolution",
+      "fr": "Révolution",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 371,
+      "en": "Ballistic",
+      "fr": "Balistique",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 372,
+      "en": "Legitimate",
+      "fr": "Légitime",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 373,
+      "en": "Futurist",
+      "fr": "Futuriste",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 374,
+      "en": "Envision",
+      "fr": "Envisager",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 375,
+      "en": "Revolutionize",
+      "fr": "Révolutionner",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 376,
+      "en": "Mistreated",
+      "fr": "Maltraité",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 377,
+      "en": "Adaptation",
+      "fr": "Adaptation",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 378,
+      "en": "Sorrow",
+      "fr": "Chagrin",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 379,
+      "en": "Start a revolution",
+      "fr": "Démarrer une révolution",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 380,
+      "en": "Go ballistic",
+      "fr": "Devenir incontrôlable",
+      "category": "Terminology",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 381,
+      "en": "Excitement",
+      "fr": "Excitation",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 382,
+      "en": "Robot",
+      "fr": "Robot",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 383,
+      "en": "Security guard",
+      "fr": "Gardien de sécurité",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 384,
+      "en": "Research group",
+      "fr": "Groupe de recherche",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 385,
+      "en": "Autonomous robot",
+      "fr": "Robot autonome",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 386,
+      "en": "To function",
+      "fr": "Fonctionner",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 387,
+      "en": "Controlled environment",
+      "fr": "Environnement contrôlé",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 388,
+      "en": "Science and engineering challenge",
+      "fr": "Défi scientifique et technique",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 389,
+      "en": "To cope with something",
+      "fr": "Faire face",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 390,
+      "en": "Human environment",
+      "fr": "Environnement humain",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 391,
+      "en": "Daily routines and patterns",
+      "fr": "Routines quotidiennes et habitudes",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 392,
+      "en": "Fixed image",
+      "fr": "Image figée",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 393,
+      "en": "Science fiction",
+      "fr": "Science-fiction",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 394,
+      "en": "Human-like features",
+      "fr": "Caractéristiques humanoïdes",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 395,
+      "en": "Human movement",
+      "fr": "Mouvement humain",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 396,
+      "en": "Physical movement",
+      "fr": "Mouvement physique",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 397,
+      "en": "Comfortable",
+      "fr": "Confortable",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 398,
+      "en": "Form dictated by function",
+      "fr": "Forme dictée par la fonction",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 399,
+      "en": "Driverless car",
+      "fr": "Voiture sans conducteur",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 400,
+      "en": "Washing machine",
+      "fr": "Machine à laver",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 401,
+      "en": "Autonomous intelligent machines",
+      "fr": "Machines autonomes intelligentes",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 402,
+      "en": "To extend",
+      "fr": "Étendre",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 403,
+      "en": "Care (in hospital)",
+      "fr": "Soins (à l'hôpital)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 404,
+      "en": "Industry building",
+      "fr": "Construction d'industrie",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 405,
+      "en": "Programming robots",
+      "fr": "Programmation de robots",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 406,
+      "en": "Huge",
+      "fr": "Enorme",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 407,
+      "en": "Power up",
+      "fr": "Allumer (mettre en marche)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 408,
+      "en": "Run on",
+      "fr": "Continuer de fonctionner durant une longue période de temps",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 409,
+      "en": "Put together",
+      "fr": "Assembler (mettre ensemble)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 410,
+      "en": "Take apart",
+      "fr": "Démanteler (démonter)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 411,
+      "en": "Wire up",
+      "fr": "Câbler (connecter des fils ou des composants électriques)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 412,
+      "en": "Test out",
+      "fr": "Tester (éprouver, vérifier le bon fonctionnement)",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 413,
+      "en": "Take over",
+      "fr": "Prendre le contrôle",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 414,
+      "en": "Give rise to",
+      "fr": "Donner naissance à",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 415,
+      "en": "Make up",
+      "fr": "Inventer/Créer",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 416,
+      "en": "Think about",
+      "fr": "Réfléchir à",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 417,
+      "en": "Get to see",
+      "fr": "Commencer à voir",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 418,
+      "en": "Fit in",
+      "fr": "S'adapter",
+      "category": "Phrasal verbs",
+      "chapter": "Introduction to Robotics"
+    },
+    {
+      "id": 419,
+      "en": "A game changer",
+      "fr": "Un tournant",
+      "category": "Idioms",
+      "chapter": "Fields Impacted by Robotics"
+    },
+    {
+      "id": 420,
+      "en": "Break the ice",
+      "fr": "Briser la glace",
+      "category": "Idioms",
+      "chapter": "Fields Impacted by Robotics"
+    },
+    {
+      "id": 421,
+      "en": "Throw in the towel",
+      "fr": "Jeter l'éponge",
+      "category": "Idioms",
+      "chapter": "Fields Impacted by Robotics"
+    },
+    {
+      "id": 422,
+      "en": "Call it a day",
+      "fr": "Arrêter pour aujourd'hui",
+      "category": "Idioms",
+      "chapter": "Fields Impacted by Robotics"
+    },
+    {
+      "id": 423,
+      "en": "Give up",
+      "fr": "Abandonner",
+      "category": "Phrasal verbs",
+      "chapter": "Fields Impacted by Robotics"
+    },
+    {
+      "id": 424,
+      "en": "Look forward to",
+      "fr": "Attendre avec impatience",
+      "category": "Phrasal verbs",
+      "chapter": "Fields Impacted by Robotics"
+    },
+    {
+      "id": 425,
+      "en": "Turn down",
+      "fr": "Refuser",
+      "category": "Phrasal verbs",
+      "chapter": "Fields Impacted by Robotics"
+    }
+  ]
+}

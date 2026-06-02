@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocab Revision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header id="header">
+    <button id="menu-toggle" aria-label="Menu chapitres">☰</button>
+    <h1>Vocab Revision</h1>
+
+    <nav id="tabs">
+      <button class="tab-btn active" data-tab="flashcards">Flashcards</button>
+      <button class="tab-btn" data-tab="qcm">QCM</button>
+      <button class="tab-btn" data-tab="dictee">Dictée</button>
+      <button class="tab-btn" data-tab="stats">Stats</button>
+      <button class="tab-btn" data-tab="fib">Fill in the Blank</button>
+      <button class="tab-btn tab-exam" data-tab="exam">📝 Exam</button>
+    </nav>
+
+    <span id="session-score">0 / 0</span>
+    <span id="exam-timer" style="display:none"></span>
+  </header>
+
+  <div id="app">
+    <aside id="sidebar"></aside>
+    <div id="sidebar-overlay"></div>
+    <main id="main">
+      <div class="empty-state">Chargement…</div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
