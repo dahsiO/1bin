@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths 2 — Relations d'Équivalence</title>
+<style>
+  :root {
+    --accent: #6B35A8;
+    --accent-light: #F0EAFB;
+    --accent-mid: #9455D4;
+    --accent-dark: #4A2178;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --red: #993C1D;
+    --red-light: #FAECE7;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --bg: #F9F7FD;
+    --card: #ffffff;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --border: rgba(0,0,0,0.09);
+    --border-strong: rgba(0,0,0,0.16);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.65; }
+
+  header {
+    background: linear-gradient(135deg, #3A0F72 0%, #6B35A8 55%, #9455D4 100%);
+    color: white; padding: 36px 40px 28px; position: relative; overflow: hidden;
+  }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  header::after { content:''; position:absolute; bottom:-40px; left:30%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); }
+  .header-tag { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; opacity:.7; margin-bottom:8px; }
+  header h1 { font-size:28px; font-weight:700; margin-bottom:6px; position:relative; }
+  header p { font-size:13px; opacity:.75; position:relative; }
+  .chapter-badge { position:absolute; top:28px; right:40px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; padding:6px 16px; font-size:12px; font-weight:600; letter-spacing:.04em; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  .progress-bar { display:flex; gap:4px; margin-bottom:20px; }
+  .progress-seg { height:4px; flex:1; border-radius:2px; background:var(--border); }
+  .progress-seg.done { background:var(--accent); }
+
+  .tab-nav { display:flex; flex-wrap:wrap; gap:6px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:10px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+  .tab-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid transparent; background:transparent; color:var(--text-muted); font-size:13px; font-weight:500; cursor:pointer; transition:all .18s; }
+  .tab-btn:hover { background:var(--accent-light); color:var(--accent); }
+  .tab-btn.active { background:var(--accent); color:white; border-color:var(--accent-dark); box-shadow:0 2px 8px rgba(107,53,168,0.28); }
+  .tab-btn .num { font-size:10px; font-weight:700; background:rgba(255,255,255,0.25); border-radius:20px; padding:1px 6px; }
+  .tab-btn:not(.active) .num { background:var(--border); color:var(--text-muted); }
+
+  .section { display:none; }
+  .section.active { display:block; animation:fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+  .section-header { font-size:18px; font-weight:700; color:var(--text); margin-bottom:20px; padding-bottom:12px; border-bottom:2px solid var(--accent-light); display:flex; align-items:center; gap:10px; }
+  .section-header .icon { width:36px; height:36px; background:var(--accent-light); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+
+  .def-box { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin:12px 0; }
+  .def-box .label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .def-box p { font-size:13.5px; }
+  .def-box p+p { margin-top:6px; }
+
+  .formula { font-family:'Courier New',monospace; font-size:13px; background:#F3EEF9; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin:8px 0; display:block; color:#3A0F72; }
+  .formula-sm { font-family:'Courier New',monospace; font-size:12px; background:#F3EEF9; border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 10px; display:block; margin:5px 0; color:#3A0F72; }
+
+  .warning { background:var(--amber-light); border-left:4px solid #EF9F27; border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .tip { background:var(--accent-light); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .info { background:var(--blue-light); border-left:4px solid var(--blue); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .success { background:var(--green-light); border-left:4px solid var(--green); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .danger { background:var(--red-light); border-left:4px solid var(--red); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+
+  .table-wrap { overflow-x:auto; margin:12px 0; border-radius:var(--radius); box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+  table { width:100%; border-collapse:collapse; font-size:13px; background:var(--card); }
+  thead { background:#F3EEF9; }
+  th { padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid var(--border-strong); }
+  td { padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:var(--accent-light); }
+  td.yes { color:var(--green); font-weight:700; }
+  td.no { color:var(--red); font-weight:700; }
+
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; margin:12px 0; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+  .card h3 { font-size:13px; font-weight:700; margin-bottom:8px; }
+  .card p { font-size:13px; color:var(--text-muted); line-height:1.55; }
+  .card.blue { border-top:3px solid var(--blue); }
+  .card.blue h3 { color:var(--blue); }
+  .card.green { border-top:3px solid var(--green); }
+  .card.green h3 { color:var(--green); }
+  .card.red { border-top:3px solid var(--red); }
+  .card.red h3 { color:var(--red); }
+  .card.purple { border-top:3px solid var(--accent); }
+  .card.purple h3 { color:var(--accent); }
+  .card.amber { border-top:3px solid var(--amber); }
+  .card.amber h3 { color:var(--amber); }
+
+  .steps { }
+  .step { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border); }
+  .step:last-child { border-bottom:none; }
+  .step-num { min-width:28px; height:28px; background:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+  .step-body { font-size:13px; padding-top:4px; }
+
+  .class-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin:12px 0; }
+  .class-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; text-align:center; }
+  .class-card .rep { font-size:22px; font-weight:800; color:var(--accent); }
+  .class-card .members { font-family:'Courier New',monospace; font-size:12px; color:var(--text-muted); margin-top:4px; background:var(--accent-light); border-radius:var(--radius-sm); padding:4px 8px; }
+
+  .compare-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  .compare-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; }
+  .compare-card h3 { font-size:13px; font-weight:700; margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid var(--border); }
+
+  /* Interactive modular demo */
+  .mod-demo { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin:14px 0; }
+  .mod-demo h3 { font-size:13px; font-weight:700; margin-bottom:12px; color:var(--accent); }
+  .mod-controls { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .mod-controls label { font-size:13px; font-weight:600; }
+  .mod-controls input[type=range] { flex:1; min-width:120px; accent-color:var(--accent); }
+  .mod-controls span { font-size:20px; font-weight:800; color:var(--accent); min-width:24px; text-align:center; }
+  .mod-classes { display:flex; flex-wrap:wrap; gap:8px; }
+  .mod-class { border:2px solid var(--border); border-radius:var(--radius-sm); padding:8px 12px; font-size:12px; }
+  .mod-class .mod-rep { font-weight:800; color:var(--accent); font-size:14px; }
+  .mod-class .mod-els { font-family:'Courier New',monospace; color:var(--text-muted); font-size:11px; margin-top:2px; }
+
+  /* Closure stepper */
+  .closure-stepper { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin:14px 0; }
+  .closure-stepper h3 { font-size:13px; font-weight:700; margin-bottom:12px; color:var(--accent); }
+  .stepper-nav { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .stepper-btn { padding:6px 14px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--bg); color:var(--text-muted); font-size:12px; font-weight:600; cursor:pointer; transition:all .15s; }
+  .stepper-btn.active { background:var(--accent); color:white; border-color:var(--accent-dark); }
+  .stepper-btn:hover:not(.active) { background:var(--accent-light); color:var(--accent); }
+  .stepper-content { display:none; }
+  .stepper-content.active { display:block; animation:fadeIn .2s ease; }
+
+  .pairs-box { font-family:'Courier New',monospace; font-size:12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; line-height:2; }
+  .pair-new { color:var(--accent); font-weight:700; }
+  .pair-orig { color:var(--text-muted); }
+
+  footer { text-align:center; padding:24px; font-size:12px; color:var(--text-muted); border-top:1px solid var(--border); margin-top:40px; }
+
+  @media(max-width:600px){
+    header{padding:24px 20px 20px;} header h1{font-size:20px;} .chapter-badge{display:none;}
+    .container{padding:20px 14px;} .tab-btn{font-size:12px;padding:6px 10px;} .compare-row{grid-template-columns:1fr;}
+  }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 20px;
+    flex-wrap: wrap;
+  }
+  .ch-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .ch-link:hover { background: var(--accent-light); color: var(--accent); }
+  .ch-link.active { background: var(--accent); color: white; }
+  .ch-num { font-size: 10px; font-weight: 700; opacity: .6; }
+  .ch-sep { width: 1px; height: 18px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+  .ch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .ch-arrow:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Maths 2 — HE Vinci / ULB</div>
+  <h1>Relations d'Équivalence</h1>
+  <p>Définition · Classes · Quotient · Algèbre Modulaire · Clôture · Opérations</p>
+  <div class="chapter-badge">Chapitre 3 / 8</div>
+</header>
+
+<nav class="chapter-nav">
+  <a class="ch-arrow" href="ch02_relations_ordre.html">← Précédent</a>
+  <div class="ch-sep"></div>
+  <a class="ch-link" href="ch01_relations_binaires.html"><span class="ch-num">01</span> Relations Binaires</a>
+  <a class="ch-link" href="ch02_relations_ordre.html"><span class="ch-num">02</span> Relations d'Ordre</a>
+  <a class="ch-link active" href="ch03_relations_equivalence.html"><span class="ch-num">03</span> Relations d'Équivalence</a>
+  <a class="ch-link" href="ch04_matrices.html"><span class="ch-num">04</span> Les Matrices</a>
+  <a class="ch-link" href="ch05_systemes_lineaires_v2.html"><span class="ch-num">05</span> Systèmes linéaires</a>
+  <a class="ch-link" href="ch06_markov.html"><span class="ch-num">06</span> Markov</a>
+  <a class="ch-link" href="ch07_langages_formels.html"><span class="ch-num">07</span> Langages formels</a>
+  <div class="ch-sep"></div>
+  <a class="ch-arrow" href="ch04_matrices.html">Suivant →</a>
+</nav>
+
+<div class="container">
+  <div class="progress-bar">
+    <div class="progress-seg done"></div>
+    <div class="progress-seg done"></div>
+    <div class="progress-seg done"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+  </div>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="show('def',this)"><span class="num">1</span> Définition</button>
+    <button class="tab-btn" onclick="show('classes',this)"><span class="num">2</span> Classes & Quotient</button>
+    <button class="tab-btn" onclick="show('repres',this)"><span class="num">3</span> Représentation</button>
+    <button class="tab-btn" onclick="show('exemples',this)"><span class="num">4</span> Exemples clés</button>
+    <button class="tab-btn" onclick="show('cloture',this)"><span class="num">5</span> Clôture équivalente</button>
+    <button class="tab-btn" onclick="show('operations',this)"><span class="num">6</span> ∩ et ∪</button>
+    <button class="tab-btn" onclick="show('recap',this)"><span class="num">7</span> Récapitulatif</button>
+  </nav>
+
+  <!-- ── 1. DÉFINITION ── -->
+  <div id="def" class="section active">
+    <div class="section-header"><div class="icon">≡</div>Définition</div>
+
+    <div class="def-box">
+      <div class="label">Relation d'équivalence</div>
+      <p>Une relation R sur un ensemble E est une <strong>relation d'équivalence</strong> si elle est simultanément :</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+        <span style="background:var(--accent-light);color:var(--accent);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;">✓ Réflexive &nbsp;∀x : x~x</span>
+        <span style="background:var(--accent-light);color:var(--accent);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;">✓ Symétrique &nbsp;x~y ⟹ y~x</span>
+        <span style="background:var(--accent-light);color:var(--accent);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;">✓ Transitive &nbsp;x~y ∧ y~z ⟹ x~z</span>
+      </div>
+      <p style="margin-top:10px">On note souvent une relation d'équivalence <strong>~</strong> plutôt que R.</p>
+    </div>
+
+    <div class="tip" style="margin-top:8px">
+      <strong>Formule universelle :</strong> Toute relation pouvant se décrire sous la forme <strong>"a même … que"</strong> est une relation d'équivalence.
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Exemples fondamentaux</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Relation</th><th>Ensemble</th><th>Réflexive</th><th>Symétrique</th><th>Transitive</th><th>Formulation "même … que"</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Égalité (=)</td><td>E quelconque</td>
+            <td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td>
+            <td>"a même valeur que"</td>
+          </tr>
+          <tr>
+            <td>"est parallèle à"</td><td>Ensemble des droites</td>
+            <td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td>
+            <td>"a même direction que"</td>
+          </tr>
+          <tr>
+            <td>x~y ⟺ x mod n = y mod n</td><td>ℤ</td>
+            <td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td>
+            <td>"a même reste que (div. par n)"</td>
+          </tr>
+          <tr>
+            <td>"est dans la même série que"</td><td>Étudiants</td>
+            <td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td>
+            <td>"a même série que"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Comment prouver qu'une relation est une équivalence</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Réflexivité :</strong> montrer que x~x est vrai pour tout x ∈ E. Prendre x quelconque et vérifier la condition.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Symétrie :</strong> supposer x~y et en déduire y~x. Manipuler la condition pour inverser les rôles de x et y.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Transitivité :</strong> supposer x~y ET y~z et en déduire x~z. Combiner les deux hypothèses pour conclure.</div>
+      </div>
+    </div>
+
+    <div class="warning" style="margin-top:14px">
+      ⚠ <strong>Ne pas confondre</strong> avec une relation d'ordre ! L'ordre est <em>antisymétrique</em> (x≤y ∧ y≤x ⟹ x=y), l'équivalence est <em>symétrique</em> (x~y ⟹ y~x). Ce sont des propriétés opposées.
+    </div>
+  </div>
+
+  <!-- ── 2. CLASSES & QUOTIENT ── -->
+  <div id="classes" class="section">
+    <div class="section-header"><div class="icon">🗂</div>Classes d'équivalence & Quotient</div>
+
+    <div class="def-box">
+      <div class="label">Classe d'équivalence de x</div>
+      <span class="formula">[x] = { y ∈ E | y ~ x }</span>
+      <p>C'est l'ensemble de <strong>tous les éléments</strong> de E qui sont en relation avec x par ~.</p>
+      <p style="margin-top:6px">Chaque élément d'une classe est en relation avec <strong>tous</strong> les autres éléments de cette même classe.</p>
+    </div>
+
+    <div class="def-box" style="margin-top:10px">
+      <div class="label">Représentant d'une classe</div>
+      <p>On choisit <strong>un élément par classe</strong> pour la nommer. Ce choix est <em>arbitraire</em> (sauf contexte naturel). Tout élément de la classe peut servir de représentant.</p>
+      <p style="margin-top:6px"><em>Ex. : [1] = [2] = [5] = [6] si {1,2,5,6} est une classe — on peut prendre n'importe lequel.</em></p>
+    </div>
+
+    <div class="def-box" style="margin-top:10px">
+      <div class="label">Quotient E/~</div>
+      <span class="formula">E/~ = { [x] | x ∈ E }</span>
+      <p>C'est la <strong>partition</strong> de E en classes disjointes — l'ensemble de toutes les classes d'équivalence.</p>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Propriétés fondamentales de la partition</p>
+
+    <div class="grid2">
+      <div class="card purple">
+        <h3>Classes disjointes</h3>
+        <p>Deux classes distinctes n'ont <strong>aucun élément en commun</strong>. Si y ∈ [x] et y ∈ [z] alors [x] = [z].</p>
+      </div>
+      <div class="card green">
+        <h3>Union = E entier</h3>
+        <p>L'union de toutes les classes reconstitue E : chaque élément appartient à <strong>exactement une</strong> classe.</p>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Exemple sur E = {1, …, 12}</p>
+
+    <div class="class-grid">
+      <div class="class-card">
+        <div class="rep">[1]</div>
+        <div class="members">{1, 2, 5, 6}</div>
+      </div>
+      <div class="class-card">
+        <div class="rep">[3]</div>
+        <div class="members">{3, 7, 8}</div>
+      </div>
+      <div class="class-card">
+        <div class="rep">[4]</div>
+        <div class="members">{4}</div>
+      </div>
+      <div class="class-card">
+        <div class="rep">[9]</div>
+        <div class="members">{9, 10}</div>
+      </div>
+      <div class="class-card">
+        <div class="rep">[11]</div>
+        <div class="members">{11, 12}</div>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:6px">
+      <strong>Quotient :</strong> E/~ = { {1,2,5,6}, {3,7,8}, {4}, {9,10}, {11,12} } — on a choisi 1, 3, 4, 9 et 11 comme représentants.
+    </div>
+
+    <div class="warning" style="margin-top:10px">
+      ⚠ <strong>Digraphe d'une équivalence :</strong> dans le digraphe complet, les éléments d'une même classe ont <em>toutes</em> les connexions possibles entre eux (clique complète dans les deux sens + boucles). Entre des classes différentes : aucune connexion.
+    </div>
+  </div>
+
+  <!-- ── 3. REPRÉSENTATION ── -->
+  <div id="repres" class="section">
+    <div class="section-header"><div class="icon">📐</div>Représentation — Diagramme de classes</div>
+
+    <div class="def-box">
+      <div class="label">Principe</div>
+      <p>Le digraphe complet d'une équivalence est très lourd (symétrie + toutes les connexions internes). On utilise le <strong>diagramme de classes</strong>, une représentation allégée.</p>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:14px 0 10px;">Construction en 2 étapes</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Sous-entendre les boucles</strong> — La réflexivité est implicite dans toute équivalence. On ne dessine pas les boucles (x, x).
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Connecter avec un minimum d'arêtes</strong> — Puisque la relation est symétrique et que tous les éléments d'une classe sont reliés entre eux, on dessine seulement un <em>arbre couvrant</em> par classe (n−1 arêtes pour une classe de n éléments).
+        </div>
+      </div>
+    </div>
+
+    <div class="info" style="margin-top:10px">
+      <strong>Exemple :</strong> Pour la classe [1] = {1, 2, 5, 6} (4 éléments), le digraphe complet aurait 4×3 = 12 flèches + 4 boucles. Le diagramme de classes n'en a que <strong>3</strong> (ex. : 1−2, 1−5, 5−6). Les deux sont valides.
+    </div>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="card purple">
+        <h3>Digraphe complet</h3>
+        <p>Classe {1,2,5,6} : toutes les connexions dans les deux sens + boucles. 4 boucles + 12 flèches = <strong>16 éléments</strong>.</p>
+        <p style="margin-top:6px;font-size:12px">Lourd, mais exhaustif.</p>
+      </div>
+      <div class="card green">
+        <h3>Diagramme de classes</h3>
+        <p>Classe {1,2,5,6} : seulement 3 arêtes non orientées (ex. 2−1, 1−5, 5−6). <strong>3 arêtes</strong> suffisent.</p>
+        <p style="margin-top:6px;font-size:12px">Léger, lisible, conventionnel.</p>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:10px">
+      <strong>Règle de lecture :</strong> deux éléments sont dans la même classe si et seulement s'ils sont <em>connectés</em> dans le diagramme de classes (chemin possible entre eux, sans notion de sens).
+    </div>
+  </div>
+
+  <!-- ── 4. EXEMPLES ── -->
+  <div id="exemples" class="section">
+    <div class="section-header"><div class="icon">🔢</div>Exemples clés</div>
+
+    <p style="font-size:14px;font-weight:700;margin:0 0 12px;">Exemple 1 — L'algèbre modulaire ℤₙ</p>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Sur ℤ, la relation : <strong>x ~ y ⟺ (x − y) est divisible par n</strong></p>
+      <span class="formula">x ~ y  ⟺  ∃p ∈ ℤ : x − y = p·n  ⟺  x mod n = y mod n</span>
+    </div>
+
+    <p style="font-size:13px;font-weight:600;margin:14px 0 6px;">Preuve que c'est une équivalence :</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Propriété</th><th>Ce qu'on montre</th><th>Argument</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Réflexive</strong></td><td>x ~ x</td><td>x − x = 0 = 0·n, divisible par n ✓</td></tr>
+          <tr><td><strong>Symétrique</strong></td><td>x ~ y ⟹ y ~ x</td><td>x − y = p·n ⟹ y − x = (−p)·n ✓</td></tr>
+          <tr><td><strong>Transitive</strong></td><td>x~y ∧ y~z ⟹ x~z</td><td>x−y = p·n, y−z = q·n ⟹ x−z = (p+q)·n ✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Interactive modular demo -->
+    <div class="mod-demo">
+      <h3>🔧 Démo interactive — Classes de ℤ mod n</h3>
+      <div class="mod-controls">
+        <label for="modSlider">n =</label>
+        <input type="range" id="modSlider" min="2" max="9" value="5" oninput="updateMod()">
+        <span id="modVal">5</span>
+      </div>
+      <div id="modClasses" class="mod-classes"></div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:10px">Les éléments affichés vont de −2n à 2n. Le quotient ℤ/~ = {[0], [1], …, [n−1]}.</p>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Application : ℤₙ — L'algèbre modulaire</p>
+    <div class="def-box">
+      <div class="label">Structure algébrique</div>
+      <p>On munit ℤ/~ d'opérations :</p>
+      <span class="formula">[x] + [y] = [x + y]    →    (x mod n) + (y mod n) = (x+y) mod n</span>
+      <span class="formula">[x] · [y] = [x · y]    →    (x mod n) · (y mod n) = (x·y) mod n</span>
+      <p style="margin-top:8px">On obtient <strong>ℤₙ</strong> — structure discrète aux applications immenses en <strong>cryptographie</strong>.</p>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:20px 0 10px;">Exemple 2 — Répartition en séries</p>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Sur E = étudiants de bloc 1 : <strong>x ~ y ⟺ x est dans la même série que y</strong></p>
+    </div>
+
+    <div class="grid2" style="margin-top:10px">
+      <div class="card purple">
+        <h3>Classes d'équivalence</h3>
+        <p>Les classes sont les <strong>séries elles-mêmes</strong> — chaque série est une classe.</p>
+      </div>
+      <div class="card blue">
+        <h3>Représentants naturels</h3>
+        <p>Le choix naturel : les <strong>délégués</strong> de chaque série.</p>
+      </div>
+      <div class="card green">
+        <h3>Quotient E/~</h3>
+        <p>E/~ = { [délégué série 1], [délégué série 2], …, [délégué série 5] }</p>
+      </div>
+      <div class="card amber">
+        <h3>Intuition générale</h3>
+        <p>Toute partition naturelle d'un ensemble définit une relation d'équivalence via la formule "même groupe que".</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. CLÔTURE ── -->
+  <div id="cloture" class="section">
+    <div class="section-header"><div class="icon">🔒</div>Clôture équivalente</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>La <strong>clôture équivalente</strong> de R est la plus petite relation d'équivalence sur E qui inclut R.</p>
+      <span class="formula">Clôture équivalente = (R ∪ R⁻¹)⁺ ∪ 1ₑ</span>
+    </div>
+
+    <div class="warning" style="margin-top:10px">
+      ⚠ <strong>Ordre OBLIGATOIRE :</strong> Pour obtenir une relation à la fois symétrique ET transitive, il faut absolument faire la clôture <em>symétrique</em> <strong>avant</strong> la clôture <em>transitive</em>. L'ordre inverse ne donne pas le bon résultat.
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:16px 0 10px;">Construction en 4 étapes</p>
+
+    <!-- Interactive closure stepper -->
+    <div class="closure-stepper">
+      <h3>📋 Exemple pas à pas — E = {1, …, 12}</h3>
+      <div class="stepper-nav">
+        <button class="stepper-btn active" onclick="showStep('s0',this)">Relation R initiale</button>
+        <button class="stepper-btn" onclick="showStep('s1',this)">① Clôture réflexive</button>
+        <button class="stepper-btn" onclick="showStep('s2',this)">② Clôture symétrique</button>
+        <button class="stepper-btn" onclick="showStep('s3',this)">③ Clôture transitive</button>
+        <button class="stepper-btn" onclick="showStep('s4',this)">④ Diagramme de classes</button>
+      </div>
+
+      <div id="s0" class="stepper-content active">
+        <p style="font-size:13px;margin-bottom:8px">La relation R initiale <strong>n'est pas</strong> une équivalence :</p>
+        <div class="grid2">
+          <div class="card red"><h3>Pas réflexive</h3><p>(1,1) ∉ R — pas de boucle sur tous les éléments.</p></div>
+          <div class="card red"><h3>Pas symétrique</h3><p>(7,2) ∈ R mais (2,7) ∉ R — flèches unilatérales.</p></div>
+          <div class="card red"><h3>Pas transitive</h3><p>(6,7) ∈ R et (7,2) ∈ R mais (6,2) ∉ R — raccourci manquant.</p></div>
+        </div>
+        <div class="tip" style="margin-top:10px">Objectif : construire la plus petite équivalence qui contient R.</div>
+      </div>
+
+      <div id="s1" class="stepper-content">
+        <p style="font-size:13px;margin-bottom:8px"><strong>Étape 1 — Clôture réflexive :</strong> ajouter toutes les paires (x, x) manquantes.</p>
+        <div class="pairs-box">
+          Paires originales : <span class="pair-orig">(3,4), (5,9), (6,7), (7,2), (7,6), (8,12), (10,9), (11,12)</span><br>
+          Paires ajoutées : <span class="pair-new">(1,1) (2,2) (3,3) (4,4) (5,5) (6,6) (7,7) (8,8) (9,9) (10,10) (11,11) (12,12)</span>
+        </div>
+        <div class="success" style="margin-top:10px">✓ La relation est maintenant réflexive.</div>
+      </div>
+
+      <div id="s2" class="stepper-content">
+        <p style="font-size:13px;margin-bottom:8px"><strong>Étape 2 — Clôture symétrique :</strong> pour chaque (a,b) ∈ R, ajouter (b,a) si absent.</p>
+        <div class="pairs-box">
+          Paires déjà symétriques : <span class="pair-orig">(7,6) et (6,7) ✓ · toutes les boucles (x,x) ✓</span><br>
+          Paires ajoutées : <span class="pair-new">(4,3) (9,5) (2,7) (12,8) (9,10) (12,11)</span>
+        </div>
+        <div class="success" style="margin-top:10px">✓ La relation est maintenant réflexive et symétrique.</div>
+        <div class="warning" style="margin-top:6px">⚠ On fait cette étape <strong>avant</strong> la clôture transitive !</div>
+      </div>
+
+      <div id="s3" class="stepper-content">
+        <p style="font-size:13px;margin-bottom:8px"><strong>Étape 3 — Clôture transitive :</strong> appliquer Warshall pour fermer tous les chemins.</p>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:8px">On cherche tous les chemins a→b→c et on ajoute (a,c). Exemple :</p>
+        <div class="pairs-box">
+          (5,9) ∧ (9,10) → <span class="pair-new">(5,10)</span><br>
+          (5,9) ∧ (9,5) → (5,5) déjà là ✓<br>
+          (2,7) ∧ (7,6) → <span class="pair-new">(2,6)</span><br>
+          (6,7) ∧ (7,2) → <span class="pair-new">(6,2)</span><br>
+          (3,4) ∧ (4,3) → <span class="pair-new">(3,3)</span> déjà là ✓<br>
+          … (Warshall complète tout automatiquement)
+        </div>
+        <div class="success" style="margin-top:10px">✓ La relation est maintenant une vraie relation d'équivalence.</div>
+        <div class="info" style="margin-top:6px">Les classes résultantes : {1} · {2,3,4,6,7} · {5,9,10} · {8,11,12}</div>
+      </div>
+
+      <div id="s4" class="stepper-content">
+        <p style="font-size:13px;margin-bottom:10px"><strong>Étape 4 — Diagramme de classes :</strong> on lit les classes et on trace l'arbre couvrant.</p>
+        <div class="class-grid">
+          <div class="class-card"><div class="rep">[1]</div><div class="members">{1}</div></div>
+          <div class="class-card"><div class="rep">[2]</div><div class="members">{2, 3, 4, 6, 7}</div></div>
+          <div class="class-card"><div class="rep">[5]</div><div class="members">{5, 9, 10}</div></div>
+          <div class="class-card"><div class="rep">[8]</div><div class="members">{8, 11, 12}</div></div>
+        </div>
+        <div class="tip" style="margin-top:10px">Le diagramme de classes final est bien plus simple que le digraphe complet. On place des captures d'écran du cours ici pour visualiser.</div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Tableau récapitulatif des 3 clôtures</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Clôture</th><th>Opération</th><th>Dans le digraphe</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Réflexive</strong></td><td>R ∪ 1ₑ</td><td>Ajouter les boucles manquantes</td></tr>
+          <tr><td><strong>Symétrique</strong></td><td>R ∪ R⁻¹</td><td>Ajouter les flèches inverses manquantes</td></tr>
+          <tr><td><strong>Transitive</strong></td><td>R⁺ = R ∪ R² ∪ R³ ∪ …</td><td>Fermer tous les chemins (Warshall)</td></tr>
+          <tr style="background:var(--accent-light)"><td><strong>Équivalente</strong></td><td>(R ∪ R⁻¹)⁺ ∪ 1ₑ</td><td>Les 3 dans le bon ordre</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 6. OPÉRATIONS ── -->
+  <div id="operations" class="section">
+    <div class="section-header"><div class="icon">⊕</div>Intersection et Union d'équivalences</div>
+
+    <div class="compare-row">
+      <div class="compare-card">
+        <h3 style="color:var(--green)">✅ Intersection R ∩ S</h3>
+        <div class="success">Si R et S sont deux équivalences sur E, alors <strong>R ∩ S est encore une équivalence sur E</strong>.</div>
+        <p style="font-size:13px;margin-top:10px">La classe d'un élément x pour R ∩ S est :</p>
+        <span class="formula-sm">[x]_{R∩S} = [x]_R  ∩  [x]_S</span>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-top:6px">Deux éléments sont dans la même classe pour R ∩ S si et seulement s'ils sont dans la même classe <strong>pour R ET pour S simultanément</strong>.</p>
+      </div>
+      <div class="compare-card">
+        <h3 style="color:var(--red)">❌ Union R ∪ S</h3>
+        <div class="danger">L'union de deux équivalences n'est <strong>généralement pas</strong> une équivalence.</div>
+        <p style="font-size:13px;margin-top:10px">La transitivité peut être brisée :</p>
+        <div class="pairs-box" style="font-size:11px;margin-top:6px">
+          5 R 9  →  (5,9) ∈ R∪S<br>
+          9 S 1  →  (9,1) ∈ R∪S<br>
+          Mais (5,1) ∉ R∪S  ← <span style="color:var(--red)">non transitive !</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Exemple d'intersection — E = {1, …, 12}</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Relation R (classes)</th><th>Relation S (classes)</th><th>R ∩ S (classes)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>{1,2,3,4} · {5,9} · {6,7} · {8} · {10} · {11,12}</td>
+            <td>{1,5} · {2,3,6,7} · {4} · {8,11,12} · {9,10}</td>
+            <td><strong>{2,3,6,7} → même classe pour R et S</strong><br>{11,12} → même classe pour R et S<br>Autres : classes singleton</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip" style="margin-top:10px">
+      <strong>Intuition :</strong> R ∩ S est "plus fine" que R et que S — elle regroupe seulement les éléments que <em>les deux</em> relations placent dans la même classe.
+    </div>
+
+    <div class="info" style="margin-top:10px">
+      <strong>Pourquoi ∩ fonctionne et pas ∪ ?</strong><br>
+      L'intersection préserve les 3 propriétés : si (x,x) ∈ R et ∈ S → (x,x) ∈ R∩S. Idem pour symétrie et transitivité. <br>
+      L'union peut briser la transitivité car deux "chemins" via deux relations différentes peuvent ne pas se raccorder directement.
+    </div>
+  </div>
+
+  <!-- ── 7. RÉCAP ── -->
+  <div id="recap" class="section">
+    <div class="section-header"><div class="icon">📋</div>Récapitulatif complet</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Notion</th><th>Définition formelle</th><th>Remarque clé</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Équivalence</strong></td><td>Réflexive + Symétrique + Transitive</td><td>Formule universelle : "a même … que"</td></tr>
+          <tr><td><strong>Classe [x]</strong></td><td>{ y ∈ E | y ~ x }</td><td>Tous les éléments en relation avec x</td></tr>
+          <tr><td><strong>Représentant</strong></td><td>Un élément choisi dans la classe</td><td>Choix arbitraire — tout élément convient</td></tr>
+          <tr><td><strong>Quotient E/~</strong></td><td>{ [x] | x ∈ E }</td><td>Partition de E — classes disjointes et union = E</td></tr>
+          <tr><td><strong>Diagramme de classes</strong></td><td>Arbre couvrant par classe, sans boucles</td><td>n−1 arêtes suffisent pour une classe de n éléments</td></tr>
+          <tr><td><strong>Algèbre ℤₙ</strong></td><td>x ~ y ⟺ x mod n = y mod n</td><td>n classes : [0], [1], …, [n−1]</td></tr>
+          <tr><td><strong>Clôture équivalente</strong></td><td>(R ∪ R⁻¹)⁺ ∪ 1ₑ</td><td>Ordre : réflexive → symétrique → transitive</td></tr>
+          <tr><td><strong>Intersection</strong></td><td>R ∩ S est une équivalence</td><td>[x]_{R∩S} = [x]_R ∩ [x]_S</td></tr>
+          <tr><td><strong>Union</strong></td><td>R ∪ S n'est pas une équivalence en général</td><td>La transitivité peut être brisée</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Pièges classiques à l'examen</p>
+
+    <div class="grid2">
+      <div class="card red">
+        <h3>⚠ Ordre de la clôture</h3>
+        <p>Toujours symétrique <strong>avant</strong> transitive. Inverser l'ordre ne donne pas une équivalence correcte.</p>
+      </div>
+      <div class="card amber">
+        <h3>⚠ Représentant ≠ seule possibilité</h3>
+        <p>[1] = [2] = [5] = [6] si {1,2,5,6} est une classe. On peut nommer la classe par n'importe lequel de ses éléments.</p>
+      </div>
+      <div class="card amber">
+        <h3>⚠ Union ≠ équivalence</h3>
+        <p>Ne jamais affirmer que R ∪ S est une équivalence sans vérifier. La transitivité doit être testée explicitement.</p>
+      </div>
+      <div class="card blue">
+        <h3>💡 Prouver une équivalence</h3>
+        <p>Toujours prouver les 3 propriétés séparément avec les notations formelles. Ne pas se contenter de "ça ressemble à une équivalence".</p>
+      </div>
+    </div>
+
+    <div class="def-box" style="margin-top:16px;border-left-color:var(--accent)">
+      <div class="label">Lien avec le cours précédent</div>
+      <p>Relations d'équivalence et relations d'ordre sont les deux grandes familles de relations "avec propriétés". Leurs différences fondamentales :</p>
+      <div class="table-wrap" style="margin-top:8px">
+        <table>
+          <thead><tr><th></th><th>Équivalence</th><th>Ordre</th></tr></thead>
+          <tbody>
+            <tr><td>Réflexive</td><td class="yes">OUI</td><td class="yes">OUI</td></tr>
+            <tr><td>Symétrique</td><td class="yes">OUI</td><td class="no">NON (antisymétrique)</td></tr>
+            <tr><td>Transitive</td><td class="yes">OUI</td><td class="yes">OUI</td></tr>
+            <tr><td>Structure créée</td><td>Partition en classes</td><td>Hiérarchie (Hasse)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Maths 2 — Relations d'Équivalence · HE Vinci / ULB · Synthèse de révision · Chapitre 3/8
+</footer>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showStep(id, btn) {
+  document.querySelectorAll('.stepper-content').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.stepper-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function updateMod() {
+  const n = parseInt(document.getElementById('modSlider').value);
+  document.getElementById('modVal').textContent = n;
+  const container = document.getElementById('modClasses');
+  container.innerHTML = '';
+  for (let r = 0; r < n; r++) {
+    const els = [];
+    for (let k = -2; k <= 2; k++) {
+      els.push(k * n + r);
+    }
+    const div = document.createElement('div');
+    div.className = 'mod-class';
+    div.style.borderColor = `hsl(${(r / n) * 300 + 240}, 60%, 60%)`;
+    div.innerHTML = `<div class="mod-rep">[${r}]</div><div class="mod-els">{ …, ${els.join(', ')}, … }</div>`;
+    container.appendChild(div);
+  }
+}
+updateMod();
+</script>
+</body>
+</html>

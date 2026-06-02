@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths 2 — Processus de Markov homogènes</title>
+<style>
+  :root {
+    --accent: #0F6E56;
+    --accent-light: #E1F5EE;
+    --accent-mid: #1a9e7a;
+    --accent-dark: #094d3c;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --red: #993C1D;
+    --red-light: #FAECE7;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --bg: #F4FAF7;
+    --card: #ffffff;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --border: rgba(0,0,0,0.09);
+    --border-strong: rgba(0,0,0,0.16);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.65; }
+
+  header {
+    background: linear-gradient(135deg, #094d3c 0%, #0F6E56 55%, #1a9e7a 100%);
+    color: white; padding: 36px 40px 28px; position: relative; overflow: hidden;
+  }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  header::after { content:''; position:absolute; bottom:-40px; left:30%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); }
+  .header-tag { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; opacity:.7; margin-bottom:8px; }
+  header h1 { font-size:28px; font-weight:700; margin-bottom:6px; position:relative; }
+  header p { font-size:13px; opacity:.75; position:relative; }
+  .chapter-badge { position:absolute; top:28px; right:40px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; padding:6px 16px; font-size:12px; font-weight:600; letter-spacing:.04em; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  .tab-nav { display:flex; flex-wrap:wrap; gap:6px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:10px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+  .tab-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid transparent; background:transparent; color:var(--text-muted); font-size:13px; font-weight:500; cursor:pointer; transition:all .18s; }
+  .tab-btn:hover { background:var(--accent-light); color:var(--accent); }
+  .tab-btn.active { background:var(--accent); color:white; border-color:var(--accent-dark); box-shadow:0 2px 8px rgba(15,110,86,0.28); }
+  .tab-btn .num { font-size:10px; font-weight:700; background:rgba(255,255,255,0.25); border-radius:20px; padding:1px 6px; }
+  .tab-btn:not(.active) .num { background:var(--border); color:var(--text-muted); }
+
+  .section { display:none; }
+  .section.active { display:block; animation:fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+  .section-header { font-size:18px; font-weight:700; color:var(--text); margin-bottom:20px; padding-bottom:12px; border-bottom:2px solid var(--accent-light); display:flex; align-items:center; gap:10px; }
+  .section-header .icon { width:36px; height:36px; background:var(--accent-light); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+
+  .def-box { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin:12px 0; }
+  .def-box .label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .def-box p { font-size:13.5px; }
+  .def-box p+p { margin-top:6px; }
+
+  .formula { font-family:'Courier New',monospace; font-size:13px; background:#EBF7F3; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin:8px 0; display:block; color:#094d3c; }
+  .formula-sm { font-family:'Courier New',monospace; font-size:12px; background:#EBF7F3; border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 10px; display:block; margin:5px 0; color:#094d3c; }
+
+  .warning { background:var(--amber-light); border-left:4px solid #EF9F27; border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .tip { background:var(--accent-light); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .info { background:var(--blue-light); border-left:4px solid var(--blue); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .success { background:var(--green-light); border-left:4px solid var(--green); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .danger { background:var(--red-light); border-left:4px solid var(--red); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+
+  .table-wrap { overflow-x:auto; margin:12px 0; border-radius:var(--radius); box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+  table { width:100%; border-collapse:collapse; font-size:13px; background:var(--card); }
+  thead { background:#EBF7F3; }
+  th { padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid var(--border-strong); }
+  td { padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:var(--accent-light); }
+  td.yes { color:var(--green); font-weight:700; }
+  td.no { color:var(--red); font-weight:700; }
+  td code { font-family:'Courier New',monospace; font-size:12px; background:#EBF7F3; padding:1px 5px; border-radius:3px; color:#094d3c; }
+
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; margin:12px 0; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+  .card h3 { font-size:13px; font-weight:700; margin-bottom:8px; }
+  .card p, .card li { font-size:13px; color:var(--text-muted); line-height:1.6; }
+  .card ul { padding-left:16px; }
+  .card.blue { border-top:3px solid var(--blue); }
+  .card.blue h3 { color:var(--blue); }
+  .card.green { border-top:3px solid var(--green); }
+  .card.green h3 { color:var(--green); }
+  .card.red { border-top:3px solid var(--red); }
+  .card.red h3 { color:var(--red); }
+  .card.amber { border-top:3px solid var(--amber); }
+  .card.amber h3 { color:var(--amber); }
+
+  .steps {}
+  .step { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border); }
+  .step:last-child { border-bottom:none; }
+  .step-num { min-width:28px; height:28px; background:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+  .step-body { font-size:13px; padding-top:4px; line-height:1.65; }
+  .step-body code { font-family:'Courier New',monospace; font-size:12px; background:#EBF7F3; padding:1px 5px; border-radius:3px; color:#094d3c; }
+
+  /* Matrix */
+  .matrix-wrap { background:#F4FAF7; border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px; margin:10px 0; overflow-x:auto; }
+  .matrix-wrap .caption { font-size:11px; color:var(--text-muted); margin-bottom:6px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
+  .matrix-table { border-collapse:separate; border-spacing:8px 4px; font-family:'Courier New',monospace; font-size:13px; }
+  .matrix-table td { text-align:right; min-width:28px; padding:2px 0; }
+  .matrix-table .mbracket { font-size:2.2rem; font-weight:100; color:#888; line-height:1; padding:0; }
+  .matrix-table .mhi { color:var(--accent); font-weight:700; }
+  .matrix-table .mzero { color:#bbb; }
+  .matrix-table .mcol { color:var(--blue); font-weight:600; }
+
+  /* Graph SVG */
+  .graph-box { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin:12px 0; text-align:center; }
+  .graph-box svg { max-width:100%; height:auto; }
+
+  /* Accordion */
+  .accordion { border:1px solid var(--border); border-radius:var(--radius); margin:8px 0; overflow:hidden; }
+  .acc-head { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--card); cursor:pointer; font-size:13px; font-weight:600; user-select:none; }
+  .acc-head:hover { background:var(--accent-light); }
+  .acc-arrow { font-size:11px; color:var(--text-muted); transition:transform .2s; }
+  .acc-head.open .acc-arrow { transform:rotate(180deg); }
+  .acc-body { display:none; padding:12px 14px; background:#FAFDF9; border-top:1px solid var(--border); font-size:13px; line-height:1.7; }
+  .acc-body.open { display:block; }
+
+  /* Simulator */
+  .sim-box { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin:12px 0; }
+  .sim-box h3 { font-size:13px; font-weight:700; color:var(--accent); margin-bottom:12px; }
+  .sim-controls { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; align-items:center; }
+  .sim-controls label { font-size:12px; font-weight:600; color:var(--text-muted); }
+  .btn { font-size:12px; font-weight:600; padding:6px 14px; border-radius:var(--radius-sm); border:none; cursor:pointer; transition:all .15s; }
+  .btn-primary { background:var(--accent); color:white; }
+  .btn-primary:hover { background:var(--accent-dark); }
+  .btn-secondary { background:var(--accent-light); color:var(--accent); border:1px solid var(--accent-mid); }
+  .btn-secondary:hover { background:#c8ede3; }
+  .btn-danger { background:var(--red-light); color:var(--red); border:1px solid #e07050; }
+
+  .dist-display { font-family:'Courier New',monospace; font-size:12px; background:#F4FAF7; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin:8px 0; }
+  .dist-row { display:flex; align-items:center; gap:10px; margin:3px 0; }
+  .dist-label { min-width:40px; color:var(--text-muted); }
+  .dist-bar-wrap { flex:1; background:#e0ede9; border-radius:3px; height:14px; overflow:hidden; }
+  .dist-bar { height:100%; background:var(--accent); border-radius:3px; transition:width .4s; }
+  .dist-val { min-width:50px; text-align:right; color:var(--accent-dark); font-weight:600; }
+
+  .t-input { width:48px; font-family:'Courier New',monospace; font-size:13px; text-align:center; border:1px solid var(--border); border-radius:4px; padding:4px; background:#F4FAF7; color:var(--text); outline:none; }
+  .t-input:focus { border-color:var(--accent); }
+
+  /* Stable dist solver */
+  .stable-box { background:#F4FAF7; border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; margin:10px 0; font-size:13px; }
+
+  /* Period/class badges */
+  .badge { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:20px; margin:2px; }
+  .badge-transient { background:#FAECE7; color:#993C1D; border:1px solid #e07050; }
+  .badge-recurrent { background:#E1F5EE; color:#0F6E56; border:1px solid #1a9e7a; }
+  .badge-period { background:#E6F1FB; color:#185FA5; border:1px solid #2A7FCC; }
+
+  @media(max-width:640px){
+    .container{padding:20px 14px;}
+    .tab-btn{font-size:12px;padding:6px 10px;}
+    header{padding:24px 20px 20px;}
+    .chapter-badge{display:none;}
+  }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 20px;
+    flex-wrap: wrap;
+  }
+  .ch-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .ch-link:hover { background: var(--accent-light); color: var(--accent); }
+  .ch-link.active { background: var(--accent); color: white; }
+  .ch-num { font-size: 10px; font-weight: 700; opacity: .6; }
+  .ch-sep { width: 1px; height: 18px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+  .ch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .ch-arrow:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Maths 2 — Chapitre 6</div>
+  <h1>Processus de Markov homogènes</h1>
+  <p>Probabilités · Matrice de transition · États · Stabilité · Temps de parcours</p>
+  <div class="chapter-badge">Ch. 06</div>
+</header>
+
+<nav class="chapter-nav">
+  <a class="ch-arrow" href="ch05_systemes_lineaires_v2.html">← Précédent</a>
+  <div class="ch-sep"></div>
+  <a class="ch-link" href="ch01_relations_binaires.html"><span class="ch-num">01</span> Relations Binaires</a>
+  <a class="ch-link" href="ch02_relations_ordre.html"><span class="ch-num">02</span> Relations d'Ordre</a>
+  <a class="ch-link" href="ch03_relations_equivalence.html"><span class="ch-num">03</span> Relations d'Équivalence</a>
+  <a class="ch-link" href="ch04_matrices.html"><span class="ch-num">04</span> Les Matrices</a>
+  <a class="ch-link" href="ch05_systemes_lineaires_v2.html"><span class="ch-num">05</span> Systèmes linéaires</a>
+  <a class="ch-link active" href="ch06_markov.html"><span class="ch-num">06</span> Markov</a>
+  <a class="ch-link" href="ch07_langages_formels.html"><span class="ch-num">07</span> Langages formels</a>
+  <div class="ch-sep"></div>
+  <a class="ch-arrow" href="ch07_langages_formels.html">Suivant →</a>
+</nav>
+
+<div class="container">
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="show('proba',this)"><span class="num">1</span> Probabilités</button>
+    <button class="tab-btn" onclick="show('definition',this)"><span class="num">2</span> Définition</button>
+    <button class="tab-btn" onclick="show('matrice',this)"><span class="num">3</span> Matrice de transition</button>
+    <button class="tab-btn" onclick="show('prevision',this)"><span class="num">4</span> Prévision d'état</button>
+    <button class="tab-btn" onclick="show('etats',this)"><span class="num">5</span> États & Périodicité</button>
+    <button class="tab-btn" onclick="show('stabilite',this)"><span class="num">6</span> Stabilité</button>
+    <button class="tab-btn" onclick="show('parcours',this)"><span class="num">7</span> Temps de parcours</button>
+    <button class="tab-btn" onclick="show('simulateur',this)"><span class="num">8</span> Simulateur</button>
+    <button class="tab-btn" onclick="show('recap',this)"><span class="num">9</span> Récapitulatif</button>
+  </nav>
+
+  <!-- ===== 1. PROBABILITES ===== -->
+  <div class="section active" id="s-proba">
+    <div class="section-header"><div class="icon">🎲</div>Probabilités — Rappels</div>
+
+    <div class="def-box">
+      <div class="label">Vocabulaire essentiel</div>
+      <p><strong>Expérience aléatoire</strong> : expérience dont les résultats dépendent du hasard (ex : jet d'un dé).</p>
+      <p><strong>Éventualité</strong> : un résultat possible. <strong>Univers Ω</strong> : ensemble de toutes les éventualités.</p>
+      <p><strong>Événement</strong> : sous-ensemble de l'univers. <strong>Probabilité</strong> : mesure de vraisemblance ∈ [0, 1].</p>
+    </div>
+
+    <div class="def-box" style="border-left-color:var(--blue);">
+      <div class="label" style="color:var(--blue);">Distribution de probabilités (fonction de masse)</div>
+      <p>Fonction <strong>f(x)</strong> qui associe à chaque éventualité x sa probabilité. Elle vérifie :</p>
+      <span class="formula">1)  0 ≤ f(eᵢ) ≤ 1   pour tout i
+2)  f(e₁) + f(e₂) + ··· + f(eₙ) = 1   (somme = 1)</span>
+    </div>
+
+    <div class="grid2">
+      <div class="card blue">
+        <h3>Exemple — Dé équilibré à 6 faces</h3>
+        <p>Chaque face a la même probabilité :</p>
+        <span class="formula-sm">f(1) = f(2) = f(3) = f(4) = f(5) = f(6) = 1/6</span>
+        <p style="margin-top:6px;">Équiprobabilité : <code>p(E) = cas favorables / cas possibles</code></p>
+      </div>
+      <div class="card amber">
+        <h3>Exemple — Dé pipé</h3>
+        <p>p(6) = 1/2, les autres faces équiprobables :</p>
+        <span class="formula-sm">5·p(1) = 1/2  ⟹  p(1) = 1/10
+f(1)=f(2)=f(3)=f(4)=f(5) = 1/10
+f(6) = 1/2</span>
+      </div>
+    </div>
+
+    <div class="def-box" style="border-left-color:var(--accent); margin-top:14px;">
+      <div class="label">Matrice colonne-stochastique</div>
+      <p>Une matrice est <strong>colonne-stochastique</strong> si :</p>
+      <p>→ tous ses éléments sont <strong>≥ 0</strong></p>
+      <p>→ la somme de chaque <strong>colonne = 1</strong></p>
+      <p style="margin-top:6px; color:var(--text-muted);">Autrement dit : chaque colonne est une distribution de probabilités.</p>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple — 2 dés à 4 faces, quelle somme viser ?</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Somme</th><th>Nb de cas</th><th>Probabilité</th><th>Conclusion</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>1</td><td>1/16</td><td></td></tr>
+          <tr><td>3</td><td>2</td><td>2/16 = 1/8</td><td></td></tr>
+          <tr><td>4</td><td>3</td><td>3/16</td><td></td></tr>
+          <tr><td style="color:var(--green); font-weight:700;">5</td><td style="color:var(--green); font-weight:700;">4</td><td style="color:var(--green); font-weight:700;">4/16 = 1/4</td><td class="yes">→ Parier sur 5 !</td></tr>
+          <tr><td>6</td><td>3</td><td>3/16</td><td></td></tr>
+          <tr><td>7</td><td>2</td><td>2/16</td><td></td></tr>
+          <tr><td>8</td><td>1</td><td>1/16</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 2. DEFINITION ===== -->
+  <div class="section" id="s-definition">
+    <div class="section-header"><div class="icon">🔄</div>Processus de Markov — Définition</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Un <strong>processus de Markov homogène à temps discret et à états finis</strong> est la modélisation d'un système évoluant entre plusieurs états au cours du temps, permettant la prévision de l'état futur.</p>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Il est défini par :</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Des <strong>états</strong> e₁, e₂, …, eₙ (états possibles du système)</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Des <strong>distributions de probabilités</strong> f₁, …, fₙ où fᵢ(eⱼ) = probabilité d'être en eⱼ à t+1 si on était en eᵢ à t</div></div>
+    </div>
+
+    <p style="font-weight:600; margin:16px 0 8px;">4 propriétés obligatoires :</p>
+    <div class="grid2">
+      <div class="card green">
+        <h3>Propriété de Markov</h3>
+        <p>La seule info nécessaire pour prédire l'état à t+1 est l'état à t (pas l'historique).</p>
+      </div>
+      <div class="card green">
+        <h3>Homogénéité</h3>
+        <p>Les distributions f₁, …, fₙ <strong>ne changent pas</strong> au cours du temps.</p>
+      </div>
+      <div class="card green">
+        <h3>États finis</h3>
+        <p>Le nombre d'états est <strong>fini</strong>.</p>
+      </div>
+      <div class="card green">
+        <h3>Temps discret</h3>
+        <p>L'intervalle entre 2 états successifs est <strong>toujours le même</strong>.</p>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:14px;">
+      💡 <strong>Application informatique :</strong> tout diagramme d'états (gestion de projets, de stages, machines à états) est modélisable par un processus de Markov.
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple introductif — Individu endetté :</p>
+    <div class="def-box" style="border-left-color:var(--amber);">
+      <div class="label" style="color:var(--amber);">Énoncé</div>
+      <p>Un individu non endetté a 1 chance sur 3 de devenir endetté le jour suivant. Un individu endetté a 1 chance sur 6 de régler ses dettes.</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>États et transitions</h3>
+        <span class="formula-sm">État 1 = Non endetté
+État 2 = Endetté
+
+P(rester en 1) = 2/3   P(1→2) = 1/3
+P(rester en 2) = 5/6   P(2→1) = 1/6</span>
+      </div>
+      <div class="card">
+        <h3>Représentation graphique</h3>
+        <div class="graph-box" style="padding:10px;">
+          <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" style="max-height:120px;">
+            <defs>
+              <marker id="arrowG" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#0F6E56"/></marker>
+            </defs>
+            <!-- State 1 -->
+            <circle cx="80" cy="60" r="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="2"/>
+            <text x="80" y="65" text-anchor="middle" font-size="14" font-weight="700" fill="#0F6E56">1</text>
+            <!-- State 2 -->
+            <circle cx="240" cy="60" r="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="2"/>
+            <text x="240" y="65" text-anchor="middle" font-size="14" font-weight="700" fill="#0F6E56">2</text>
+            <!-- Self-loop 1 -->
+            <path d="M60,35 Q50,5 80,32" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrowG)"/>
+            <text x="55" y="18" font-size="11" fill="#0F6E56" font-weight="600">2/3</text>
+            <!-- Self-loop 2 -->
+            <path d="M260,35 Q270,5 240,32" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrowG)"/>
+            <text x="253" y="18" font-size="11" fill="#0F6E56" font-weight="600">5/6</text>
+            <!-- 1→2 -->
+            <path d="M107,70 Q160,95 212,70" fill="none" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrowG)"/>
+            <text x="155" y="100" font-size="11" fill="#0F6E56" font-weight="600">1/3</text>
+            <!-- 2→1 -->
+            <path d="M212,50 Q160,25 107,50" fill="none" stroke="#1a9e7a" stroke-width="1.5" marker-end="url(#arrowG)"/>
+            <text x="155" y="34" font-size="11" fill="#1a9e7a" font-weight="600">1/6</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 3. MATRICE DE TRANSITION ===== -->
+  <div class="section" id="s-matrice">
+    <div class="section-header"><div class="icon">📊</div>Matrice de transition</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>La matrice de transition <strong>P</strong> contient les distributions de probabilités mises en <strong>colonnes</strong> :</p>
+      <span class="formula">P[i][j] = pᵢⱼ = probabilité d'être en état eᵢ à t+1
+              si on était en état eⱼ à t
+
+⟹ Chaque colonne j = distribution de probabilités depuis l'état j
+⟹ P est une matrice CARRÉE COLONNE-STOCHASTIQUE</span>
+    </div>
+
+    <div class="warning">
+      ⚠️ Attention à la convention : <strong>P[i][j]</strong> = de j vers i (ligne = arrivée, colonne = départ).
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple — Individu endetté :</p>
+    <div class="matrix-wrap">
+      <div class="caption">Matrice de transition P (2×2)</div>
+      <table class="matrix-table">
+        <tr>
+          <td class="mbracket" rowspan="2">(</td>
+          <td style="color:var(--text-muted); font-size:11px;"></td>
+          <td style="color:var(--text-muted); font-size:11px; text-align:center;">de 1</td>
+          <td style="color:var(--text-muted); font-size:11px; text-align:center;">de 2</td>
+          <td class="mbracket" rowspan="2">)</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted); font-size:11px;">vers 1<br>vers 2</td>
+          <td class="mhi">2/3<br>1/3</td>
+          <td class="mhi">1/6<br>5/6</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="tip">💡 <strong>Vérification :</strong> la somme de chaque colonne doit toujours valoir 1 : 2/3 + 1/3 = 1 ✔, 1/6 + 5/6 = 1 ✔</div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Règle de lecture graphe → matrice :</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Chaque <strong>état = une colonne</strong> de la matrice.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">La probabilité d'une flèche eᵢ → eⱼ va dans <strong>P[j][i]</strong> (ligne j, colonne i).</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">La somme des probabilités des flèches sortant d'un même état = 1 ⟹ somme de la colonne = 1.</div></div>
+    </div>
+  </div>
+
+  <!-- ===== 4. PREVISION ===== -->
+  <div class="section" id="s-prevision">
+    <div class="section-header"><div class="icon">📈</div>Prévision de l'état</div>
+
+    <div class="def-box">
+      <div class="label">Formule de prévision</div>
+      <p>Si <strong>d⁽ᵗ⁾</strong> est le vecteur de distribution à l'instant t, alors :</p>
+      <span class="formula">d⁽ᵗ⁺¹⁾ = P · d⁽ᵗ⁾
+
+d⁽ᵗ⁾ = Pᵗ · d⁽⁰⁾   (depuis l'état initial)</span>
+      <p style="margin-top:8px; color:var(--text-muted);">Le vecteur d⁽ᵗ⁾ est une colonne dont chaque entrée dᵢ = probabilité d'être en état i à l'instant t. La somme = 1.</p>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple — Individu endetté :</p>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">À l'instant t : autant de chances d'être endetté que non endetté → d⁽ᵗ⁾ = (1/2, 1/2)</p>
+    <div class="matrix-wrap">
+      <div class="caption">Calcul de d⁽ᵗ⁺¹⁾ = P · d⁽ᵗ⁾</div>
+      <div style="font-family:'Courier New',monospace; font-size:13px; line-height:2.2;">
+        d⁽ᵗ⁺¹⁾ = ( 2/3  1/6 ) · ( 1/2 )  =  ( 2/3×1/2 + 1/6×1/2 )  =  ( 5/12  )<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 1/3  5/6 ) &nbsp; ( 1/2 ) &nbsp;&nbsp; ( 1/3×1/2 + 5/6×1/2 ) &nbsp;&nbsp; ( 7/12  )
+      </div>
+    </div>
+    <div class="success">✔ À t+1 : probabilité 7/12 d'être endetté, 5/12 de ne pas l'être.</div>
+
+    <p style="font-weight:600; margin:16px 0 8px;">Exemple du chien dans le labyrinthe (7 états) :</p>
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Matrice de transition 7×7 (labyrinthe) <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <div class="matrix-wrap">
+          <div class="caption">P — états 1 à 7 (colonnes = départ, lignes = arrivée)</div>
+          <table class="matrix-table">
+            <tr>
+              <td class="mbracket" rowspan="7">(</td>
+              <td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td>
+              <td class="mbracket" rowspan="7">)</td>
+            </tr>
+            <tr><td class="mhi">1</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mhi">1</td><td class="mzero">0</td><td class="mzero">0</td></tr>
+            <tr><td class="mzero">0</td><td class="mhi">1</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td></tr>
+            <tr><td class="mzero">0</td><td class="mzero">0</td><td class="mhi">1</td><td class="mzero">0</td><td class="mzero">0</td><td>1/2</td><td class="mzero">0</td></tr>
+            <tr><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td>1/2</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td></tr>
+            <tr><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td>1/2</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td></tr>
+            <tr><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td class="mzero">0</td><td>1/2</td><td class="mhi">1</td></tr>
+          </table>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">7 états (sas 1→7). Chemin déterministe 1→2→3→4, puis bifurcation vers 5 ou 6 (prob 1/2), état 7 absorbant.</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Évolution pas à pas (chien, départ sas 1) <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Temps t</th><th>d⁽ᵗ⁾</th><th>Position du chien</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td><code>(1, 0, 0, 0, 0, 0, 0)</code></td><td>Sas 1 (certain)</td></tr>
+              <tr><td>1</td><td><code>(0, 1, 0, 0, 0, 0, 0)</code></td><td>Sas 2</td></tr>
+              <tr><td>2</td><td><code>(0, 0, 1, 0, 0, 0, 0)</code></td><td>Sas 3</td></tr>
+              <tr><td>3</td><td><code>(0, 0, 0, 1, 0, 0, 0)</code></td><td>Sas 4</td></tr>
+              <tr><td>4</td><td><code>(0, 0, 0, 0, 1/2, 1/2, 0)</code></td><td>Sas 5 ou 6 (prob 1/2 chacun)</td></tr>
+              <tr><td>5</td><td><code>(0, 1/2, 0, 1/4, 0, 0, 1/4)</code></td><td>Sas 2, 4 ou 7</td></tr>
+              <tr><td style="color:var(--accent); font-weight:700;">6</td><td><code>(0, 0, 1/2, 0, 1/8, 1/8, 1/4)</code></td><td>Sas 3(50%), 5(12.5%), 6(12.5%), 7(25%)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 5. ETATS ET PERIODICITE ===== -->
+  <div class="section" id="s-etats">
+    <div class="section-header"><div class="icon">🔍</div>États, Périodicité & Classes</div>
+
+    <div class="grid2">
+      <div class="def-box" style="margin:0;">
+        <div class="label">État transient</div>
+        <p>État dont le système <strong>n'est pas certain</strong> de pouvoir revenir après l'avoir quitté.</p>
+        <p style="margin-top:6px;"><span class="badge badge-transient">Transient</span> → dans une distribution stable, sa composante = 0.</p>
+      </div>
+      <div class="def-box" style="margin:0; border-left-color:var(--green);">
+        <div class="label" style="color:var(--green);">État récurrent</div>
+        <p>État dans lequel le système a <strong>toujours la possibilité</strong> de revenir après l'avoir quitté.</p>
+        <p style="margin-top:6px;"><span class="badge badge-recurrent">Récurrent</span> → contribue à la distribution stable.</p>
+      </div>
+    </div>
+
+    <div class="def-box" style="margin-top:14px; border-left-color:var(--blue);">
+      <div class="label" style="color:var(--blue);">Classe de communication & Période</div>
+      <p><strong>Communication :</strong> eᵢ communique avec eⱼ s'il existe un chemin de eᵢ vers eⱼ ET un chemin de eⱼ vers eᵢ. Un état communique toujours avec lui-même.</p>
+      <p style="margin-top:6px;"><strong>Classe de communication :</strong> ensemble maximal d'états qui communiquent tous entre eux.</p>
+      <p style="margin-top:6px;"><strong>Période d'un état :</strong> PGCD des longueurs de chemin possibles pour y revenir.</p>
+      <p style="margin-top:6px;"><strong>Processus irréductible (ergodique) :</strong> une seule classe de communication.</p>
+      <p style="margin-top:6px;"><strong>Classe apériodique :</strong> période = 1.</p>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple — Labyrinthe (7 états) :</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Classe</th><th>États</th><th>Type</th><th>Période</th><th>Remarque</th></tr></thead>
+        <tbody>
+          <tr><td><strong>C₁</strong></td><td>{1}</td><td><span class="badge badge-transient">Transient</span></td><td>—</td><td>Quand on quitte l'état 1, on n'y revient jamais</td></tr>
+          <tr><td><strong>C₂</strong></td><td>{2, 3, 4, 5, 6}</td><td><span class="badge badge-transient">Transient</span></td><td><span class="badge badge-period">Période 2</span></td><td>Boucle de longueur 2, 4, 6… → PGCD = 2</td></tr>
+          <tr><td><strong>C₃</strong></td><td>{7}</td><td><span class="badge badge-recurrent">Récurrent</span></td><td><span class="badge badge-period">Période 1</span></td><td>État absorbant (on y reste définitivement)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple — Exercice échelle (5 états : sol, marches 1–4) :</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Classe</th><th>États</th><th>Type</th><th>Période</th></tr></thead>
+        <tbody>
+          <tr><td><strong>C₁</strong></td><td>{sol=0, 1, 2, 3}</td><td><span class="badge badge-transient">Transient</span></td><td><span class="badge badge-period">Période 2</span> (2, 4, 6…)</td></tr>
+          <tr><td><strong>C₂</strong></td><td>{4}</td><td><span class="badge badge-recurrent">Récurrent</span></td><td><span class="badge badge-period">Période 1</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tip">💡 Tous les états d'une même classe ont le même type et la même période.</div>
+  </div>
+
+  <!-- ===== 6. STABILITE ===== -->
+  <div class="section" id="s-stabilite">
+    <div class="section-header"><div class="icon">⚖️</div>Distribution stable</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Une distribution <strong>d</strong> est <em>stable</em> si elle n'évolue plus avec le temps :</p>
+      <span class="formula">P · d = d</span>
+      <p>Interprétation : d donne la <strong>proportion de temps passé dans chaque état sur le long terme</strong>.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card blue">
+        <h3>Théorème d'existence</h3>
+        <p>Tout processus de Markov possède <strong>toujours au moins une</strong> distribution stable.</p>
+      </div>
+      <div class="card blue">
+        <h3>Théorème d'unicité</h3>
+        <p>Si le processus n'a qu'<strong>une seule classe récurrente</strong> → distribution stable unique.</p>
+      </div>
+    </div>
+    <div class="card blue" style="margin-top:0;">
+      <h3>Théorème de convergence</h3>
+      <p>Si le processus a une seule classe récurrente et que celle-ci est <strong>apériodique</strong> (période = 1) → la suite d⁽ᵏ⁺¹⁾ = P·d⁽ᵏ⁾ <strong>converge vers l'unique distribution stable</strong>.</p>
+    </div>
+
+    <p style="font-weight:600; margin:16px 0 8px;">Méthode pour trouver d stable :</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Poser d = (x₁, x₂, …, xₙ) et écrire <strong>P·d = d</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Ajouter la contrainte <strong>x₁ + x₂ + … + xₙ = 1</strong></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Résoudre le système par la <strong>méthode de Gauss</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body">Les états transients ont automatiquement leur composante = 0</div></div>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple complet — Individu endetté :</p>
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Vérification des conditions de convergence <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <div class="steps">
+          <div class="step"><div class="step-num">a</div><div class="step-body">Classes : 1 seule classe C₁ = {1, 2} → <span class="badge badge-recurrent">irréductible</span></div></div>
+          <div class="step"><div class="step-num">b</div><div class="step-body">Type : tous récurrents, période = 1 → <span class="badge badge-period">apériodique</span></div></div>
+          <div class="step"><div class="step-num">c</div><div class="step-body">✔ Processus irréductible et apériodique → convergence vers l'unique distribution stable.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Résolution du système P·d = d <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p style="margin-bottom:8px;">Soit d = (x, y). On a les conditions :</p>
+        <span class="formula-sm">x + y = 1
+(2/3)x + (1/6)y = x   →  -(1/3)x + (1/6)y = 0
+(1/3)x + (5/6)y = y   →   (1/3)x - (1/6)y = 0</span>
+        <p style="margin:8px 0;">Échelonnage Gauss :</p>
+        <span class="formula-sm"> 1   1 | 1        →   1   1 | 1
+-1/3 1/6| 0   →×(-6)  2  -1 | 0
+ 1/3 -1/6| 0  →×6    2  -1 | 0
+
+Après élimination :  1  1 | 1
+                     0 -3 | -2
+                     0  0 |  0
+
+Résolution : y = 2/3 , x = 1/3</span>
+        <div class="success" style="margin-top:8px;">✔ Distribution stable : d = (1/3, 2/3)</div>
+        <p style="margin-top:6px; font-size:13px; color:var(--text-muted);">L'individu sera <strong>endetté 2/3 du temps (≈ 66,7%)</strong> sur le long terme.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 7. TEMPS DE PARCOURS ===== -->
+  <div class="section" id="s-parcours">
+    <div class="section-header"><div class="icon">⏱️</div>Temps de parcours moyen</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Le <strong>temps de parcours moyen</strong> pour aller de l'état eᵢ à l'état eⱼ est le nombre d'unités de temps moyen nécessaires.</p>
+    </div>
+
+    <p style="font-weight:600; margin:12px 0 8px;">Méthode :</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body">Soit <strong>tᵢ</strong> le temps moyen pour aller de l'état eᵢ à l'état cible eⱼ. Poser <strong>tⱼ = 0</strong>.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body">Pour tout i ≠ j : <code>tᵢ = 1 + Σₖ pₖᵢ · tₖ</code> (1 unité de temps + temps pondéré depuis les états atteignables)</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body">Réécrire le système sous forme matricielle et résoudre par <strong>Gauss</strong>.</div></div>
+    </div>
+
+    <div class="warning">⚠️ Pour que le calcul ait un sens, il faut que l'état d'arrivée appartienne à <strong>la seule classe récurrente</strong> du processus.</div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple — Chien (état 1 → état 7) :</p>
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Écriture des équations de temps <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <span class="formula-sm">t₇ = 0   (état d'arrivée)
+
+t₁ = 1 + t₂              (1→2 obligatoire)
+t₂ = 1 + t₃
+t₃ = 1 + t₄
+t₄ = 1 + (1/2)·t₅ + (1/2)·t₆   (bifurcation 50/50)
+t₅ = 1 + t₂              (5→2 obligatoire)
+t₆ = 1 + (1/2)·t₄ + (1/2)·t₇ = 1 + (1/2)·t₄</span>
+        <p style="margin-top:8px; font-size:13px; color:var(--text-muted);">Réécriture en système linéaire :</p>
+        <span class="formula-sm">t₁ - t₂           = 1
+   t₂ - t₃          = 1
+      t₃ - t₄        = 1
+         t₄ - (1/2)t₅ - (1/2)t₆ = 1
+      -t₂      + t₅   = 1
+          -(1/2)t₄       + t₆ = 1</span>
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Résolution (Gauss) et résultat <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <p style="margin-bottom:8px;">Après échelonnage de la matrice 6×7 :</p>
+        <span class="formula-sm">Système échelonné :
+t₆ = 7
+t₅ - 2t₆ = 1   →  t₅ = 15
+-t₄ + 2t₆ = 2  →  t₄ = 12
+t₃ - t₄ = 1    →  t₃ = 13
+t₂ - t₃ = 1    →  t₂ = 14
+t₁ - t₂ = 1    →  t₁ = 15</span>
+        <div class="success" style="margin-top:8px;">✔ En moyenne : <strong>15 déplacements</strong> pour aller du sas 1 au sas 7.</div>
+      </div>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple — Échelle (sol → marche 4) :</p>
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Système et résolution <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <span class="formula-sm">t₄ = 0
+t₀ = 1 + t₁
+t₁ = 1 + (1/2)·t₀ + (1/2)·t₂
+t₂ = 1 + (1/2)·t₁ + (1/2)·t₃
+t₃ = 1 + (1/2)·t₂ + (1/2)·t₄
+
+Système linéaire :
+t₀ - t₁          = 1
+-t₀ + 2t₁ - t₂   = 2
+    -t₁ + 2t₂ - t₃ = 2
+        -t₂ + 2t₃  = 2
+
+Après Gauss (échelonnage simple) :
+t₃ = 7, t₂ = 12, t₁ = 15, t₀ = 16</span>
+        <div class="success" style="margin-top:8px;">✔ Temps moyen pour atteindre la marche 4 : <strong>16 changements d'échelon</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 8. SIMULATEUR ===== -->
+  <div class="section" id="s-simulateur">
+    <div class="section-header"><div class="icon">🧮</div>Simulateur interactif</div>
+    <p style="color:var(--text-muted); font-size:13px; margin-bottom:14px;">Simulez l'évolution d'un processus de Markov à 2 ou 3 états. Modifiez la matrice de transition et observez la convergence vers la distribution stable.</p>
+
+    <div class="sim-box">
+      <h3>Configuration</h3>
+      <div class="sim-controls">
+        <label>Taille :</label>
+        <button class="btn btn-primary" id="btn2s" onclick="setSimSize(2)">2 états</button>
+        <button class="btn btn-secondary" id="btn3s" onclick="setSimSize(3)">3 états</button>
+        <label style="margin-left:10px;">Exemple :</label>
+        <button class="btn btn-secondary" onclick="loadPreset(0)">Endetté</button>
+        <button class="btn btn-secondary" onclick="loadPreset(1)">3 états</button>
+      </div>
+
+      <p style="font-size:12px; font-weight:600; color:var(--text-muted); margin-bottom:6px;">Matrice de transition P (chaque colonne doit sommer à 1) :</p>
+      <div id="matrix-input"></div>
+
+      <p style="font-size:12px; font-weight:600; color:var(--text-muted); margin:10px 0 6px;">Distribution initiale d⁽⁰⁾ :</p>
+      <div id="dist-input"></div>
+
+      <div class="sim-controls" style="margin-top:10px;">
+        <label>t =</label>
+        <input type="number" class="t-input" id="t-val" value="1" min="0" max="50">
+        <button class="btn btn-primary" onclick="computeStep()">Calculer d⁽ᵗ⁾</button>
+        <button class="btn btn-secondary" onclick="computeAll()">Voir convergence (t=0..20)</button>
+        <button class="btn btn-danger" onclick="resetSim()">↺</button>
+      </div>
+    </div>
+
+    <div id="result-single" style="display:none;" class="matrix-wrap">
+      <div class="caption" id="result-caption">Résultat</div>
+      <div id="result-bars" class="dist-display"></div>
+    </div>
+
+    <div id="result-conv" style="display:none;" class="sim-box">
+      <h3>Convergence vers la distribution stable</h3>
+      <div id="conv-table"></div>
+    </div>
+  </div>
+
+  <!-- ===== 9. RECAP ===== -->
+  <div class="section" id="s-recap">
+    <div class="section-header"><div class="icon">📋</div>Récapitulatif</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Concept</th><th>Définition clé</th><th>Formule / Remarque</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Matrice P</strong></td><td>Matrice de transition carrée colonne-stochastique</td><td>P[i][j] = prob de j→i. Somme de chaque col = 1.</td></tr>
+          <tr><td><strong>d⁽ᵗ⁾</strong></td><td>Distribution de probabilités à l'instant t</td><td><code>d⁽ᵗ⁺¹⁾ = P·d⁽ᵗ⁾</code> &nbsp;|&nbsp; <code>d⁽ᵗ⁾ = Pᵗ·d⁽⁰⁾</code></td></tr>
+          <tr><td><strong>État transient</strong></td><td>On n'est pas certain d'y revenir</td><td>Composante = 0 dans toute distribution stable</td></tr>
+          <tr><td><strong>État récurrent</strong></td><td>On peut toujours y revenir</td><td>Contribue à la distribution stable</td></tr>
+          <tr><td><strong>Période</strong></td><td>PGCD des longueurs de retour possibles</td><td>Période 1 = apériodique</td></tr>
+          <tr><td><strong>Distribution stable d</strong></td><td>P·d = d (n'évolue plus)</td><td>Proportion de temps dans chaque état sur le long terme</td></tr>
+          <tr><td><strong>Convergence</strong></td><td>Irréductible + apériodique</td><td>⟹ d⁽ᵏ⁾ → d (unique)</td></tr>
+          <tr><td><strong>Temps de parcours tᵢ</strong></td><td>Temps moyen de eᵢ vers eⱼ</td><td><code>tᵢ = 1 + Σₖ pₖᵢ·tₖ</code>, tⱼ = 0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-weight:600; margin:16px 0 10px;">Méthode complète pour un exercice d'examen :</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Identifier les états</strong> et les numéroter.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Tracer le graphe</strong> : flèches avec probabilités, vérifier que la somme des flèches sortant de chaque état = 1.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Écrire la matrice P</strong> : colonne j = distribution depuis l'état j.</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Classifier</strong> : trouver les classes de communication, le type (transient/récurrent), la période.</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Distribution stable</strong> : résoudre P·d = d avec Σdᵢ = 1 par Gauss.</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><strong>Temps de parcours</strong> : écrire tᵢ = 1 + Σpₖᵢ·tₖ pour chaque état (sauf l'état cible), résoudre par Gauss.</div></div>
+    </div>
+
+    <div class="warning" style="margin-top:16px;">
+      ⚠️ <strong>Pièges classiques :</strong><br>
+      • La colonne j de P représente les transitions <em>depuis</em> l'état j (pas depuis l'état i).<br>
+      • Somme des colonnes = 1, pas des lignes.<br>
+      • Pour le temps de parcours : multiplier par la probabilité de chaque transition.<br>
+      • Pour la distribution stable : ne pas oublier la contrainte Σdᵢ = 1 dans le système.
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== TABS =====
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== ACCORDION =====
+function toggleAcc(head) {
+  head.classList.toggle('open');
+  head.nextElementSibling.classList.toggle('open');
+}
+
+// ===== SIMULATOR =====
+let simN = 2;
+
+const PRESETS = [
+  // 0 : Endetté (2 états)
+  { n:2, P:[[2/3,1/6],[1/3,5/6]], d0:[1,0], labels:['Non endetté','Endetté'] },
+  // 1 : 3 états
+  { n:3, P:[[0.7,0.1,0.2],[0.2,0.6,0.3],[0.1,0.3,0.5]], d0:[1,0,0], labels:['A','B','C'] }
+];
+let labels = ['État 1','État 2'];
+
+function setSimSize(n) {
+  simN = n;
+  document.getElementById('btn2s').className = n===2?'btn btn-primary':'btn btn-secondary';
+  document.getElementById('btn3s').className = n===3?'btn btn-primary':'btn btn-secondary';
+  labels = Array.from({length:n},(_,i)=>`État ${i+1}`);
+  buildMatrixInput(n);
+  buildDistInput(n);
+  hideSimResults();
+}
+
+function buildMatrixInput(n) {
+  let h = '<table style="border-collapse:separate;border-spacing:4px;font-family:\'Courier New\',monospace;font-size:12px;"><tbody>';
+  for(let i=0;i<n;i++){
+    h+='<tr>';
+    for(let j=0;j<n;j++){
+      const val = i===j ? (1/n).toFixed(3) : (1/n).toFixed(3);
+      h+=`<td><input type="number" id="p${i}${j}" value="${val}" step="0.01" min="0" max="1" style="width:60px;font-family:'Courier New',monospace;font-size:12px;text-align:center;border:1px solid var(--border);border-radius:4px;padding:3px;background:#F4FAF7;color:var(--text);outline:none;"></td>`;
+    }
+    h+='</tr>';
+  }
+  h+='</tbody></table>';
+  document.getElementById('matrix-input').innerHTML=h;
+}
+
+function buildDistInput(n) {
+  let h = '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+  for(let i=0;i<n;i++){
+    const val = i===0?'1':'0';
+    h+=`<div style="display:flex;align-items:center;gap:4px;font-size:12px;font-family:'Courier New',monospace;">
+      <label style="color:var(--text-muted);">${labels[i]}:</label>
+      <input type="number" id="d${i}" value="${val}" step="0.01" min="0" max="1" style="width:55px;font-family:'Courier New',monospace;font-size:12px;text-align:center;border:1px solid var(--border);border-radius:4px;padding:3px;background:#F4FAF7;color:var(--text);outline:none;">
+    </div>`;
+  }
+  h+='</div>';
+  document.getElementById('dist-input').innerHTML=h;
+}
+
+function loadPreset(idx) {
+  const p = PRESETS[idx];
+  simN = p.n;
+  labels = p.labels;
+  document.getElementById('btn2s').className = p.n===2?'btn btn-primary':'btn btn-secondary';
+  document.getElementById('btn3s').className = p.n===3?'btn btn-primary':'btn btn-secondary';
+  buildMatrixInput(p.n);
+  buildDistInput(p.n);
+  for(let i=0;i<p.n;i++) for(let j=0;j<p.n;j++) document.getElementById(`p${i}${j}`).value=p.P[i][j].toFixed(4);
+  for(let i=0;i<p.n;i++) document.getElementById(`d${i}`).value=p.d0[i];
+  hideSimResults();
+}
+
+function getP() {
+  const n=simN, P=[];
+  for(let i=0;i<n;i++){P.push([]); for(let j=0;j<n;j++) P[i].push(parseFloat(document.getElementById(`p${i}${j}`).value)||0);}
+  return P;
+}
+function getD0() {
+  const n=simN, d=[];
+  for(let i=0;i<n;i++) d.push(parseFloat(document.getElementById(`d${i}`).value)||0);
+  return d;
+}
+function mulMV(P,d){
+  return P.map(row => row.reduce((s,v,j)=>s+v*d[j],0));
+}
+function matPow(P,t){
+  let R=P.map(r=>[...r]);
+  if(t===1) return R;
+  for(let k=1;k<t;k++){
+    const n=P.length, NR=Array.from({length:n},()=>new Array(n).fill(0));
+    for(let i=0;i<n;i++) for(let j=0;j<n;j++) for(let l=0;l<n;l++) NR[i][j]+=R[i][l]*P[l][j];
+    R=NR;
+  }
+  return R;
+}
+function applyP(P,d,t){
+  let cur=[...d];
+  for(let k=0;k<t;k++) cur=mulMV(P,cur);
+  return cur;
+}
+
+function fmtP(v){ return (Math.round(v*1e4)/1e4).toFixed(4); }
+
+function renderBars(d, caption){
+  document.getElementById('result-single').style.display='block';
+  document.getElementById('result-caption').textContent = caption;
+  let h='';
+  d.forEach((v,i)=>{
+    const pct = Math.round(Math.max(0,Math.min(1,v))*100);
+    h+=`<div class="dist-row">
+      <span class="dist-label">${labels[i]||'e'+(i+1)}</span>
+      <div class="dist-bar-wrap"><div class="dist-bar" style="width:${pct}%"></div></div>
+      <span class="dist-val">${fmtP(v)}</span>
+    </div>`;
+  });
+  document.getElementById('result-bars').innerHTML=h;
+}
+
+function computeStep(){
+  const P=getP(), d0=getD0(), t=parseInt(document.getElementById('t-val').value)||0;
+  const dt = applyP(P,d0,t);
+  renderBars(dt, `Distribution d⁽${t}⁾`);
+  document.getElementById('result-conv').style.display='none';
+}
+
+function computeAll(){
+  const P=getP(), d0=getD0();
+  const rows=[];
+  let d=[...d0];
+  for(let t=0;t<=20;t++){
+    rows.push({t,d:[...d]});
+    d=mulMV(P,d);
+  }
+  let h='<div style="overflow-x:auto;"><table><thead><tr><th>t</th>';
+  labels.forEach(l=>{ h+=`<th>${l}</th>`; });
+  h+='</tr></thead><tbody>';
+  rows.forEach(({t,d})=>{
+    h+=`<tr><td style="font-weight:700;color:var(--accent);">${t}</td>`;
+    d.forEach(v=>{ h+=`<td style="font-family:'Courier New',monospace;font-size:12px;">${fmtP(v)}</td>`; });
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+  document.getElementById('result-conv').style.display='block';
+  document.getElementById('conv-table').innerHTML=h;
+  document.getElementById('result-single').style.display='none';
+}
+
+function hideSimResults(){
+  document.getElementById('result-single').style.display='none';
+  document.getElementById('result-conv').style.display='none';
+}
+function resetSim(){ hideSimResults(); }
+
+// Init
+setSimSize(2);
+loadPreset(0);
+</script>
+</body>
+</html>

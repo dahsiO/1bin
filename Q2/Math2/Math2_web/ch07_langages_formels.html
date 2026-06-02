@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synthèse Math2 — Langages Formels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root {
+    --accent: #185FA5;
+    --accent-light: #E6F1FB;
+    --accent-mid: #378ADD;
+    --accent-dark: #0C447C;
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --red: #993C1D;
+    --red-light: #FAECE7;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --purple: #533AB7;
+    --purple-light: #EEEDFE;
+    --bg: #f8f7f4;
+    --card: #ffffff;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.18);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --bg3: #f3f4f6;
+    --text2: #6b6a66;
+    --text3: #9b9a96;
+    --accent2: #378ADD;
+    --accent3: #E6F1FB;
+    --teal: #0F6E56;
+    --teal2: #1a8a6a;
+    --green2: #1a8a6a;
+    --amber2: #a06010;
+    --pink: #993C1D;
+    --border2: rgba(0,0,0,0.16);
+    --mono: 'IBM Plex Mono', 'Courier New', monospace;
+    --sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.65; }
+
+  /* HEADER */
+  header { background: linear-gradient(135deg, #0C447C 0%, #185FA5 60%, #378ADD 100%); color: white; padding: 36px 40px 28px; position: relative; overflow: hidden; }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  header::after { content:''; position:absolute; bottom:-40px; left:30%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); }
+  .header-tag { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; opacity:.7; margin-bottom:8px; }
+  header h1 { font-size:28px; font-weight:700; margin-bottom:6px; position:relative; }
+  header p { font-size:13px; opacity:.75; position:relative; }
+  .chapter-badge { position:absolute; top:28px; right:40px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; padding:6px 16px; font-size:12px; font-weight:600; letter-spacing:.04em; }
+
+  /* CHAPTER NAV */
+  .chapter-nav { background:var(--card); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:center; gap:4px; padding:8px 20px; flex-wrap:wrap; }
+  .ch-link { display:flex; align-items:center; gap:5px; padding:5px 12px; border-radius:var(--radius-sm); text-decoration:none; color:var(--text-muted); font-size:12px; font-weight:500; border:1px solid transparent; transition:all .15s; }
+  .ch-link:hover { background:var(--accent-light); color:var(--accent); }
+  .ch-link.active { background:var(--accent); color:white; }
+  .ch-num { font-size:10px; font-weight:700; opacity:.6; }
+  .ch-sep { width:1px; height:18px; background:var(--border); margin:0 6px; flex-shrink:0; }
+  .ch-arrow { display:flex; align-items:center; padding:5px 12px; border-radius:var(--radius-sm); text-decoration:none; color:var(--text-muted); font-size:12px; font-weight:500; border:1px solid var(--border); transition:all .15s; }
+  .ch-arrow:hover { background:var(--accent-light); color:var(--accent); border-color:var(--accent); }
+
+  /* LAYOUT */
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  /* TAB NAV */
+  .tab-nav { display:flex; flex-wrap:wrap; gap:6px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:10px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+  .tab-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid transparent; background:transparent; color:var(--text-muted); font-size:13px; font-weight:500; cursor:pointer; transition:all .18s; }
+  .tab-btn:hover { background:var(--accent-light); color:var(--accent); }
+  .tab-btn.active { background:var(--accent); color:white; border-color:var(--accent-dark); box-shadow:0 2px 8px rgba(24,95,165,0.28); }
+  .tab-btn .num { font-size:10px; font-weight:700; background:rgba(255,255,255,0.25); border-radius:20px; padding:1px 6px; }
+  .tab-btn:not(.active) .num { background:var(--border); color:var(--text-muted); }
+
+  /* SECTIONS */
+  .chapter { display:none; }
+  .chapter.active { display:block; animation:fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+  /* CHAPTER HEADER */
+  .chapter-header { display:flex; align-items:flex-start; gap:1rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px solid var(--accent-light); }
+  .chapter-icon { width:44px; height:44px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px; }
+  .chapter-icon.purple { background:var(--purple-light); color:var(--purple); }
+  .chapter-icon.teal { background:var(--green-light); color:var(--green); }
+  .chapter-icon.green { background:var(--green-light); color:var(--green); }
+  .chapter-icon.amber { background:var(--amber-light); color:var(--amber); }
+  .chapter-icon.accent { background:var(--accent-light); color:var(--accent); }
+  .chapter-icon.pink { background:var(--red-light); color:var(--red); }
+  .chapter-header-text h3 { font-size:18px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .chapter-header-text p { font-size:13px; color:var(--text-muted); }
+
+  /* CARDS */
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.25rem 1.5rem; margin-bottom:1rem; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+  .card h4 { font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:.75rem; }
+  .card p { color:var(--text); font-size:14px; line-height:1.7; }
+  .card.highlight { border-color:rgba(24,95,165,.25); background:var(--accent-light); }
+  .card.highlight h4 { color:var(--accent); }
+  .card.success { border-color:rgba(15,110,86,.25); background:var(--green-light); }
+  .card.success h4 { color:var(--green); }
+  .card.warning { border-color:rgba(133,79,11,.25); background:var(--amber-light); }
+  .card.warning h4 { color:var(--amber); }
+  .card.danger { border-color:rgba(153,60,29,.25); background:var(--red-light); }
+  .card.danger h4 { color:var(--red); }
+  .card.teal-card { border-color:rgba(15,110,86,.25); background:var(--green-light); }
+  .card.teal-card h4 { color:var(--green); }
+
+  /* GRID */
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+  .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1rem; }
+
+  /* DEFINITION BOX */
+  .def-box { background:var(--accent-light); border-left:3px solid var(--accent); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:1rem 1.25rem; margin:1rem 0; }
+  .def-box .def-label { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:.5rem; }
+  .def-box p { color:var(--text); font-size:14px; }
+
+  /* FORMULA */
+  .formula { font-family:var(--mono); background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm); padding:.75rem 1rem; margin:.5rem 0; color:var(--accent-dark); font-size:13px; overflow-x:auto; }
+  .formula .kw { color:var(--amber); }
+  .formula .sym { color:var(--red); }
+  .formula .var { color:var(--green); }
+  .formula .cmt { color:var(--text-muted); font-style:italic; }
+
+  /* STEPS */
+  .steps { list-style:none; }
+  .steps li { display:flex; gap:1rem; align-items:flex-start; padding:.75rem 0; border-bottom:1px solid var(--border); }
+  .steps li:last-child { border-bottom:none; }
+  .step-num { width:28px; height:28px; border-radius:50%; flex-shrink:0; background:var(--accent); color:white; font-size:12px; font-weight:600; display:flex; align-items:center; justify-content:center; }
+  .step-content { flex:1; }
+  .step-content strong { color:var(--text); font-weight:600; display:block; margin-bottom:2px; }
+  .step-content p { color:var(--text-muted); font-size:13px; }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x:auto; margin:1rem 0; border-radius:var(--radius); border:1px solid var(--border); box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+  table { width:100%; border-collapse:collapse; font-size:13px; background:var(--card); }
+  thead th { background:#EAF2FB; padding:.6rem .9rem; text-align:left; font-weight:600; color:var(--accent-dark); font-size:11px; letter-spacing:.06em; text-transform:uppercase; border-bottom:1px solid var(--border-strong); }
+  tbody td { padding:.6rem .9rem; color:var(--text); border-bottom:1px solid var(--border); font-family:var(--mono); font-size:12px; vertical-align:top; }
+  tbody tr:last-child td { border-bottom:none; }
+  tbody tr:hover td { background:var(--accent-light); }
+  td.accent-cell { color:var(--accent); font-weight:500; }
+  td.green-cell { color:var(--green); }
+  td.accept { color:var(--green); font-weight:600; }
+
+  /* CALLOUT */
+  .callout { display:flex; gap:1rem; align-items:flex-start; padding:1rem 1.25rem; border-radius:var(--radius-sm); margin:1rem 0; }
+  .callout.info { background:var(--accent-light); border:1px solid rgba(24,95,165,.2); }
+  .callout.success { background:var(--green-light); border:1px solid rgba(15,110,86,.2); }
+  .callout.warning { background:var(--amber-light); border:1px solid rgba(133,79,11,.2); }
+  .callout.danger { background:var(--red-light); border:1px solid rgba(153,60,29,.2); }
+  .callout-icon { font-size:18px; margin-top:1px; }
+  .callout.info .callout-icon { color:var(--accent); }
+  .callout.success .callout-icon { color:var(--green); }
+  .callout.warning .callout-icon { color:var(--amber); }
+  .callout.danger .callout-icon { color:var(--red); }
+  .callout p { font-size:13.5px; color:var(--text); line-height:1.6; }
+  .callout strong { color:var(--text); }
+
+  /* AUTOMATE VISUAL */
+  .automaton-visual { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin:1rem 0; overflow-x:auto; }
+  .automaton-visual svg { display:block; margin:0 auto; }
+
+  /* PILL TAGS */
+  .tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.75rem; }
+  .tag { font-size:11px; font-weight:500; padding:3px 10px; border-radius:100px; font-family:var(--mono); }
+  .tag.purple { background:var(--purple-light); color:var(--purple); border:1px solid rgba(83,58,183,.25); }
+  .tag.teal { background:var(--green-light); color:var(--green); border:1px solid rgba(15,110,86,.25); }
+  .tag.green { background:var(--green-light); color:var(--green); border:1px solid rgba(15,110,86,.25); }
+  .tag.amber { background:var(--amber-light); color:var(--amber); border:1px solid rgba(133,79,11,.25); }
+  .tag.accent { background:var(--accent-light); color:var(--accent); border:1px solid rgba(24,95,165,.25); }
+
+  /* CONCLUSION BOX */
+  .conclusion { background:var(--accent-light); border:1px solid rgba(24,95,165,.2); border-radius:var(--radius); padding:1.5rem 2rem; margin:2rem 0; }
+  .conclusion h4 { font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
+  .conclusion ul { list-style:none; }
+  .conclusion ul li { padding:.35rem 0; font-size:14px; color:var(--text); display:flex; align-items:center; gap:.5rem; }
+  .conclusion ul li::before { content:"↔"; color:var(--accent-mid); font-weight:700; }
+
+  /* EQUIVALENCE CHAIN */
+  .equiv-chain { display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; padding:1.25rem; background:var(--bg3); border-radius:var(--radius-sm); margin:1rem 0; }
+  .equiv-box { background:var(--card); border:1px solid var(--border-strong); border-radius:6px; padding:.4rem .85rem; font-size:12px; color:var(--text); font-family:var(--mono); }
+  .equiv-arr { color:var(--accent-mid); font-weight:700; font-size:16px; }
+
+  /* SECTION TITLE */
+  .section-title { font-size:15px; font-weight:700; color:var(--text); margin:1.75rem 0 .75rem; display:flex; align-items:center; gap:.5rem; }
+  .section-title::after { content:""; flex:1; height:1px; background:var(--border); }
+
+  /* ALGO BOX */
+  .algo-box { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:1rem 0; }
+  .algo-header { background:var(--accent-light); padding:.6rem 1rem; font-size:12px; font-weight:700; color:var(--accent); letter-spacing:.06em; text-transform:uppercase; border-bottom:1px solid var(--border); }
+  .algo-body { padding:1rem 1.25rem; }
+  .algo-step { display:flex; gap:.75rem; align-items:flex-start; padding:.5rem 0; border-bottom:1px solid var(--border); font-size:13px; }
+  .algo-step:last-child { border-bottom:none; }
+  .algo-step .sn { font-family:var(--mono); font-size:11px; font-weight:600; color:var(--accent); background:var(--accent-light); border-radius:3px; padding:1px 6px; flex-shrink:0; margin-top:2px; }
+  .algo-step p { color:var(--text); line-height:1.5; }
+  .algo-step p code { font-family:var(--mono); color:var(--accent-dark); font-size:12px; background:var(--accent-light); border-radius:3px; padding:0 4px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 800px) {
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+    header { padding: 24px 20px 20px; }
+    .chapter-badge { display: none; }
+    .tab-btn { font-size: 12px; padding: 6px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Maths 2 — HE Vinci / ULB</div>
+  <h1>Langages Formels</h1>
+  <p>Alphabets · Expressions régulières · Grammaires · Automates · NDFA · Moore-Nerode</p>
+  <div class="chapter-badge">Chapitre 7 / 8</div>
+</header>
+
+<nav class="chapter-nav">
+  <a class="ch-arrow" href="ch06_markov.html">← Précédent</a>
+  <div class="ch-sep"></div>
+  <a class="ch-link" href="ch01_relations_binaires.html"><span class="ch-num">01</span> Relations Binaires</a>
+  <a class="ch-link" href="ch02_relations_ordre.html"><span class="ch-num">02</span> Relations d'Ordre</a>
+  <a class="ch-link" href="ch03_relations_equivalence.html"><span class="ch-num">03</span> Relations d'Équivalence</a>
+  <a class="ch-link" href="ch04_matrices.html"><span class="ch-num">04</span> Les Matrices</a>
+  <a class="ch-link" href="ch05_systemes_lineaires_v2.html"><span class="ch-num">05</span> Systèmes linéaires</a>
+  <a class="ch-link" href="ch06_markov.html"><span class="ch-num">06</span> Markov</a>
+  <a class="ch-link active" href="ch07_langages_formels.html"><span class="ch-num">07</span> Langages formels</a>
+</nav>
+
+<div class="container">
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="show('ch1',this)"><span class="num">1</span> Alphabets & Langages</button>
+    <button class="tab-btn" onclick="show('ch2',this)"><span class="num">2</span> Exp. Régulières</button>
+    <button class="tab-btn" onclick="show('ch3',this)"><span class="num">3</span> Grammaires</button>
+    <button class="tab-btn" onclick="show('ch4',this)"><span class="num">4</span> Automates Moore</button>
+    <button class="tab-btn" onclick="show('ch5',this)"><span class="num">5</span> NDFA</button>
+    <button class="tab-btn" onclick="show('ch6',this)"><span class="num">6</span> Subset Constr.</button>
+    <button class="tab-btn" onclick="show('ch7',this)"><span class="num">7</span> Automate Minimal</button>
+    <button class="tab-btn" onclick="show('ch8',this)"><span class="num">8</span> Équivalence Glob.</button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH1 — ALPHABETS & LANGAGES                      -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter active" id="ch1">
+    <div class="chapter-header">
+      <div class="chapter-icon purple"><i class="fas fa-font"></i></div>
+      <div class="chapter-header-text">
+        <h3>1 — Alphabets, Mots et Langages</h3>
+        <p>Définitions fondamentales et opérations de base</p>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <div class="card">
+        <h4>Alphabet Σ</h4>
+        <p>Ensemble <strong>fini non vide</strong> de symboles (lettres). Ex : Σ = {a, b, c}</p>
+      </div>
+      <div class="card">
+        <h4>Mot</h4>
+        <p>Suite <strong>finie</strong> de lettres. Longueur |m|. Mot vide <strong>ε</strong> (longueur 0).</p>
+      </div>
+      <div class="card">
+        <h4>Langage</h4>
+        <p>Tout ensemble de mots sur Σ. Peut être fini ou infini.</p>
+      </div>
+    </div>
+
+    <div class="section-title">Concaténation</div>
+    <div class="card">
+      <h4>Opérations sur les mots</h4>
+      <div class="formula">
+        <span class="cmt">// Concaténation de m et p</span><br>
+        mp = juxtaposition de m puis p<br><br>
+        <span class="cmt">// Puissance</span><br>
+        m<span class="sym">^</span>k = m · m · ... · m  (k fois),  m<span class="sym">^</span>0 = ε<br><br>
+        <span class="cmt">// Neutralité du mot vide</span><br>
+        ∀p : pε = p = εp
+      </div>
+    </div>
+
+    <div class="section-title">Opérations sur les langages</div>
+    <div class="grid2">
+      <div class="card">
+        <h4>Opérations ensemblistes</h4>
+        <p style="font-size:13px;">L₁ ∪ L₂ · · · union<br>L₁ ∩ L₂ · · · intersection<br>L₁ − L₂ · · · différence</p>
+      </div>
+      <div class="card">
+        <h4>Concaténation L₁ • L₂</h4>
+        <p style="font-size:13px;">Tous les mots obtenus en concaténant un mot de L₁ avec un mot de L₂.<br><strong>{ε} est neutre pour •</strong></p>
+      </div>
+    </div>
+
+    <div class="card highlight">
+      <h4>Étoile de Kleene L* et L⁺</h4>
+      <div class="formula">
+        L<span class="sym">+</span> = L ∪ L<span class="sym">^</span>2 ∪ L<span class="sym">^</span>3 ∪ ...  <span class="cmt">(nb non nul de concat.)</span><br>
+        L<span class="sym">*</span> = {ε} ∪ L<span class="sym">+</span>  = L<span class="sym">^</span>0 ∪ L ∪ L<span class="sym">^</span>2 ∪ ...  <span class="cmt">(nb quelconque)</span><br><br>
+        Σ<span class="sym">*</span> = <span class="cmt">tous les mots sur Σ</span><br>
+        L<span class="sym">+</span> = L<span class="sym">*</span>  ssi  ε ∈ L
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH2 — EXPRESSIONS RÉGULIÈRES                   -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter" id="ch2">
+    <div class="chapter-header">
+      <div class="chapter-icon teal"><i class="fas fa-code"></i></div>
+      <div class="chapter-header-text">
+        <h3>2 — Expressions Régulières</h3>
+        <p>Premier outil pour décrire les langages réguliers de façon compacte</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon"><i class="fas fa-lightbulb"></i></span>
+      <p>Une <strong>expression régulière (ER)</strong> est définie par induction sur un alphabet Σ disjoint de ∆ = {∅, λ, (, ), *, |}</p>
+    </div>
+
+    <div class="section-title">Définition inductive</div>
+    <div class="grid2">
+      <div class="card">
+        <h4>Expressions primitives</h4>
+        <ul style="list-style:none; font-size:13px; color:var(--text2);">
+          <li style="padding:.3rem 0; border-bottom:1px solid var(--border);">∅ → langage vide</li>
+          <li style="padding:.3rem 0; border-bottom:1px solid var(--border);">λ → {ε} (mot vide)</li>
+          <li style="padding:.3rem 0;">x ∈ Σ → {x} (lettre seule)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Expressions composées</h4>
+        <ul style="list-style:none; font-size:13px; color:var(--text2);">
+          <li style="padding:.3rem 0; border-bottom:1px solid var(--border);">αβ → concaténation Lα • Lβ</li>
+          <li style="padding:.3rem 0; border-bottom:1px solid var(--border);">(α|β) → union Lα ∪ Lβ</li>
+          <li style="padding:.3rem 0;">(α)* ou α* → étoile Lα*</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">Langage associé</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Expression</th><th>Langage associé</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td class="accent-cell">∅</td><td>∅</td><td>langage vide</td></tr>
+          <tr><td class="accent-cell">λ</td><td>{ε}</td><td>contient seulement le mot vide</td></tr>
+          <tr><td class="accent-cell">x ∈ Σ</td><td>{x}</td><td>contient seulement la lettre x</td></tr>
+          <tr><td class="accent-cell">αβ</td><td>Lα • Lβ</td><td>concaténation des langages</td></tr>
+          <tr><td class="accent-cell">(α|β)</td><td>Lα ∪ Lβ</td><td>union des langages</td></tr>
+          <tr><td class="accent-cell">(α)* ou α*</td><td>Lα*</td><td>étoile de Kleene</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-title">Notations abrégées</div>
+    <div class="card warning">
+      <h4>Abréviations courantes</h4>
+      <div class="formula">
+        (α)<span class="sym">+</span> = α(α)<span class="sym">*</span> = (α)<span class="sym">*</span>α  <span class="cmt">(au moins une fois)</span><br>
+        (α)<span class="sym">^</span>k = α·α·...·α  (k fois)<br>
+        α β γ ≡ (α|β)γ ≡ α(β|γ)  <span class="cmt">(raccourci pour union)</span>
+      </div>
+    </div>
+
+    <div class="section-title">Langages réguliers</div>
+    <div class="def-box">
+      <div class="def-label">Définition</div>
+      <p>Un langage sur Σ est dit <strong>régulier (rationnel)</strong> s'il est le langage associé à une expression régulière sur Σ.</p>
+    </div>
+
+    <div class="card success">
+      <h4>Exemple d'examen — Juin 2017</h4>
+      <p style="font-size:13px; margin-bottom:.5rem;">Sur Σ = {a,b,c,d} :</p>
+      <div class="formula">
+        L₁ = <span class="var">aa*(c|d)*(cd)*</span>  <span class="cmt">→ commence par au moins 1 a</span><br>
+        L₂ = <span class="var">(aa)*(c|d)*(cd)*</span>  <span class="cmt">→ nombre pair de a</span><br>
+        L₃ = <span class="var">{(aa)^n (c|d)^p (cd)^n | n,p ∈ ℕ}</span>  <span class="cmt">→ autant de aa que de cd</span>
+      </div>
+      <p style="font-size:13px; margin-top:.75rem; color:var(--text2);">Preuve L₁≠L₂≠L₃ : le mot <code style="font-family:var(--mono);color:var(--accent2);">a</code> ∈ L₁ mais ∉ L₂ ni L₃ ; le mot <code style="font-family:var(--mono);color:var(--accent2);">aa</code> ∈ L₂ mais ∉ L₃ (car n=1 → aacd ≠ aa).</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH3 — GRAMMAIRES RÉGULIÈRES                    -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter" id="ch3">
+    <div class="chapter-header">
+      <div class="chapter-icon green"><i class="fas fa-sitemap"></i></div>
+      <div class="chapter-header-text">
+        <h3>3 — Grammaires Régulières</h3>
+        <p>Deuxième outil : règles formelles pour construire les mots d'un langage</p>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">Définition — Quadruplet G = (Σ, N, &lt;S&gt;, P)</div>
+      <p>Σ = symboles terminaux · N = symboles non terminaux · &lt;S&gt; = axiome · P = règles de dérivation</p>
+    </div>
+
+    <div class="section-title">Formes des règles de dérivation</div>
+    <div class="grid3">
+      <div class="card">
+        <h4>Forme 1</h4>
+        <div class="formula">&lt;A&gt; → m<br><span class="cmt">m ∈ Σ*</span></div>
+      </div>
+      <div class="card">
+        <h4>Forme 2</h4>
+        <div class="formula">&lt;A&gt; → m&lt;B&gt;<br><span class="cmt">m ∈ Σ*, &lt;B&gt; ∈ N</span></div>
+      </div>
+      <div class="card">
+        <h4>Forme 3</h4>
+        <div class="formula">&lt;A&gt; → &lt;B&gt;<br><span class="cmt">&lt;A&gt;,&lt;B&gt; ∈ N</span></div>
+      </div>
+    </div>
+
+    <div class="section-title">Grammaire normalisée</div>
+    <div class="callout info">
+      <span class="callout-icon"><i class="fas fa-compress-arrows-alt"></i></span>
+      <p>Une grammaire est <strong>normalisée</strong> si chaque membre droit est soit <strong>ε</strong>, soit <strong>x</strong> (lettre seule), soit <strong>x&lt;Z&gt;</strong> (lettre + non-terminal). Toute grammaire régulière peut être normalisée sans changer le langage.</p>
+    </div>
+    <div class="formula">
+      <span class="cmt">// Règle non normale → remplacement</span><br>
+      &lt;X&gt; → ab&lt;Z&gt;  devient  :<br>
+      &lt;X&gt; → <span class="var">a</span>&lt;Y&gt;<br>
+      &lt;Y&gt; → <span class="var">b</span>&lt;Z&gt;  <span class="cmt">(ajout du non-terminal &lt;Y&gt;)</span>
+    </div>
+
+    <div class="section-title">Construction grammaire ↔ expression régulière</div>
+    <div class="algo-box">
+      <div class="algo-header">Règles de construction</div>
+      <div class="algo-body">
+        <div class="algo-step">
+          <span class="sn">∅</span>
+          <p>&lt;S&gt; → x&lt;S&gt; (boucle infinie) — génère le <strong>langage vide</strong></p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">λ</span>
+          <p>&lt;S&gt; → ε — génère uniquement <strong>{ε}</strong></p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">x∈Σ</span>
+          <p>&lt;S&gt; → x — génère <strong>{x}</strong></p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">(α|β)</span>
+          <p>Ajouter axiome &lt;S&gt; avec règle &lt;S&gt; → &lt;Sα&gt; | &lt;Sβ&gt; + garder toutes règles de Gα et Gβ</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">αβ</span>
+          <p>Garder &lt;Sα&gt; comme axiome. Remplacer toute règle terminale &lt;X&gt;→u de Gα par &lt;X&gt;→u&lt;Sβ&gt;</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">(α)*</span>
+          <p>Ajouter &lt;S&gt; avec règle &lt;S&gt;→ε|&lt;Sα&gt;. Toute règle terminale &lt;X&gt;→u devient &lt;X&gt;→u&lt;S&gt;</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Raisonnement par états (exemple)</div>
+    <div class="card success">
+      <h4>Mots avec nombre pair de 'a' sur {a,b,c}</h4>
+      <div class="formula">
+        &lt;S&gt; → <span class="sym">ε</span>  <span class="cmt">(0 a : accepté)</span><br>
+        &lt;S&gt; → <span class="var">a</span>&lt;A&gt;  <span class="cmt">(ajoute un a → nb impair)</span><br>
+        &lt;S&gt; → <span class="var">b</span>&lt;S&gt;  <span class="var">c</span>&lt;S&gt;  <span class="cmt">(b ou c : reste pair)</span><br><br>
+        &lt;A&gt; → <span class="var">a</span>&lt;S&gt;  <span class="cmt">(ajoute un a → nb pair)</span><br>
+        &lt;A&gt; → <span class="var">b</span>&lt;A&gt;  <span class="var">c</span>&lt;A&gt;  <span class="cmt">(b ou c : reste impair)</span>
+      </div>
+      <p style="font-size:13px; margin-top:.75rem; color:var(--text2);">Expression régulière : <code style="font-family:var(--mono);color:var(--accent2);">(b | c | a(b|c)*a)*</code></p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH4 — AUTOMATES DE MOORE                       -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter" id="ch4">
+    <div class="chapter-header">
+      <div class="chapter-icon amber"><i class="fas fa-project-diagram"></i></div>
+      <div class="chapter-header-text">
+        <h3>4 — Automates de Moore</h3>
+        <p>Troisième outil : reconnaisseur déterministe de langages réguliers</p>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">Définition — Quintuplet M = (Σ, E, e₀, A, t)</div>
+      <p>Σ = alphabet · E = états (fini non vide) · e₀ = état initial unique · A ⊆ E = états acceptants · t : Σ × E → E = fonction de transition</p>
+    </div>
+
+    <div class="section-title">Propriétés d'un automate de Moore</div>
+    <div class="grid2">
+      <div class="card highlight">
+        <h4>Conditions nécessaires</h4>
+        <ul style="list-style:none; font-size:13px; color:var(--text2);">
+          <li style="padding:.3rem 0; border-bottom:1px solid var(--border);">✓ Un et un seul état initial</li>
+          <li style="padding:.3rem 0;">✓ Pour chaque état et chaque lettre : exactement une flèche</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Langage reconnu</h4>
+        <p style="font-size:13px;">Tous les mots qui, <strong>à partir de e₀</strong>, conduisent par transitions à un <strong>état final acceptant</strong>.</p>
+      </div>
+    </div>
+
+    <div class="section-title">Table de transitions</div>
+    <div class="callout info">
+      <span class="callout-icon"><i class="fas fa-table"></i></span>
+      <p>Table à double entrée : <strong>états en colonnes</strong>, <strong>lettres en lignes</strong>. Chaque case donne l'état d'arrivée. États acceptants mis en évidence (ex: rouge). Flèche ↓ au-dessus de l'état initial.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Σ \ E</th>
+            <th class="accept">↓ 1 (init)</th>
+            <th>2</th>
+            <th class="accept">3 ✓</th>
+            <th class="accept">4 ✓</th>
+            <th>5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>a</td><td>3</td><td>2</td><td>4</td><td>3</td><td>5</td></tr>
+          <tr><td>b</td><td>2</td><td>5</td><td>2</td><td>2</td><td>4</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px; color:var(--text3); margin-top:.5rem;">Exemple : de l'état 1, si lettre 'a' → état 3 (acceptant). Mot <code style="font-family:var(--mono);">ababbaa</code> → termine sur état 4 ✓ : accepté.</p>
+
+    <div class="section-title">Grammaire associée à un automate de Moore</div>
+    <div class="algo-box">
+      <div class="algo-header">Conversion automate → grammaire régulière normalisée</div>
+      <div class="algo-body">
+        <div class="algo-step"><span class="sn">1</span><p>Associer à chaque état i le symbole non terminal <code>&lt;i&gt;</code></p></div>
+        <div class="algo-step"><span class="sn">2</span><p>L'axiome correspond à l'état initial</p></div>
+        <div class="algo-step"><span class="sn">3</span><p>Pour chaque flèche x de i vers j : ajouter <code>&lt;i&gt; → x&lt;j&gt;</code></p></div>
+        <div class="algo-step"><span class="sn">4</span><p>Pour chaque état acceptant i : ajouter <code>&lt;i&gt; → ε</code></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH5 — NDFA                                     -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter" id="ch5">
+    <div class="chapter-header">
+      <div class="chapter-icon pink"><i class="fas fa-random"></i></div>
+      <div class="chapter-header-text">
+        <h3>5 — NDFA (Non Deterministic Finite Automaton)</h3>
+        <p>Automate fini non déterministe — plus souple, souvent plus simple à concevoir</p>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">Définition — Quintuplet M = (Σ, E, I, A, t)</div>
+      <p>Σ = alphabet · E = états · <strong>I ⊆ E = ensemble d'états initiaux</strong> (plusieurs !) · A ⊆ E = états acceptants · t : Σ × E → P(E)</p>
+    </div>
+
+    <div class="section-title">Différences clés avec l'automate de Moore</div>
+    <div class="grid3">
+      <div class="card danger">
+        <h4>Plusieurs états initiaux</h4>
+        <p style="font-size:13px;">I peut contenir plusieurs états (marqués →)</p>
+      </div>
+      <div class="card warning">
+        <h4>Non déterminisme</h4>
+        <p style="font-size:13px;">Depuis un état et une lettre, on peut atteindre <strong>0, 1 ou plusieurs</strong> états.</p>
+      </div>
+      <div class="card teal-card">
+        <h4>Blocage possible</h4>
+        <p style="font-size:13px;">Aucune transition prévue pour certaines configurations : le mot n'est pas reconnu par ce chemin.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-icon"><i class="fas fa-check-circle"></i></span>
+      <p>Un mot est <strong>reconnu</strong> par un NDFA s'il existe <em>au moins un</em> chemin de transitions (parmi tous les chemins possibles) qui mène d'un état initial à un état acceptant.</p>
+    </div>
+
+    <div class="section-title">Table de transitions NDFA</div>
+    <div class="callout warning">
+      <span class="callout-icon"><i class="fas fa-exclamation-triangle"></i></span>
+      <p>Chaque case contient <strong>un ensemble d'états</strong> (possiblement vide : −). Plusieurs flèches ↓ sont possibles. Un automate de Moore est un cas particulier de NDFA où I = {e₀} et chaque case contient exactement un état.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Σ \ E</th><th>↓ 1</th><th class="accept">↓ 2 ✓</th><th>3</th><th>4</th><th class="accept">5 ✓</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>a</td><td>2</td><td>−</td><td>3,4</td><td>2</td><td>4</td></tr>
+          <tr><td>b</td><td>2,3</td><td>1</td><td>−</td><td>5</td><td>4</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH6 — SUBSET CONSTRUCTION                      -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter" id="ch6">
+    <div class="chapter-header">
+      <div class="chapter-icon accent"><i class="fas fa-layer-group"></i></div>
+      <div class="chapter-header-text">
+        <h3>6 — Subset Construction & Opérations</h3>
+        <p>Convertir un NDFA en automate de Moore équivalent</p>
+      </div>
+    </div>
+
+    <div class="def-box">
+      <div class="def-label">Principe</div>
+      <p>Chaque état du nouvel automate de Moore est un <strong>sous-ensemble</strong> des états du NDFA. L'état initial est l'ensemble I des états initiaux du NDFA.</p>
+    </div>
+
+    <div class="algo-box">
+      <div class="algo-header">Algorithme — Subset Construction</div>
+      <div class="algo-body">
+        <div class="algo-step">
+          <span class="sn">1</span>
+          <p>L'état initial de l'automate de Moore = <code>I</code> (ensemble des états initiaux du NDFA). Il est acceptant si I contient un état acceptant.</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">2</span>
+          <p>Pour chaque état D non traité et chaque lettre x : <code>τ(x, D) = ⋃_{e∈D} T(x, e)</code> = tous les états NDFA atteignables depuis D par x.</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">3</span>
+          <p>Un état est acceptant s'il contient au moins un état acceptant du NDFA.</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">4</span>
+          <p>Si aucun état n'est atteignable → créer l'<strong>état poubelle −</strong> (non acceptant, avec boucle sur lui-même pour toute lettre).</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">5</span>
+          <p>Répéter jusqu'à ce que tous les états soient traités. Nombre max d'états : <code>2^|E|</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <span class="callout-icon"><i class="fas fa-exclamation-triangle"></i></span>
+      <p>La subset construction ne produit <strong>pas nécessairement</strong> un automate minimal. Elle donne un automate de Moore correct mais pas forcément optimisé.</p>
+    </div>
+
+    <div class="section-title">Opérations sur les automates</div>
+    <div class="card">
+      <h4>Union L₁ ∪ L₂</h4>
+      <p style="font-size:13px;">Rassembler M₁ et M₂ en un NDFA (deux états initiaux), puis appliquer la subset construction.</p>
+    </div>
+    <div class="card">
+      <h4>Concaténation L₁ • L₂</h4>
+      <ol style="font-size:13px; color:var(--text2); padding-left:1.2rem;">
+        <li style="padding:.2rem 0;">Mettre M₁ et M₂ ensemble</li>
+        <li style="padding:.2rem 0;">Pour toute flèche x de i→j où j est acceptant dans M₁ : ajouter flèche x de i → état initial de M₂</li>
+        <li style="padding:.2rem 0;">Si état initial M₁ non acceptant : retirer état initial M₂ des états initiaux</li>
+        <li style="padding:.2rem 0;">Si état initial M₂ non acceptant : rendre non acceptants tous les états acceptants de M₁</li>
+        <li style="padding:.2rem 0;">Subset construction</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h4>Étoile L*</h4>
+      <ol style="font-size:13px; color:var(--text2); padding-left:1.2rem;">
+        <li style="padding:.2rem 0;">Ajouter un état acceptant eᵢ comme nouvel état initial</li>
+        <li style="padding:.2rem 0;">Pour chaque flèche x de l'ancien état initial vers j : copier x de eᵢ vers j</li>
+        <li style="padding:.2rem 0;">Pour chaque flèche x de i vers un état acceptant j de M : ajouter flèche x de i vers eᵢ</li>
+        <li style="padding:.2rem 0;">Retirer l'ancien état initial des états initiaux</li>
+        <li style="padding:.2rem 0;">Subset construction</li>
+      </ol>
+    </div>
+
+    <div class="section-title">Conversion grammaire → automate de Moore</div>
+    <div class="algo-box">
+      <div class="algo-header">Grammaire régulière normalisée → NDFA → automate de Moore</div>
+      <div class="algo-body">
+        <div class="algo-step"><span class="sn">1</span><p>Pour chaque non-terminal &lt;I&gt; : ajouter un état I au NDFA</p></div>
+        <div class="algo-step"><span class="sn">2</span><p>Axiome = état initial</p></div>
+        <div class="algo-step"><span class="sn">3</span><p>Règle &lt;I&gt;→x&lt;J&gt; : flèche x de I vers J</p></div>
+        <div class="algo-step"><span class="sn">4</span><p>Règle &lt;I&gt;→ε : état I devient acceptant</p></div>
+        <div class="algo-step"><span class="sn">5</span><p>Règle &lt;I&gt;→x (x∈Σ) : flèche x de I vers l'état universel <strong>Ω</strong> (acceptant)</p></div>
+        <div class="algo-step"><span class="sn">6</span><p>Appliquer la subset construction au NDFA obtenu</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH7 — AUTOMATE MINIMAL / MOORE-NERODE          -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter" id="ch7">
+    <div class="chapter-header">
+      <div class="chapter-icon purple"><i class="fas fa-compress-alt"></i></div>
+      <div class="chapter-header-text">
+        <h3>7 — Automate de Moore Minimal (Moore-Nerode)</h3>
+        <p>Fusionner les états équivalents pour obtenir l'automate optimal unique</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon"><i class="fas fa-info-circle"></i></span>
+      <p>Tout langage régulier L est reconnu par <strong>un et un seul automate de Moore minimal</strong> M_L. Si deux automates ont le même nombre d'états et reconnaissent le même langage, ils ne sont pas optimisés.</p>
+    </div>
+
+    <div class="section-title">Algorithme de Moore-Nerode</div>
+    <div class="algo-box">
+      <div class="algo-header">Étapes de l'algorithme</div>
+      <div class="algo-body">
+        <div class="algo-step">
+          <span class="sn">∼₀</span>
+          <p><strong>Étape 0 :</strong> Partition initiale en 2 classes : {états acceptants} et {états non acceptants}.<br>
+          <code>E/∼₀ = { {acceptants}, {non acceptants} }</code></p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">∼ₙ</span>
+          <p><strong>Étape n :</strong> e ∼ₙ f  ssi  e ∼ₙ₋₁ f  ET  pour toute lettre x, les états d'arrivée e₂=t(x,e) et f₂=t(x,f) vérifient e₂ ∼ₙ₋₁ f₂.<br>
+          → Si un état de la même classe donne des destinations dans des classes différentes : <strong>on scinde la classe</strong>.</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">Stop</span>
+          <p><strong>Critère d'arrêt :</strong> On s'arrête quand ∼ₙ = ∼ₙ₋₁ (aucune nouvelle partition).</p>
+        </div>
+        <div class="algo-step">
+          <span class="sn">Fusion</span>
+          <p><strong>Fusion :</strong> États dans la même classe finale → fusionnés en un seul état. Le résultat est acceptant si les états fusionnés l'étaient. Les flèches se redirigent vers l'état fusionné.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">Exemple complet — 8 états (0..7)</div>
+    <div class="card">
+      <h4>Données initiales</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Σ\E</th><th>↓0*</th><th>1*</th><th>2</th><th>3*</th><th>4</th><th>5*</th><th>6</th><th>7</th></tr></thead>
+          <tbody>
+            <tr><td>a</td><td>2</td><td>7</td><td>3</td><td>6</td><td>5</td><td>7</td><td>1</td><td>1</td></tr>
+            <tr><td>b</td><td>4</td><td>6</td><td>4</td><td>5</td><td>2</td><td>5</td><td>6</td><td>6</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px; color:var(--text3);">* = états acceptants (0,1,3,5)</p>
+    </div>
+
+    <div class="card">
+      <h4>Déroulement des partitions</h4>
+      <div style="overflow-x:auto;">
+        <div style="font-family:var(--mono); font-size:12px; color:var(--text2); line-height:2;">
+          <div style="padding:.4rem .5rem; border-bottom:1px solid var(--border);">
+            <span style="color:var(--amber2); font-weight:600;">∼₀</span> : [0,1,3,5] | [2,4,6,7]
+          </div>
+          <div style="padding:.4rem .5rem; border-bottom:1px solid var(--border);">
+            <span style="color:var(--accent2); font-weight:600;">∼₁</span> : [0,1] | [3,5] | [2,4,6,7]  <span style="color:var(--text3);">← {0,1} et {3,5} se séparent car destinations différentes</span>
+          </div>
+          <div style="padding:.4rem .5rem; border-bottom:1px solid var(--border);">
+            <span style="color:var(--teal2); font-weight:600;">∼₂</span> : [0,1] | [3,5] | [2,4] | [6,7]  <span style="color:var(--text3);">← [2,4,6,7] se scinde</span>
+          </div>
+          <div style="padding:.4rem .5rem; border-bottom:1px solid var(--border);">
+            <span style="color:var(--green2); font-weight:600;">∼₃</span> : [0] | [1] | [3,5] | [2,4] | [6,7]  <span style="color:var(--text3);">← [0,1] se scinde</span>
+          </div>
+          <div style="padding:.4rem .5rem;">
+            <span style="color:var(--green2); font-weight:600;">∼₄</span> = ∼₃ → <span style="color:var(--green2);">ARRÊT !</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card success">
+      <h4>Résultat — États fusionnés</h4>
+      <div class="tags">
+        <span class="tag accent">{0} → état 0 (init, accept.)</span>
+        <span class="tag accent">{1} → état 1 (accept.)</span>
+        <span class="tag teal">{3,5} → état 3 (accept.)</span>
+        <span class="tag teal">{2,4} → état 2 (accept.)</span>
+        <span class="tag green">{6,7} → état 6 (accept.)</span>
+      </div>
+      <p style="font-size:13px; margin-top:.75rem; color:var(--text2);">8 états → <strong>5 états</strong> dans l'automate optimisé.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- CH8 — ÉQUIVALENCE GLOBALE                       -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <section class="chapter" id="ch8">
+    <div class="chapter-header">
+      <div class="chapter-icon teal"><i class="fas fa-exchange-alt"></i></div>
+      <div class="chapter-header-text">
+        <h3>8 — Théorème d'Équivalence Globale</h3>
+        <p>Les cinq outils décrivent exactement la même classe de langages</p>
+      </div>
+    </div>
+
+    <div class="conclusion">
+      <h4>Théorème central</h4>
+      <ul>
+        <li>associé à une <strong>expression régulière</strong></li>
+        <li>engendré par une <strong>grammaire régulière</strong></li>
+        <li>engendré par une <strong>grammaire régulière normalisée</strong></li>
+        <li>reconnu par un <strong>automate de Moore</strong></li>
+        <li>reconnu par un <strong>NDFA</strong></li>
+      </ul>
+    </div>
+
+    <div class="equiv-chain">
+      <div class="equiv-box">Expr. Régulière</div>
+      <span class="equiv-arr">⟺</span>
+      <div class="equiv-box">Grammaire Rég.</div>
+      <span class="equiv-arr">⟺</span>
+      <div class="equiv-box">Grammaire Norm.</div>
+      <span class="equiv-arr">⟺</span>
+      <div class="equiv-box">Automate Moore</div>
+      <span class="equiv-arr">⟺</span>
+      <div class="equiv-box">NDFA</div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-icon"><i class="fas fa-times-circle"></i></span>
+      <p>Il existe des langages <strong>non réguliers</strong> ! Exemple : le langage des mots avec le même nombre de 'a' et de 'b' sur {a,b} n'est pas régulier (il faudrait une infinité d'états pour mémoriser la différence courante).</p>
+    </div>
+
+    <div class="section-title">Tableau récapitulatif des conversions</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>De</th><th>Vers</th><th>Méthode</th></tr></thead>
+        <tbody>
+          <tr><td>Expression régulière</td><td>Grammaire régulière</td><td class="accent-cell">Construction inductive (6 règles)</td></tr>
+          <tr><td>Grammaire régulière</td><td>Grammaire normalisée</td><td class="accent-cell">Décomposition des règles longues</td></tr>
+          <tr><td>Grammaire normalisée</td><td>NDFA</td><td class="accent-cell">États = non-terminaux + état Ω</td></tr>
+          <tr><td>NDFA</td><td>Automate de Moore</td><td class="accent-cell">Subset construction</td></tr>
+          <tr><td>Automate de Moore</td><td>Grammaire normalisée</td><td class="accent-cell">État i → &lt;i&gt;, flèche → règle</td></tr>
+          <tr><td>Automate de Moore</td><td>Automate minimal</td><td class="accent-cell">Algorithme de Moore-Nerode</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function show(id, btn) {
+    document.querySelectorAll('.chapter').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

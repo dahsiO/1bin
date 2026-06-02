@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths 2 — Relations Binaires</title>
+<style>
+  :root {
+    --accent: #185FA5;
+    --accent-light: #E6F1FB;
+    --accent-mid: #378ADD;
+    --accent-dark: #0C447C;
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --red: #993C1D;
+    --red-light: #FAECE7;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --purple: #533AB7;
+    --purple-light: #EEEDFE;
+    --bg: #f8f7f4;
+    --card: #ffffff;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.18);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #0C447C 0%, #185FA5 60%, #378ADD 100%);
+    color: white;
+    padding: 36px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .header-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    opacity: .7;
+    margin-bottom: 8px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  header p {
+    font-size: 13px;
+    opacity: .75;
+    position: relative;
+  }
+  .chapter-badge {
+    position: absolute;
+    top: 28px; right: 40px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  /* ── TAB NAV ── */
+  .tab-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  }
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .18s;
+  }
+  .tab-btn:hover { background: var(--accent-light); color: var(--accent); }
+  .tab-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent-dark);
+    box-shadow: 0 2px 8px rgba(24,95,165,0.25);
+  }
+  .tab-btn .num {
+    font-size: 10px;
+    font-weight: 700;
+    opacity: .7;
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 1px 6px;
+  }
+  .tab-btn:not(.active) .num {
+    background: var(--border);
+    color: var(--text-muted);
+    opacity: 1;
+  }
+
+  /* ── SECTIONS ── */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn .2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .section-header {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-header .icon {
+    width: 36px; height: 36px;
+    background: var(--accent-light);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── DEF BOX ── */
+  .def-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent-mid);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 18px;
+    margin: 12px 0;
+  }
+  .def-box .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .def-box p { font-size: 13.5px; }
+  .def-box p + p { margin-top: 6px; }
+
+  /* ── FORMULA ── */
+  .formula {
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 13px;
+    background: #f0f4f8;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin: 8px 0;
+    display: block;
+    color: #1a3a5c;
+  }
+  .formula-sm {
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 12px;
+    background: #f0f4f8;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 5px 10px;
+    display: block;
+    margin: 5px 0;
+    color: #1a3a5c;
+  }
+
+  /* ── PROP CARDS ── */
+  .prop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 12px; margin: 14px 0; }
+  .prop-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .prop-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .prop-card .memo { font-size: 12px; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
+  .prop-card.refl { border-top: 3px solid var(--green); }
+  .prop-card.refl h3 { color: var(--green); }
+  .prop-card.antirefl { border-top: 3px solid var(--red); }
+  .prop-card.antirefl h3 { color: var(--red); }
+  .prop-card.sym { border-top: 3px solid var(--accent); }
+  .prop-card.sym h3 { color: var(--accent); }
+  .prop-card.antisym { border-top: 3px solid var(--amber); }
+  .prop-card.antisym h3 { color: var(--amber); }
+  .prop-card.trans { border-top: 3px solid var(--purple); }
+  .prop-card.trans h3 { color: var(--purple); }
+
+  /* ── ALERTS ── */
+  .warning {
+    background: var(--amber-light);
+    border-left: 4px solid #EF9F27;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+  .tip {
+    background: var(--green-light);
+    border-left: 4px solid #1D9E75;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+  .info {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent-mid);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 13px;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; margin: 12px 0; border-radius: var(--radius); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--card); }
+  thead { background: #f0f4f8; }
+  th { padding: 10px 12px; text-align: left; font-weight: 600; color: var(--text); border-bottom: 2px solid var(--border-strong); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--accent-light); }
+  td.yes { color: var(--green); font-weight: 700; }
+  td.no { color: var(--red); font-weight: 700; }
+
+  /* ── OP GRID ── */
+  .op-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 12px 0; }
+  .op-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .op-card h3 { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+  .op-card p { font-size: 12.5px; color: var(--text-muted); }
+
+  /* ── ALGO ── */
+  .algo-block {
+    background: #1a2332;
+    color: #c9d8ea;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 2;
+    margin: 12px 0;
+    overflow-x: auto;
+  }
+  .algo-block .kw { color: #6ab0f5; font-weight: 700; }
+  .algo-block .cm { color: #6a9153; font-style: italic; }
+  .algo-block .op { color: #e6c07b; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; margin: 10px 0; }
+  .checklist li {
+    font-size: 13.5px;
+    padding: 5px 0 5px 22px;
+    position: relative;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before { content: "→"; position: absolute; left: 0; color: var(--accent-mid); font-weight: 700; }
+
+  /* ── BADGE ── */
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; margin: 3px; }
+  .badge.ok { background: var(--green-light); color: var(--green); border: 1px solid #9FE1CB; }
+  .badge.no { background: var(--red-light); color: var(--red); border: 1px solid #F5C4B3; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  .progress-seg {
+    height: 4px;
+    flex: 1;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background .3s;
+  }
+  .progress-seg.done { background: var(--accent); }
+
+  @media (max-width: 600px) {
+    header { padding: 24px 20px 20px; }
+    header h1 { font-size: 20px; }
+    .chapter-badge { display: none; }
+    .container { padding: 20px 14px; }
+    .tab-btn { font-size: 12px; padding: 6px 10px; }
+  }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 20px;
+    flex-wrap: wrap;
+  }
+  .ch-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .ch-link:hover { background: var(--accent-light); color: var(--accent); }
+  .ch-link.active { background: var(--accent); color: white; }
+  .ch-num { font-size: 10px; font-weight: 700; opacity: .6; }
+  .ch-sep { width: 1px; height: 18px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+  .ch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .ch-arrow:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Maths 2 — HE Vinci / ULB</div>
+  <h1>Relations Binaires</h1>
+  <p>Définitions · Propriétés · Clôtures · Opérations · Warshall</p>
+  <div class="chapter-badge">Chapitre 1 / 8</div>
+</header>
+
+<nav class="chapter-nav">
+  <a class="ch-link active" href="ch01_relations_binaires.html"><span class="ch-num">01</span> Relations Binaires</a>
+  <a class="ch-link" href="ch02_relations_ordre.html"><span class="ch-num">02</span> Relations d'Ordre</a>
+  <a class="ch-link" href="ch03_relations_equivalence.html"><span class="ch-num">03</span> Relations d'Équivalence</a>
+  <a class="ch-link" href="ch04_matrices.html"><span class="ch-num">04</span> Les Matrices</a>
+  <a class="ch-link" href="ch05_systemes_lineaires_v2.html"><span class="ch-num">05</span> Systèmes linéaires</a>
+  <a class="ch-link" href="ch06_markov.html"><span class="ch-num">06</span> Markov</a>
+  <a class="ch-link" href="ch07_langages_formels.html"><span class="ch-num">07</span> Langages formels</a>
+  <div class="ch-sep"></div>
+  <a class="ch-arrow" href="ch02_relations_ordre.html">Suivant →</a>
+</nav>
+
+<div class="container">
+
+  <!-- Progress -->
+  <div class="progress-bar">
+    <div class="progress-seg done"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+  </div>
+
+  <!-- Tab nav -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="show('bases', this)"><span class="num">1</span> Bases</button>
+    <button class="tab-btn" onclick="show('props', this)"><span class="num">2</span> Propriétés</button>
+    <button class="tab-btn" onclick="show('checkup', this)"><span class="num">3</span> Check-up</button>
+    <button class="tab-btn" onclick="show('clotures', this)"><span class="num">4</span> Clôtures</button>
+    <button class="tab-btn" onclick="show('ops', this)"><span class="num">5</span> Opérations</button>
+    <button class="tab-btn" onclick="show('chemins', this)"><span class="num">6</span> Chemins & R⁺</button>
+    <button class="tab-btn" onclick="show('warshall', this)"><span class="num">7</span> Warshall</button>
+  </nav>
+
+  <!-- ── SECTION 1 : BASES ── -->
+  <div id="bases" class="section active">
+    <div class="section-header">
+      <div class="icon">📐</div>
+      Définitions de base
+    </div>
+
+    <div class="def-box">
+      <div class="label">Couple</div>
+      <p>Un couple <strong>(a, b)</strong> est une paire ordonnée. Ordonné signifie que l'ordre compte :</p>
+      <span class="formula">(a ≠ b)  ⟹  (a, b) ≠ (b, a)</span>
+      <span class="formula">(a, b) = (c, d)  ⟺  a = c  ∧  b = d</span>
+      <p>Un couple <em>identique</em> est de la forme (a, a).</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Produit cartésien</div>
+      <p>A × B = { (a, b) | a ∈ A ∧ b ∈ B } — tous les couples possibles.</p>
+      <span class="formula">|A × B| = |A| · |B|</span>
+      <p>Notation raccourcie : A × A = A²</p>
+      <p style="margin-top:8px"><em>Exemple :</em> A = {1,2}, B = {a,b,c} → A×B = {(1,a),(1,b),(1,c),(2,a),(2,b),(2,c)}, |A×B| = 6</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Relation binaire</div>
+      <p><strong>R est une relation de A vers B</strong> si et seulement si <strong>R ⊆ A × B</strong>.</p>
+      <p>A = ensemble de départ · B = ensemble d'arrivée.</p>
+      <p style="margin-top:6px">Notation infixe : <code>a R b</code> au lieu de (a, b) ∈ R.</p>
+      <p style="margin-top:6px">Cas particulier : si R est une relation de A vers A, on dit que R est une <strong>relation sur A</strong>.</p>
+    </div>
+
+    <div class="def-box">
+      <div class="label">Relation identité 1ₐ</div>
+      <p>1ₐ = { (a, a) | a ∈ A } — chaque élément mis en relation avec lui-même.</p>
+      <span class="formula">(x, y) ∈ 1ₐ  ⟺  x = y</span>
+    </div>
+
+    <div class="def-box" style="margin-top:16px">
+      <div class="label">Domaine & Image</div>
+      <p><strong>Dom(R)</strong> = { a ∈ A | ∃ b ∈ B : (a,b) ∈ R } — éléments de départ qui ont au moins une image.</p>
+      <p><strong>Im(R)</strong> = { b ∈ B | ∃ a ∈ A : (a,b) ∈ R } — éléments d'arrivée qui ont au moins un antécédent.</p>
+    </div>
+
+    <p style="font-size:14px; font-weight:700; margin:20px 0 10px; color:var(--text)">Représentations</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Description</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Sagittale</strong></td><td>2 ovales (A et B) reliés par des flèches a → b pour chaque (a,b) ∈ R</td><td>Relations A→B</td></tr>
+          <tr><td><strong>Matricielle</strong></td><td>Matrice lignes=A, colonnes=B. M[a][b] = 1 si (a,b) ∈ R, 0 sinon</td><td>Relations A→B</td></tr>
+          <tr><td><strong>Digraphe</strong></td><td>Un seul ensemble de sommets (relation sur A). Flèches = paires de R. Boucles si (a,a) ∈ R</td><td>Relations sur A</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2 : PROPRIÉTÉS ── -->
+  <div id="props" class="section">
+    <div class="section-header">
+      <div class="icon">🔍</div>
+      5 propriétés des relations sur un ensemble
+    </div>
+
+    <div class="info">Ces 5 propriétés ne s'appliquent qu'aux relations sur un seul ensemble E (R ⊆ E²).</div>
+
+    <div class="prop-grid">
+      <div class="prop-card refl">
+        <h3>♻ Réflexivité</h3>
+        <span class="formula-sm">∀x ∈ E : x R x</span>
+        <span class="formula-sm">⟺  1ₑ ⊆ R</span>
+        <p class="memo"><strong>Digraphe :</strong> TOUS les éléments ont une boucle.</p>
+        <p class="memo"><strong>Prouver :</strong> montrer x R x vrai ∀x. <strong>Réfuter :</strong> trouver x tel que x R x est faux.</p>
+        <p class="memo"><em>Ex. "est multiple de" sur ℕ : n est multiple de n ✓</em></p>
+      </div>
+
+      <div class="prop-card antirefl">
+        <h3>⊘ Antiréflexivité</h3>
+        <span class="formula-sm">∀x ∈ E : ¬(x R x)</span>
+        <span class="formula-sm">⟺  1ₑ ∩ R = ∅</span>
+        <p class="memo"><strong>Digraphe :</strong> AUCUN élément n'a de boucle.</p>
+        <p class="memo"><strong>Prouver :</strong> x R x faux ∀x. <strong>Réfuter :</strong> trouver x tel que x R x est vrai.</p>
+        <p class="memo"><em>Ex. "strictement inférieur" sur ℕ : n &lt; n est toujours faux ✓</em></p>
+      </div>
+
+      <div class="prop-card sym">
+        <h3>↔ Symétrie</h3>
+        <span class="formula-sm">∀x,y ∈ E : x R y  ⟹  y R x</span>
+        <span class="formula-sm">⟺  R = R⁻¹</span>
+        <p class="memo"><strong>Digraphe :</strong> que des boucles et des doubles flèches — aucune flèche simple.</p>
+        <p class="memo"><strong>Prouver :</strong> supposer xRy, montrer yRx. <strong>Réfuter :</strong> trouver x,y tels que xRy mais ¬(yRx).</p>
+        <p class="memo"><em>Ex. "est frère ou sœur de" ✓</em></p>
+      </div>
+
+      <div class="prop-card antisym">
+        <h3>→ Antisymétrie</h3>
+        <span class="formula-sm">∀x,y ∈ E : (x R y) ∧ (x≠y)  ⟹  ¬(y R x)</span>
+        <span class="formula-sm">⟺  R ∩ R⁻¹ ⊆ 1ₑ</span>
+        <p class="memo"><strong>Digraphe :</strong> aucune double flèche — que des boucles et flèches simples.</p>
+        <p class="memo"><strong>Prouver :</strong> supposer xRy et x≠y, montrer ¬(yRx). <strong>Réfuter :</strong> trouver x≠y tels que xRy ET yRx.</p>
+        <p class="memo"><em>Ex. "divise" sur ℕ₀ ✓</em></p>
+      </div>
+
+      <div class="prop-card trans">
+        <h3>⤳ Transitivité</h3>
+        <span class="formula-sm">∀x,y,z ∈ E : (x R y) ∧ (y R z)  ⟹  (x R z)</span>
+        <span class="formula-sm">⟺  R ∘ R ⊆ R</span>
+        <p class="memo"><strong>Digraphe :</strong> si chemin e1→e3→e2 alors flèche e1→e2 doit exister.</p>
+        <p class="memo"><strong>Prouver :</strong> supposer xRy et yRz, montrer xRz. <strong>Réfuter :</strong> trouver x,y,z tels que xRy, yRz mais ¬(xRz).</p>
+        <p class="memo"><em>Ex. "est ancêtre de" ✓</em></p>
+      </div>
+    </div>
+
+    <div class="warning">
+      ⚠ <strong>Pièges classiques :</strong> non-réflexive ≠ antiréflexive · non-symétrique ≠ antisymétrique. Une relation peut n'être ni l'une ni l'autre, ou être les deux à la fois. Toujours vérifier les 5 propriétés indépendamment.
+    </div>
+
+    <div class="tip" style="margin-top:10px">
+      ✓ <strong>Récapitulatif opérationnel :</strong> Antiréflexive ⟺ 1ₑ ∩ R = ∅ · Symétrique ⟺ R = R⁻¹ · Antisymétrique ⟺ R ∩ R⁻¹ ⊆ 1ₑ · Transitive ⟺ R ∘ R ⊆ R
+    </div>
+  </div>
+
+  <!-- ── SECTION 3 : CHECK-UP ── -->
+  <div id="checkup" class="section">
+    <div class="section-header">
+      <div class="icon">✅</div>
+      Méthode check-up complète
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Propriété</th>
+            <th>Digraphe — OUI si...</th>
+            <th>Définition — comment prouver</th>
+            <th>Réfuter en trouvant...</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--green)">Réflexive</strong></td>
+            <td>Tous les sommets ont une boucle</td>
+            <td>Prendre y = x et vérifier x R x ∀x</td>
+            <td>Un x ∈ E tel que (x,x) ∉ R</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--red)">Antiréflexive</strong></td>
+            <td>Aucun sommet n'a de boucle</td>
+            <td>Vérifier que x R x est faux ∀x</td>
+            <td>Un x ∈ E tel que (x,x) ∈ R</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--accent)">Symétrique</strong></td>
+            <td>Que des boucles et doubles flèches</td>
+            <td>Supposer xRy, montrer yRx</td>
+            <td>x,y tels que xRy mais ¬(yRx)</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--amber)">Antisymétrique</strong></td>
+            <td>Aucune double flèche</td>
+            <td>Supposer xRy et x≠y, montrer ¬(yRx)</td>
+            <td>x≠y tels que xRy ET yRx</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--purple)">Transitive</strong></td>
+            <td>Tout chemin en 2 étapes a son raccourci direct</td>
+            <td>Supposer xRy et yRz, montrer xRz</td>
+            <td>x,y,z tels que xRy, yRz mais ¬(xRz)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:14px; font-weight:700; margin:20px 0 10px;">Exemple complet — R : |x − y| ≤ 4 sur ℤ</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Propriété</th><th>Résultat</th><th>Justification</th></tr></thead>
+        <tbody>
+          <tr><td>Réflexive</td><td class="yes">OUI</td><td>|x − x| = 0 ≤ 4 ∀x ✓</td></tr>
+          <tr><td>Antiréflexive</td><td class="no">NON</td><td>(4,4) ∈ R car |4−4| = 0 ≤ 4</td></tr>
+          <tr><td>Symétrique</td><td class="yes">OUI</td><td>|y − x| = |x − y| → si xRy alors yRx ✓</td></tr>
+          <tr><td>Antisymétrique</td><td class="no">NON</td><td>5R3 et 3R5 (|5−3|=2≤4) mais 5 ≠ 3</td></tr>
+          <tr><td>Transitive</td><td class="no">NON</td><td>1R3 et 3R6 mais |1−6|=5 > 4 → 1 ¬R 6</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:14px; font-weight:700; margin:20px 0 10px;">Exemple sur digraphe — x R y ⟺ (x − y) mod 2 = 0 sur ℕ</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Propriété</th><th>Résultat</th><th>Justification</th></tr></thead>
+        <tbody>
+          <tr><td>Réflexive</td><td class="yes">OUI</td><td>(x − x) mod 2 = 0 ✓</td></tr>
+          <tr><td>Antiréflexive</td><td class="no">NON</td><td>(0,0) ∈ R</td></tr>
+          <tr><td>Symétrique</td><td class="yes">OUI</td><td>(y−x) mod 2 = (−(x−y)) mod 2 = 0 ✓</td></tr>
+          <tr><td>Antisymétrique</td><td class="no">NON</td><td>0R2 et 2R0, 0≠2</td></tr>
+          <tr><td>Transitive</td><td class="yes">OUI</td><td>(x−z) = (x−y)+(y−z) → somme de deux multiples de 2 ✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4 : CLÔTURES ── -->
+  <div id="clotures" class="section">
+    <div class="section-header">
+      <div class="icon">🔒</div>
+      Clôtures
+    </div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p><strong>Clôturer R pour une propriété p</strong> = ajouter le minimum de couples pour que R acquière p.</p>
+      <p>La clôture est <strong>unique</strong>. On ne peut qu'<strong>ajouter</strong> des flèches, jamais en retirer.</p>
+    </div>
+
+    <div style="margin:14px 0;">
+      <span class="badge ok">✓ Clôture réflexive possible</span>
+      <span class="badge ok">✓ Clôture symétrique possible</span>
+      <span class="badge ok">✓ Clôture transitive possible</span>
+      <span class="badge no">✗ Clôture antiréflexive impossible</span>
+      <span class="badge no">✗ Clôture antisymétrique impossible</span>
+    </div>
+    <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px">
+      Antiréflexive et antisymétrique nécessitent de <em>retirer</em> des flèches (boucles / doubles flèches) → impossible comme clôture.
+    </p>
+
+    <div class="prop-grid">
+      <div class="prop-card refl">
+        <h3>Clôture réflexive</h3>
+        <span class="formula-sm">R ∪ 1ₑ</span>
+        <p class="memo">Ajouter une boucle (x,x) sur chaque élément x qui n'en a pas encore.</p>
+      </div>
+      <div class="prop-card sym">
+        <h3>Clôture symétrique</h3>
+        <span class="formula-sm">R ∪ R⁻¹</span>
+        <p class="memo">Pour chaque flèche simple a → b, ajouter b → a.</p>
+      </div>
+      <div class="prop-card trans">
+        <h3>Clôture transitive</h3>
+        <span class="formula-sm">R⁺  (calculée par Warshall)</span>
+        <p class="memo">Pour tout chemin a → ⋯ → b, ajouter la flèche directe a → b.</p>
+      </div>
+    </div>
+
+    <div class="warning" style="margin-top:14px">
+      ⚠ <strong>L'ordre des clôtures successives est important !</strong><br>
+      Clôture symétrique puis transitive ≠ Clôture transitive puis symétrique.<br>
+      <em>La clôture sym. suivie de la clôture trans. donne une relation transitive. L'inverse pas nécessairement.</em>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5 : OPÉRATIONS ── -->
+  <div id="ops" class="section">
+    <div class="section-header">
+      <div class="icon">⚙️</div>
+      Opérations sur les relations
+    </div>
+
+    <div class="op-grid">
+      <div class="op-card">
+        <h3>↩ Réciproque R⁻¹</h3>
+        <p>x R⁻¹ y  ⟺  y R x<br>Inverser le sens de toutes les flèches. R⁻¹ ⊆ B × A.</p>
+        <span class="formula-sm">Symétrique ⟺ R = R⁻¹</span>
+      </div>
+      <div class="op-card">
+        <h3>⊘ Complémentaire R̄</h3>
+        <p>x R̄ y  ⟺  ¬(x R y)<br>Flèche dans R̄ ssi pas de flèche dans R. R̄ ⊆ A × B.</p>
+      </div>
+      <div class="op-card">
+        <h3>∪ Union R ∪ S</h3>
+        <p>x (R∪S) y  ⟺  x R y ∨ x S y<br>Même ensemble de départ et d'arrivée requis.</p>
+      </div>
+      <div class="op-card">
+        <h3>∩ Intersection R ∩ S</h3>
+        <p>x (R∩S) y  ⟺  x R y ∧ x S y<br>Flèche présente dans les deux relations.</p>
+      </div>
+    </div>
+
+    <div class="def-box" style="margin-top:14px; border-left-color:var(--purple)">
+      <div class="label" style="color:var(--purple)">Composée S ∘ R</div>
+      <p>R de A vers B · S de B vers C. L'ensemble d'arrivée de R = ensemble de départ de S.</p>
+      <span class="formula">x (S ∘ R) y  ⟺  ∃z ∈ B : (x R z)  ∧  (z S y)</span>
+      <p>Se lit "R puis S". S ∘ R ⊆ A × C.</p>
+      <p style="margin-top:6px"><strong>Exemple concret :</strong> M = "est mère de", P = "est père de" sur les humains :</p>
+      <ul style="font-size:13px; margin:6px 0 0 18px; line-height:1.8">
+        <li>M ∪ P = "est parent de"</li>
+        <li>M ∘ P = "est grand-père maternel de" (∃z : x est père de z et z est mère de y)</li>
+      </ul>
+    </div>
+
+    <div class="warning">
+      ⚠ <strong>Pas commutative :</strong> S ∘ R ≠ R ∘ S en général.<br>
+      <strong>Neutre :</strong> 1ᴮ ∘ R = R = R ∘ 1ᴬ (les identités sont neutres pour ∘).<br>
+      <strong>Attention :</strong> R⁻¹ ∘ R ≠ 1ᴬ et R ∘ R⁻¹ ≠ 1ᴮ en général.
+    </div>
+
+    <div class="tip" style="margin-top:10px">
+      <strong>Propriétés reformulées avec les opérations :</strong><br>
+      Antiréflexive ⟺ 1ₑ ∩ R = ∅ &nbsp;·&nbsp;
+      Symétrique ⟺ R = R⁻¹ &nbsp;·&nbsp;
+      Antisymétrique ⟺ R ∩ R⁻¹ ⊆ 1ₑ &nbsp;·&nbsp;
+      Transitive ⟺ R ∘ R ⊆ R
+    </div>
+  </div>
+
+  <!-- ── SECTION 6 : CHEMINS ── -->
+  <div id="chemins" class="section">
+    <div class="section-header">
+      <div class="icon">🛤️</div>
+      Chemins dans un digraphe &amp; puissances de relation
+    </div>
+
+    <div class="def-box">
+      <div class="label">Vocabulaire digraphe</div>
+      <p><strong>Sommet</strong> = nœud (élément de E) · <strong>Arête</strong> = flèche (paire (x,y) ∈ R).</p>
+      <p><strong>Chemin de x à y</strong> : séquence d'arêtes consécutives, de x à y.</p>
+      <p><strong>Cycle</strong> : chemin de x à x (l'origine = l'extrémité).</p>
+      <p><strong>Longueur</strong> : nombre d'arêtes du chemin.</p>
+      <p><strong>Chemin hamiltonien</strong> : chemin sans cycle intérieur. Longueur max dans un digraphe à n sommets = n.</p>
+    </div>
+
+    <div class="def-box" style="margin-top:12px">
+      <div class="label">Puissance d'une relation R^k</div>
+      <span class="formula">R⁰ = 1ₑ</span>
+      <span class="formula">R^k = R^(k-1) ∘ R  =  R composée k fois</span>
+      <p><strong>Interprétation :</strong> x R^k y  ⟺  il existe un R-chemin de longueur k de x à y.</p>
+      <p style="margin-top:6px"><strong>Propriétés algébriques :</strong></p>
+      <span class="formula">R^n ∘ R^p = R^(n+p)      (R^k)^n = R^(k·n)</span>
+    </div>
+
+    <div class="def-box" style="margin-top:12px; border-left-color:var(--purple)">
+      <div class="label" style="color:var(--purple)">Fermeture transitive R⁺</div>
+      <p>x R⁺ y  ⟺  il existe un R-chemin (de n'importe quelle longueur > 0) de x à y.</p>
+      <span class="formula">R⁺ = R¹ ∪ R² ∪ … ∪ Rⁿ    (si |E| = n)</span>
+      <p style="margin-top:6px">Calculer R⁺ = faire la <strong>clôture transitive</strong> de R.</p>
+      <p>⚠ R⁺ n'inclut pas R⁰ = 1ₑ (pas nécessairement de boucle sur chaque sommet).</p>
+    </div>
+
+    <div class="warning" style="margin-top:12px">
+      <strong>Algorithme naïf pour R⁺ : O(n⁴)</strong><br>
+      Calculer R¹, R², …, Rⁿ et les unir. Chaque composée est O(n³), répétée n fois → O(n⁴). Inefficace ! On utilise Warshall : O(n³).
+    </div>
+
+    <div class="algo-block" style="margin-top:12px">
+      <span class="cm">// Algorithme naïf O(n⁴) — pour comprendre, pas pour utiliser</span><br>
+      R⁺ = ∅ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ R⁺ vide au départ</span><br>
+      Rk = 1ₑ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ initialisation à R⁰</span><br>
+      <span class="kw">pour</span> k = 1 <span class="kw">à</span> n :<br>
+      &nbsp;&nbsp;Rk = Rk ∘ R &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ calcul de R^k</span><br>
+      &nbsp;&nbsp;R⁺ = R⁺ ∪ Rk &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ ajout de R^k</span><br>
+      <span class="kw">fin-pour</span>
+    </div>
+  </div>
+
+  <!-- ── SECTION 7 : WARSHALL ── -->
+  <div id="warshall" class="section">
+    <div class="section-header">
+      <div class="icon">🧮</div>
+      Algorithme de Warshall — O(n³)
+    </div>
+
+    <div class="def-box">
+      <div class="label">Relations de Warshall Rk</div>
+      <p>Soit R sur E = {1, 2, …, n}. On définit :</p>
+      <span class="formula">x Rk y  ⟺  ∃ R-chemin de x à y dont tous les sommets intérieurs ∈ {1, …, k}</span>
+      <p style="margin-top:6px">
+        <strong>R₀ = R</strong> (chemins directs = longueur 1, sommets intérieurs dans ∅)<br>
+        <strong>Rn = R⁺</strong> (n'importe quel chemin, sommets intérieurs dans E entier)<br>
+        <strong>Rk₋₁ ⊆ Rk</strong> (on ajoute au fur et à mesure)
+      </p>
+    </div>
+
+    <div class="def-box" style="margin-top:10px; border-left-color:var(--purple)">
+      <div class="label" style="color:var(--purple)">Propriété récurrente — clé de l'algorithme</div>
+      <span class="formula">a Rk b  ⟺  (a Rk₋₁ b)  ∨  ((a Rk₋₁ k)  ∧  (k Rk₋₁ b))</span>
+      <p style="margin-top:6px; font-size:13px">
+        Il existe un chemin a → b via sommets ≤ k, soit parce qu'il existait déjà sans passer par k, soit parce que a peut atteindre k (a→k existe) ET k peut atteindre b (k→b existe).
+      </p>
+    </div>
+
+    <p style="font-size:14px; font-weight:700; margin:18px 0 10px;">Algorithme complet</p>
+
+    <div class="algo-block">
+      R⁺ = R &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ initialisation à R₀</span><br>
+      <br>
+      <span class="kw">pour</span> k = 1 <span class="kw">à</span> n <span class="kw">faire</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ on traite chaque sommet k</span><br>
+      &nbsp;&nbsp;<span class="kw">pour</span> i = 1 <span class="kw">à</span> n <span class="kw">faire</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">si</span> <span class="op">(i, k) ∈ R⁺</span> <span class="kw">alors</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ flèche arrivant à k</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">pour</span> j = 1 <span class="kw">à</span> n <span class="kw">faire</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">si</span> <span class="op">(k, j) ∈ R⁺</span> <span class="kw">alors</span> &nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">→ flèche partant de k</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ajouter <span class="op">(i, j)</span> à R⁺ &nbsp;&nbsp;<span class="cm">→ chemin i → k → j</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">fin-si</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">fin-pour</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">fin-si</span><br>
+      &nbsp;&nbsp;<span class="kw">fin-pour</span><br>
+      <span class="kw">fin-pour</span><br>
+      <br>
+      <span class="cm">→ Complexité : O(n²) par étape × n étapes = O(n³)</span>
+    </div>
+
+    <p style="font-size:14px; font-weight:700; margin:18px 0 10px;">Méthode manuelle — étape k</p>
+
+    <ul class="checklist">
+      <li>Partir de Rk₋₁ (ou de R pour k=1)</li>
+      <li>Repérer toutes les flèches <strong>arrivant à k</strong> (les "i" tels que (i,k) ∈ R⁺)</li>
+      <li>Repérer toutes les flèches <strong>partant de k</strong> (les "j" tels que (k,j) ∈ R⁺)</li>
+      <li>Pour chaque paire (i, j) : ajouter la flèche i → j si elle n'existe pas encore</li>
+      <li>Si aucune flèche ne part de k OU n'arrive à k → Rk = Rk₋₁ (rien à ajouter)</li>
+    </ul>
+
+    <div class="tip" style="margin-top:14px">
+      <strong>Exemple — E = {2,3,6,7,8,12}, ordre choisi : 7,3,6,2,12,8</strong><br>
+      Étape 7 : 3→7→2 → ajouter (3,2) · Étape 3 : 2→3→{7,6,2,12} → ajouter 4 flèches · Étape 6 : aucune flèche ne part de 6 → R₃=R₂ · Étape 2 : 7→2→{7,3,6,12} → ajouter 4 flèches · Étape 12 : 8→12→6 → ajouter (8,6) · Étape 8 : aucune flèche n'arrive à 8 → R₆=R₅.
+    </div>
+
+    <div class="warning">
+      ⚠ L'ordre des sommets choisi pour k peut varier librement. Le résultat final R⁺ est toujours le même, quel que soit l'ordre choisi.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Maths 2 — Relations Binaires · HE Vinci / ULB · Synthèse de révision · Chapitre 1/8
+</footer>
+
+<script>
+  function show(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

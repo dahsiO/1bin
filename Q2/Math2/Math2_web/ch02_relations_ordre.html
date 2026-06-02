@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths 2 — Relations d'Ordre</title>
+<style>
+  :root {
+    --accent: #0F6E56;
+    --accent-light: #E1F5EE;
+    --accent-mid: #1D9E75;
+    --accent-dark: #085041;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --red: #993C1D;
+    --red-light: #FAECE7;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --purple: #533AB7;
+    --purple-light: #EEEDFE;
+    --bg: #f7f9f8;
+    --card: #ffffff;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --border: rgba(0,0,0,0.09);
+    --border-strong: rgba(0,0,0,0.16);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.65; }
+
+  header {
+    background: linear-gradient(135deg, #085041 0%, #0F6E56 55%, #1D9E75 100%);
+    color: white; padding: 36px 40px 28px; position: relative; overflow: hidden;
+  }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  header::after { content:''; position:absolute; bottom:-40px; left:30%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); }
+  .header-tag { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; opacity:.7; margin-bottom:8px; }
+  header h1 { font-size:28px; font-weight:700; margin-bottom:6px; position:relative; }
+  header p { font-size:13px; opacity:.75; position:relative; }
+  .chapter-badge { position:absolute; top:28px; right:40px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; padding:6px 16px; font-size:12px; font-weight:600; letter-spacing:.04em; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  .progress-bar { display:flex; gap:4px; margin-bottom:20px; }
+  .progress-seg { height:4px; flex:1; border-radius:2px; background:var(--border); }
+  .progress-seg.done { background:var(--accent); }
+
+  .tab-nav { display:flex; flex-wrap:wrap; gap:6px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:10px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+  .tab-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid transparent; background:transparent; color:var(--text-muted); font-size:13px; font-weight:500; cursor:pointer; transition:all .18s; }
+  .tab-btn:hover { background:var(--accent-light); color:var(--accent); }
+  .tab-btn.active { background:var(--accent); color:white; border-color:var(--accent-dark); box-shadow:0 2px 8px rgba(15,110,86,0.25); }
+  .tab-btn .num { font-size:10px; font-weight:700; background:rgba(255,255,255,0.25); border-radius:20px; padding:1px 6px; }
+  .tab-btn:not(.active) .num { background:var(--border); color:var(--text-muted); }
+
+  .section { display:none; }
+  .section.active { display:block; animation:fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+  .section-header { font-size:18px; font-weight:700; color:var(--text); margin-bottom:20px; padding-bottom:12px; border-bottom:2px solid var(--accent-light); display:flex; align-items:center; gap:10px; }
+  .section-header .icon { width:36px; height:36px; background:var(--accent-light); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+
+  .def-box { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin:12px 0; }
+  .def-box .label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .def-box p { font-size:13.5px; }
+  .def-box p+p { margin-top:6px; }
+
+  .formula { font-family:'Courier New',monospace; font-size:13px; background:#f0f6f4; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin:8px 0; display:block; color:#0a3d2e; }
+  .formula-sm { font-family:'Courier New',monospace; font-size:12px; background:#f0f6f4; border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 10px; display:block; margin:5px 0; color:#0a3d2e; }
+
+  .warning { background:var(--amber-light); border-left:4px solid #EF9F27; border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .tip { background:var(--accent-light); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .info { background:var(--blue-light); border-left:4px solid var(--blue); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+
+  .table-wrap { overflow-x:auto; margin:12px 0; border-radius:var(--radius); box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+  table { width:100%; border-collapse:collapse; font-size:13px; background:var(--card); }
+  thead { background:#f0f6f4; }
+  th { padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid var(--border-strong); }
+  td { padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:var(--accent-light); }
+  td.yes { color:var(--accent); font-weight:700; }
+  td.no { color:var(--red); font-weight:700; }
+
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; margin:12px 0; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+  .card h3 { font-size:13px; font-weight:700; margin-bottom:8px; }
+  .card p { font-size:13px; color:var(--text-muted); line-height:1.55; }
+  .card.blue { border-top:3px solid var(--blue); }
+  .card.blue h3 { color:var(--blue); }
+  .card.green { border-top:3px solid var(--accent); }
+  .card.green h3 { color:var(--accent); }
+  .card.red { border-top:3px solid var(--red); }
+  .card.red h3 { color:var(--red); }
+  .card.purple { border-top:3px solid var(--purple); }
+  .card.purple h3 { color:var(--purple); }
+  .card.amber { border-top:3px solid var(--amber); }
+  .card.amber h3 { color:var(--amber); }
+
+  .checklist { list-style:none; margin:10px 0; }
+  .checklist li { font-size:13.5px; padding:5px 0 5px 22px; position:relative; border-bottom:1px solid var(--border); }
+  .checklist li:last-child { border-bottom:none; }
+  .checklist li::before { content:"→"; position:absolute; left:0; color:var(--accent-mid); font-weight:700; }
+
+  .hasse-steps { counter-reset:step; }
+  .hasse-step { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border); }
+  .hasse-step:last-child { border-bottom:none; }
+  .step-num { min-width:28px; height:28px; background:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+  .step-body { font-size:13px; padding-top:4px; }
+
+  .vocab-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin:12px 0; }
+  .vocab-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; }
+  .vocab-card .vterm { font-size:13px; font-weight:700; color:var(--accent); margin-bottom:4px; }
+  .vocab-card .vdef { font-size:12.5px; color:var(--text-muted); }
+  .vocab-card .vformula { font-family:'Courier New',monospace; font-size:11.5px; background:#f0f6f4; padding:4px 8px; border-radius:4px; margin-top:6px; display:block; color:#0a3d2e; }
+
+  .compare-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  .compare-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; }
+  .compare-card h3 { font-size:13px; font-weight:700; margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid var(--border); }
+
+  footer { text-align:center; padding:24px; font-size:12px; color:var(--text-muted); border-top:1px solid var(--border); margin-top:40px; }
+
+  @media(max-width:600px){
+    header{padding:24px 20px 20px;} header h1{font-size:20px;} .chapter-badge{display:none;}
+    .container{padding:20px 14px;} .tab-btn{font-size:12px;padding:6px 10px;} .compare-row{grid-template-columns:1fr;}
+  }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 20px;
+    flex-wrap: wrap;
+  }
+  .ch-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .ch-link:hover { background: var(--accent-light); color: var(--accent); }
+  .ch-link.active { background: var(--accent); color: white; }
+  .ch-num { font-size: 10px; font-weight: 700; opacity: .6; }
+  .ch-sep { width: 1px; height: 18px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+  .ch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .ch-arrow:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Maths 2 — HE Vinci / ULB</div>
+  <h1>Relations d'Ordre</h1>
+  <p>Définition · Hasse · Vocabulaire · Treillis · Tri topologique · Produits</p>
+  <div class="chapter-badge">Chapitre 2 / 8</div>
+</header>
+
+<nav class="chapter-nav">
+  <a class="ch-arrow" href="ch01_relations_binaires.html">← Précédent</a>
+  <div class="ch-sep"></div>
+  <a class="ch-link" href="ch01_relations_binaires.html"><span class="ch-num">01</span> Relations Binaires</a>
+  <a class="ch-link active" href="ch02_relations_ordre.html"><span class="ch-num">02</span> Relations d'Ordre</a>
+  <a class="ch-link" href="ch03_relations_equivalence.html"><span class="ch-num">03</span> Relations d'Équivalence</a>
+  <a class="ch-link" href="ch04_matrices.html"><span class="ch-num">04</span> Les Matrices</a>
+  <a class="ch-link" href="ch05_systemes_lineaires_v2.html"><span class="ch-num">05</span> Systèmes linéaires</a>
+  <a class="ch-link" href="ch06_markov.html"><span class="ch-num">06</span> Markov</a>
+  <a class="ch-link" href="ch07_langages_formels.html"><span class="ch-num">07</span> Langages formels</a>
+  <div class="ch-sep"></div>
+  <a class="ch-arrow" href="ch03_relations_equivalence.html">Suivant →</a>
+</nav>
+
+<div class="container">
+  <div class="progress-bar">
+    <div class="progress-seg done"></div>
+    <div class="progress-seg done"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+    <div class="progress-seg"></div>
+  </div>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="show('def',this)"><span class="num">1</span> Définition</button>
+    <button class="tab-btn" onclick="show('hasse',this)"><span class="num">2</span> Diagramme de Hasse</button>
+    <button class="tab-btn" onclick="show('vocab',this)"><span class="num">3</span> Vocabulaire</button>
+    <button class="tab-btn" onclick="show('treillis',this)"><span class="num">4</span> Treillis</button>
+    <button class="tab-btn" onclick="show('topo',this)"><span class="num">5</span> Tri topologique</button>
+    <button class="tab-btn" onclick="show('produits',this)"><span class="num">6</span> Produits d'ordre</button>
+  </nav>
+
+  <!-- ── 1. DÉFINITION ── -->
+  <div id="def" class="section active">
+    <div class="section-header"><div class="icon">📏</div>Définition & Notations</div>
+
+    <div class="def-box">
+      <div class="label">Relation d'ordre</div>
+      <p>R est une <strong>relation d'ordre</strong> sur E si elle est simultanément :</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
+        <span style="background:var(--accent-light);color:var(--accent);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;">✓ Réflexive</span>
+        <span style="background:var(--accent-light);color:var(--accent);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;">✓ Antisymétrique</span>
+        <span style="background:var(--accent-light);color:var(--accent);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;">✓ Transitive</span>
+      </div>
+      <p style="margin-top:10px">L'ensemble E muni de l'ordre ≤ se note <strong>(E, ≤)</strong> et s'appelle <strong>ensemble ordonné</strong>.</p>
+    </div>
+
+    <div class="def-box" style="margin-top:10px">
+      <div class="label">Notations</div>
+      <p>Une relation d'ordre est souvent notée <strong>≤</strong>.</p>
+      <span class="formula">x &lt; y  ⟺  (x ≤ y)  ∧  (x ≠ y)    (ordre strict)</span>
+      <p style="margin-top:8px">Pour deux éléments x et y, 4 situations possibles :</p>
+    </div>
+
+    <div class="table-wrap" style="margin-top:10px">
+      <table>
+        <thead><tr><th>Cas</th><th>Signification</th><th>Condition</th></tr></thead>
+        <tbody>
+          <tr><td>x = y</td><td>x et y sont égaux</td><td>x ≤ y  et  y ≤ x</td></tr>
+          <tr><td>x &lt; y</td><td>x est strictement inférieur à y</td><td>x ≤ y  et  x ≠ y</td></tr>
+          <tr><td>y &lt; x</td><td>y est strictement inférieur à x</td><td>y ≤ x  et  x ≠ y</td></tr>
+          <tr><td style="color:var(--red)">x ≶ y</td><td style="color:var(--red)"><strong>Non comparables</strong></td><td>¬(x ≤ y)  et  ¬(y ≤ x)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="card blue">
+        <h3>Ordre partiel</h3>
+        <p>Il <strong>existe</strong> deux éléments non comparables. La relation d'ordre n'est pas totale.</p>
+        <p style="margin-top:6px;font-size:12px"><em>Ex. "est multiple de" sur ℕ : 2 et 3 ne sont pas comparables.</em></p>
+      </div>
+      <div class="card green">
+        <h3>Ordre total</h3>
+        <p><strong>Tout</strong> élément est comparable avec tout autre. Aucune paire non comparable.</p>
+        <p style="margin-top:6px;font-size:12px"><em>Ex. Ordre alphabétique : toute paire de lettres est comparable.</em></p>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Exemples de relations d'ordre</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Relation</th><th>Ensemble</th><th>Réflexive</th><th>Antisymétrique</th><th>Transitive</th><th>Type</th></tr></thead>
+        <tbody>
+          <tr><td>Identité 1ₑ (=)</td><td>E quelconque</td><td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td><td>Partiel</td></tr>
+          <tr><td>≤ (inférieur ou égal)</td><td>ℤ</td><td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td><td>Total</td></tr>
+          <tr><td>⊆ (inclusion)</td><td>P(A)</td><td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td><td>Partiel</td></tr>
+          <tr><td>"divise"</td><td>ℕ₀</td><td class="yes">OUI</td><td class="yes">OUI</td><td class="yes">OUI</td><td>Partiel</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip" style="margin-top:12px">
+      <strong>Propriété :</strong> Si (E, ≤) est un ensemble ordonné et B ⊆ E, alors (B, ≤) est aussi un ensemble ordonné avec la même relation d'ordre.
+    </div>
+  </div>
+
+  <!-- ── 2. HASSE ── -->
+  <div id="hasse" class="section">
+    <div class="section-header"><div class="icon">📊</div>Diagramme de Hasse</div>
+
+    <div class="def-box">
+      <div class="label">Principe</div>
+      <p>Le diagramme de Hasse est une représentation simplifiée d'un ordre. On "sous-entend" les propriétés de l'ordre pour alléger le graphe.</p>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:14px 0 10px;">Construction — 4 étapes</p>
+
+    <div class="hasse-steps">
+      <div class="hasse-step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Supprimer les boucles</strong> — La réflexivité est implicite : tout élément est en relation avec lui-même, donc on n'affiche pas les boucles (x, x).</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Supprimer les flèches transitives</strong> — Si x → y et y → z, alors la flèche x → z est "récupérable" par transitivité. On ne la dessine pas.</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Orienter vers le haut</strong> — Comme l'ordre est antisymétrique, il n'y a que des flèches simples. On les oriente toutes vers le haut (les éléments "supérieurs" sont en haut).</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">4</div>
+        <div class="step-body"><strong>Enlever les pointes de flèches</strong> — Puisque toutes les arêtes vont vers le haut, les pointes sont implicites. On représente les sommets par des points.</div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Lecture d'un diagramme de Hasse</p>
+
+    <div class="def-box">
+      <div class="label">Règle fondamentale</div>
+      <p><strong>x &lt; y</strong> si et seulement si on peut aller de x à y <strong>uniquement en montant</strong>.</p>
+      <p style="margin-top:6px">Si pour aller de x à y il faut "descendre" à un moment, alors x et y sont <strong>non comparables</strong>.</p>
+    </div>
+
+    <div class="grid2" style="margin-top:12px">
+      <div class="card green">
+        <h3>Règles à respecter</h3>
+        <ul style="font-size:12.5px;margin-left:16px;line-height:2">
+          <li>Pas de ligne horizontale ni de triangle</li>
+          <li>Points distincts = étiquettes distinctes</li>
+          <li>La notion de <strong>niveau n'existe pas</strong></li>
+        </ul>
+      </div>
+      <div class="card red">
+        <h3>Piège classique</h3>
+        <p>Être "à la même hauteur" ou "plus haut" dans le dessin ne signifie rien ! Deux diagrammes différents peuvent représenter le même ordre. Seule la relation "on peut monter de x à y" compte.</p>
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top:12px">
+      <strong>Ordre total → Hasse linéaire :</strong> Si l'ordre est total (tout élément est comparable à tout autre), le diagramme de Hasse est une ligne verticale simple (une "chaîne").
+    </div>
+  </div>
+
+  <!-- ── 3. VOCABULAIRE ── -->
+  <div id="vocab" class="section">
+    <div class="section-header"><div class="icon">📚</div>Vocabulaire dans un ensemble ordonné</div>
+
+    <div class="vocab-grid">
+      <div class="vocab-card">
+        <div class="vterm">Maximum</div>
+        <div class="vdef">Élément supérieur ou égal à <strong>tous</strong> les autres.</div>
+        <span class="vformula">a = max(E) ⟺ ∀x ∈ E : x ≤ a</span>
+        <div class="vdef" style="margin-top:6px">Un ensemble a <strong>au plus un</strong> maximum.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vterm">Minimum</div>
+        <div class="vdef">Élément inférieur ou égal à <strong>tous</strong> les autres.</div>
+        <span class="vformula">a = min(E) ⟺ ∀x ∈ E : a ≤ x</span>
+        <div class="vdef" style="margin-top:6px">Un ensemble a <strong>au plus un</strong> minimum.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vterm">Maximal</div>
+        <div class="vdef">Pas d'élément <strong>strictement supérieur</strong>. Supérieur à tous ceux auxquels il est comparable.</div>
+        <span class="vformula">a maximal ⟺ ¬∃x ∈ E : x > a</span>
+        <div class="vdef" style="margin-top:6px">Peut y en avoir <strong>plusieurs</strong>.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vterm">Minimal</div>
+        <div class="vdef">Pas d'élément <strong>strictement inférieur</strong>. Inférieur à tous ceux auxquels il est comparable.</div>
+        <span class="vformula">a minimal ⟺ ¬∃x ∈ E : x &lt; a</span>
+        <div class="vdef" style="margin-top:6px">Peut y en avoir <strong>plusieurs</strong>.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vterm">Majorant de B</div>
+        <div class="vdef">Élément de E supérieur ou égal à <strong>chaque</strong> élément de B.</div>
+        <span class="vformula">a ∈ Major(B) ⟺ ∀x ∈ B : x ≤ a</span>
+        <div class="vdef" style="margin-top:6px">Un majorant peut être extérieur à B.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vterm">Minorant de B</div>
+        <div class="vdef">Élément de E inférieur ou égal à <strong>chaque</strong> élément de B.</div>
+        <span class="vformula">a ∈ Minor(B) ⟺ ∀x ∈ B : a ≤ x</span>
+        <div class="vdef" style="margin-top:6px">Un minorant peut être extérieur à B.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vterm">Supremum (borne sup)</div>
+        <div class="vdef"><strong>Minimum</strong> de l'ensemble des majorants.</div>
+        <span class="vformula">sup(B) = min(Major(B))</span>
+        <div class="vdef" style="margin-top:6px">N'existe pas si les majorants ne sont pas comparables entre eux.</div>
+      </div>
+      <div class="vocab-card">
+        <div class="vterm">Infimum (borne inf)</div>
+        <div class="vdef"><strong>Maximum</strong> de l'ensemble des minorants.</div>
+        <span class="vformula">inf(B) = max(Minor(B))</span>
+        <div class="vdef" style="margin-top:6px">N'existe pas si les minorants ne sont pas comparables entre eux.</div>
+      </div>
+    </div>
+
+    <div class="warning" style="margin-top:14px">
+      ⚠ <strong>Pièges max/maximal :</strong><br>
+      Pas d'élément supérieur à x ≠ x est le maximum ! Si x n'est pas comparable à certains éléments, ce n'est pas le maximum.<br>
+      Tout maximum est maximal, mais un maximal n'est pas forcément maximum (sauf si c'est le seul maximal dans un ensemble fini).
+    </div>
+
+    <div class="tip" style="margin-top:10px">
+      <strong>Lien max/sup :</strong> Si max(B) existe → sup(B) = max(B). Si sup(B) existe et ∈ B → sup(B) = max(B). Idem pour min/inf.
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Exemples récapitulatifs (même ensemble ordonné E)</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sous-ensemble B</th><th>max</th><th>min</th><th>maximaux</th><th>minimaux</th><th>Major(B)</th><th>Minor(B)</th><th>sup</th><th>inf</th></tr></thead>
+        <tbody>
+          <tr><td>B = {2,4,5,6,7}</td><td class="yes">7</td><td class="yes">2</td><td>{7}</td><td>{2}</td><td>{7,9,10}</td><td>{1,2}</td><td class="yes">7</td><td class="yes">2</td></tr>
+          <tr><td>B = {2,3,4,5}</td><td class="no">∅</td><td class="no">∅</td><td>{3,4,5}</td><td>{2,3}</td><td>{8,9,10}</td><td>{1}</td><td class="yes">8</td><td class="yes">1</td></tr>
+          <tr><td>B = {4,5,6,7,8}</td><td class="no">∅</td><td class="no">∅</td><td>{7,8}</td><td>{4,5}</td><td>{9,10}</td><td>{1,2}</td><td class="no">∅</td><td class="yes">2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:6px">E = {1,…,10} avec un ordre partiel donné par un diagramme de Hasse spécifique.</p>
+  </div>
+
+  <!-- ── 4. TREILLIS ── -->
+  <div id="treillis" class="section">
+    <div class="section-header"><div class="icon">🔷</div>Treillis</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Un ensemble ordonné (E, ≤) est un <strong>treillis</strong> si <strong>toute paire d'éléments</strong> possède un supremum et un infimum.</p>
+    </div>
+
+    <div class="grid2" style="margin-top:14px">
+      <div class="card green">
+        <h3>Exemples de treillis</h3>
+        <ul style="font-size:12.5px;margin-left:16px;line-height:2.1">
+          <li><strong>(P(A), ⊆)</strong> — sup = union, inf = intersection</li>
+          <li><strong>(ℕ₀, "divise")</strong> — sup = PPCM, inf = PGCD</li>
+          <li>Tout <strong>ordre total</strong> est un treillis</li>
+        </ul>
+      </div>
+      <div class="card red">
+        <h3>Non-treillis</h3>
+        <p>Si deux éléments n'ont pas de supremum ou pas d'infimum, ce n'est pas un treillis.</p>
+        <p style="margin-top:6px;font-size:12px"><em>Ex. : Major({1,4}) = {2,3,5} avec 2 et 5 non comparables → pas de sup({1,4}) → pas un treillis.</em></p>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">3 astuces pour déterminer si c'est un treillis</p>
+
+    <div class="hasse-steps">
+      <div class="hasse-step">
+        <div class="step-num">1</div>
+        <div class="step-body"><strong>Ordre total → treillis</strong> automatiquement (tout est comparable).</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">2</div>
+        <div class="step-body"><strong>Plusieurs maximaux OU plusieurs minimaux → pas un treillis.</strong> (Les éléments minimaux non comparables n'ont pas d'infimum, idem pour les maximaux.)</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Vérifier uniquement les paires non comparables.</strong> Si e1 &lt; e2, alors sup = e2 et inf = e1 automatiquement. Seules les paires incomparables nécessitent une vérification.</div>
+      </div>
+    </div>
+
+    <div class="info" style="margin-top:12px">
+      <strong>Méthode rapide :</strong> Pour chaque paire d'éléments non comparables {x, y}, calculer Major({x,y}) et Minor({x,y}). Si l'un de ces ensembles n'a pas de minimum (pour Major) ou de maximum (pour Minor), ce n'est pas un treillis.
+    </div>
+  </div>
+
+  <!-- ── 5. TRI TOPOLOGIQUE ── -->
+  <div id="topo" class="section">
+    <div class="section-header"><div class="icon">🔢</div>Tri topologique</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Soit ≤ un ordre partiel sur E. Un <strong>tri topologique</strong> de ≤ est tout ordre total ≤′ sur E qui <strong>étend</strong> ≤ :</p>
+      <span class="formula">≤′ est un tri topologique de ≤  ⟺  ≤′ total  ∧  ∀x,y ∈ E : (x ≤ y) ⟹ (x ≤′ y)</span>
+      <p style="margin-top:6px">Autrement dit : toutes les relations de ≤ restent vraies dans ≤′, et ≤′ les complète en comparant les éléments non comparables dans ≤.</p>
+    </div>
+
+    <div class="warning">
+      ⚠ Un ordre partiel a en général <strong>plusieurs tris topologiques</strong> possibles. Il n'y a pas de formule pour calculer leur nombre — on utilise l'<strong>arbre des tris</strong>.
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Construction d'un tri topologique</p>
+
+    <div class="def-box" style="border-left-color:var(--purple)">
+      <div class="label" style="color:var(--purple)">Algorithme</div>
+      <p>On construit le tri <strong>de bas en haut</strong>, en sélectionnant un élément minimal à chaque étape.</p>
+    </div>
+
+    <div class="hasse-steps" style="margin-top:10px">
+      <div class="hasse-step">
+        <div class="step-num">1</div>
+        <div class="step-body">Identifier tous les <strong>éléments minimaux</strong> de l'ordre courant.</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">2</div>
+        <div class="step-body">Choisir <strong>l'un d'eux</strong> (le choix est libre → différents tris possibles). L'ajouter en haut du tri en cours de construction.</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">3</div>
+        <div class="step-body"><strong>Retirer</strong> cet élément de l'ordre restant. Les nouveaux minimaux peuvent apparaître.</div>
+      </div>
+      <div class="hasse-step">
+        <div class="step-num">4</div>
+        <div class="step-body"><strong>Répéter</strong> jusqu'à ce que l'ordre restant soit un ordre total. L'ajouter en entier au tri.</div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Compter les tris — Arbre des tris</p>
+    <div class="def-box">
+      <div class="label">Méthode</div>
+      <p>Pour trouver <strong>tous</strong> les tris topologiques possibles :</p>
+      <ul style="font-size:13px;margin:8px 0 0 18px;line-height:2">
+        <li>Mettre les <strong>minimaux initiaux</strong> à gauche (racines de l'arbre)</li>
+        <li>Pour chaque élément retiré, mettre <strong>les minimaux suivants</strong> comme fils</li>
+        <li>Répéter jusqu'aux feuilles → chaque feuille donne un tri complet</li>
+      </ul>
+      <p style="margin-top:8px;font-size:12.5px;color:var(--text-muted)"><em>Exemple : ordre à 5 éléments {1,2,3,4,5} avec 3 et 4 minimaux → 5 tris topologiques possibles.</em></p>
+    </div>
+
+    <div class="tip" style="margin-top:12px">
+      <strong>Exemple de résultat :</strong> Pour un ordre {1,2,3,4,5} avec minimaux 3 et 4 : tris possibles = 3→4→1→5→2 · 3→4→5→1→2 · 4→3→1→5→2 · 4→3→5→1→2 · 4→1→3→5→2
+    </div>
+  </div>
+
+  <!-- ── 6. PRODUITS ── -->
+  <div id="produits" class="section">
+    <div class="section-header"><div class="icon">✖️</div>Produits de relations d'ordre</div>
+
+    <div class="info">
+      Étant donné deux ensembles ordonnés (A, ≤ₐ) et (B, ≤ᴮ), deux façons d'ordonner A×B.
+    </div>
+
+    <div class="compare-row" style="margin-top:14px">
+      <div class="compare-card">
+        <h3 style="color:var(--blue)">Produit classique ≤ₐₓᴮ</h3>
+        <span class="formula-sm">(a₁,b₁) ≤ₐₓᴮ (a₂,b₂)  ⟺  a₁ ≤ₐ a₂  ET  b₁ ≤ᴮ b₂</span>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-top:8px">Les deux composantes doivent être dans le bon ordre simultanément.</p>
+        <p style="font-size:12.5px;margin-top:6px"><strong>Si une composante monte et l'autre descend → non comparables.</strong></p>
+      </div>
+      <div class="compare-card">
+        <h3 style="color:var(--purple)">Produit lexicographique ≼ₐₓᴮ</h3>
+        <span class="formula-sm">(a₁,b₁) ≼ₐₓᴮ (a₂,b₂)  ⟺  a₁ &lt;ₐ a₂  OU  (a₁=a₂ ∧ b₁ ≤ᴮ b₂)</span>
+        <p style="font-size:12.5px;color:var(--text-muted);margin-top:8px">Priorité à la première composante. On ne regarde la 2e que si les 1res sont égales.</p>
+        <p style="font-size:12.5px;margin-top:6px"><strong>Comme l'ordre alphabétique : d'abord la 1re lettre, puis la 2e.</strong></p>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:14px">
+      <table>
+        <thead><tr><th>Comparaison</th><th>Produit classique</th><th>Produit lexicographique</th></tr></thead>
+        <tbody>
+          <tr><td>(0,c) vs (1,a)</td><td class="no">Non comparables (0&lt;1 mais c>a)</td><td class="yes">(0,c) ≼ (1,a) car 0 &lt; 1</td></tr>
+          <tr><td>(0,b) vs (1,c)</td><td class="yes">(0,b) ≤ (1,c) car 0&lt;1 et b&lt;c</td><td class="yes">(0,b) ≼ (1,c) car 0 &lt; 1</td></tr>
+          <tr><td>(0,a) vs (0,b)</td><td class="yes">(0,a) ≤ (0,b) car 0=0 et a&lt;b</td><td class="yes">(0,a) ≼ (0,b) car 0=0 et a&lt;b</td></tr>
+          <tr><td>(1,a) vs (1,c)</td><td class="no">Non comparables (1=1 mais a et c non comp.)</td><td class="no">Non comparables (1=1 mais a ≶ c)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size:14px;font-weight:700;margin:18px 0 10px;">Construction des diagrammes de Hasse</p>
+
+    <div class="compare-row">
+      <div class="compare-card">
+        <h3 style="color:var(--blue)">Produit classique A×B</h3>
+        <ol style="font-size:12.5px;margin-left:18px;line-height:2.2">
+          <li>Dessiner une copie de (B, ≤ᴮ) pour chaque élément de A</li>
+          <li>Disposer ces copies selon le diagramme de Hasse de (A, ≤ₐ)</li>
+          <li>Pour chaque arête a₁→a₂ dans A : relier les éléments correspondants des deux copies (même position dans B)</li>
+        </ol>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:6px">Note : B×A donne le même diagramme avec des étiquettes différentes.</p>
+      </div>
+      <div class="compare-card">
+        <h3 style="color:var(--purple)">Produit lexicographique A×B</h3>
+        <ol style="font-size:12.5px;margin-left:18px;line-height:2.2">
+          <li>Dessiner une copie de (B, ≤ᴮ) pour chaque élément de A</li>
+          <li>Disposer ces copies selon le diagramme de Hasse de (A, ≤ₐ)</li>
+          <li>Pour chaque arête a₁→a₂ dans A : relier les <strong>maximaux</strong> de la copie de a₁ avec les <strong>minimaux</strong> de la copie de a₂</li>
+        </ol>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:6px">Note : B×A donne un diagramme très différent de A×B !</p>
+      </div>
+    </div>
+
+    <div class="warning" style="margin-top:14px">
+      ⚠ <strong>Différence clé :</strong> Dans le produit classique, on relie tous les éléments correspondants. Dans le lexicographique, on relie seulement maximaux↔minimaux entre deux copies adjacentes. Le résultat final est très différent.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Maths 2 — Relations d'Ordre · HE Vinci / ULB · Synthèse de révision · Chapitre 2/8
+</footer>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

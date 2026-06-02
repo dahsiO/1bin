@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths 2 — Systèmes d'équations linéaires</title>
+<style>
+  :root {
+    --accent: #185FA5;
+    --accent-light: #E6F1FB;
+    --accent-mid: #2A7FCC;
+    --accent-dark: #0E3E6E;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --red: #993C1D;
+    --red-light: #FAECE7;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --bg: #F5F8FC;
+    --card: #ffffff;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --border: rgba(0,0,0,0.09);
+    --border-strong: rgba(0,0,0,0.16);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.65; }
+
+  header {
+    background: linear-gradient(135deg, #0E3E6E 0%, #185FA5 55%, #2A7FCC 100%);
+    color: white; padding: 36px 40px 28px; position: relative; overflow: hidden;
+  }
+  header::before { content:''; position:absolute; top:-60px; right:-60px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  header::after { content:''; position:absolute; bottom:-40px; left:30%; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); }
+  .header-tag { font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; opacity:.7; margin-bottom:8px; }
+  header h1 { font-size:28px; font-weight:700; margin-bottom:6px; position:relative; }
+  header p { font-size:13px; opacity:.75; position:relative; }
+  .chapter-badge { position:absolute; top:28px; right:40px; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); border-radius:30px; padding:6px 16px; font-size:12px; font-weight:600; letter-spacing:.04em; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  .tab-nav { display:flex; flex-wrap:wrap; gap:6px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:10px; margin-bottom:24px; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+  .tab-btn { display:flex; align-items:center; gap:6px; padding:7px 14px; border-radius:var(--radius-sm); border:1px solid transparent; background:transparent; color:var(--text-muted); font-size:13px; font-weight:500; cursor:pointer; transition:all .18s; }
+  .tab-btn:hover { background:var(--accent-light); color:var(--accent); }
+  .tab-btn.active { background:var(--accent); color:white; border-color:var(--accent-dark); box-shadow:0 2px 8px rgba(24,95,165,0.28); }
+  .tab-btn .num { font-size:10px; font-weight:700; background:rgba(255,255,255,0.25); border-radius:20px; padding:1px 6px; }
+  .tab-btn:not(.active) .num { background:var(--border); color:var(--text-muted); }
+
+  .section { display:none; }
+  .section.active { display:block; animation:fadeIn .2s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+  .section-header { font-size:18px; font-weight:700; color:var(--text); margin-bottom:20px; padding-bottom:12px; border-bottom:2px solid var(--accent-light); display:flex; align-items:center; gap:10px; }
+  .section-header .icon { width:36px; height:36px; background:var(--accent-light); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+
+  .def-box { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius) var(--radius) 0; padding:14px 18px; margin:12px 0; }
+  .def-box .label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .def-box p { font-size:13.5px; }
+  .def-box p+p { margin-top:6px; }
+
+  .formula { font-family:'Courier New',monospace; font-size:13px; background:#EAF2FB; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin:8px 0; display:block; color:#0E3E6E; }
+  .formula-sm { font-family:'Courier New',monospace; font-size:12px; background:#EAF2FB; border:1px solid var(--border); border-radius:var(--radius-sm); padding:5px 10px; display:block; margin:5px 0; color:#0E3E6E; }
+  .formula-line { font-family:'Courier New',monospace; font-size:13px; color:#0E3E6E; }
+
+  .warning { background:var(--amber-light); border-left:4px solid #EF9F27; border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .tip { background:var(--accent-light); border-left:4px solid var(--accent-mid); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .info { background:var(--blue-light); border-left:4px solid var(--blue); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .success { background:var(--green-light); border-left:4px solid var(--green); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .danger { background:var(--red-light); border-left:4px solid var(--red); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:10px 14px; margin:10px 0; font-size:13px; }
+
+  .table-wrap { overflow-x:auto; margin:12px 0; border-radius:var(--radius); box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+  table { width:100%; border-collapse:collapse; font-size:13px; background:var(--card); }
+  thead { background:#EAF2FB; }
+  th { padding:10px 12px; text-align:left; font-weight:600; border-bottom:2px solid var(--border-strong); }
+  td { padding:9px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:var(--accent-light); }
+  td.yes { color:var(--green); font-weight:700; }
+  td.no { color:var(--red); font-weight:700; }
+  td code { font-family:'Courier New',monospace; font-size:12px; background:#EAF2FB; padding:1px 5px; border-radius:3px; color:#0E3E6E; }
+
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px; margin:12px 0; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+  .card h3 { font-size:13px; font-weight:700; margin-bottom:8px; }
+  .card p, .card li { font-size:13px; color:var(--text-muted); line-height:1.6; }
+  .card ul { padding-left:16px; }
+  .card.blue { border-top:3px solid var(--blue); }
+  .card.blue h3 { color:var(--blue); }
+  .card.green { border-top:3px solid var(--green); }
+  .card.green h3 { color:var(--green); }
+  .card.red { border-top:3px solid var(--red); }
+  .card.red h3 { color:var(--red); }
+  .card.amber { border-top:3px solid var(--amber); }
+  .card.amber h3 { color:var(--amber); }
+
+  .steps { }
+  .step { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--border); }
+  .step:last-child { border-bottom:none; }
+  .step-num { min-width:28px; height:28px; background:var(--accent); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+  .step-body { font-size:13px; padding-top:4px; line-height:1.65; }
+  .step-body code { font-family:'Courier New',monospace; font-size:12px; background:#EAF2FB; padding:1px 5px; border-radius:3px; color:#0E3E6E; }
+
+  /* Matrix display */
+  .matrix-container { display:inline-flex; align-items:center; gap:4px; font-family:'Courier New',monospace; font-size:13px; vertical-align:middle; }
+  .matrix-bracket { font-size:2rem; font-weight:100; color:#888; line-height:1; }
+  .matrix-table { border-collapse:separate; border-spacing:8px 4px; }
+  .matrix-table td { text-align:right; min-width:28px; padding:2px 0; }
+  .matrix-table .pivot { color:#CC6A00; font-weight:700; }
+  .matrix-table .zero { color:#bbb; }
+  .matrix-table .bterm { border-left:1px solid #888; padding-left:10px; color:#185FA5; font-weight:600; }
+
+  .matrix-wrap { background:#F5F8FC; border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 16px; margin:10px 0; overflow-x:auto; }
+  .matrix-wrap .caption { font-size:11px; color:var(--text-muted); margin-bottom:6px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
+  .op-arrow { display:flex; align-items:center; gap:8px; margin:6px 0; flex-wrap:wrap; }
+  .op-label { font-family:'Courier New',monospace; font-size:12px; background:#FFF3E0; border:1px solid #F9A825; border-radius:4px; padding:2px 8px; color:#854F0B; }
+
+  /* Algo/pseudocode */
+  .algo-box { background:#F5F8FC; border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; font-family:'Courier New',monospace; font-size:12.5px; line-height:2; margin:12px 0; overflow-x:auto; }
+  .algo-box .kw { color:#185FA5; font-weight:700; }
+  .algo-box .cmt { color:#888; font-style:italic; }
+  .algo-box .fn { color:#0F6E56; font-weight:700; }
+  .algo-box .err { color:#993C1D; }
+  .algo-box .hi { color:#CC6A00; font-weight:700; }
+  .algo-box .ind1 { padding-left:20px; display:block; }
+  .algo-box .ind2 { padding-left:40px; display:block; }
+  .algo-box .ind3 { padding-left:60px; display:block; }
+
+  /* Accordion */
+  .accordion { border:1px solid var(--border); border-radius:var(--radius); margin:8px 0; overflow:hidden; }
+  .acc-head { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--card); cursor:pointer; font-size:13px; font-weight:600; user-select:none; }
+  .acc-head:hover { background:var(--accent-light); }
+  .acc-arrow { font-size:11px; color:var(--text-muted); transition:transform .2s; }
+  .acc-head.open .acc-arrow { transform:rotate(180deg); }
+  .acc-body { display:none; padding:12px 14px; background:#FAFCFF; border-top:1px solid var(--border); font-size:13px; line-height:1.7; }
+  .acc-body.open { display:block; }
+
+  /* Interactive solver */
+  .solver-box { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px; margin:12px 0; }
+  .solver-box h3 { font-size:13px; font-weight:700; color:var(--accent); margin-bottom:12px; }
+  .input-matrix-table td { padding:3px; }
+  .input-matrix-table input { width:52px; font-family:'Courier New',monospace; font-size:13px; text-align:center; border:1px solid var(--border); border-radius:4px; padding:4px; background:#F5F8FC; color:var(--text); outline:none; }
+  .input-matrix-table input:focus { border-color:var(--accent); }
+  .sep-col { padding:0 6px; font-size:1.1rem; color:#888; font-weight:300; }
+  .btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+  .btn { font-size:12px; font-weight:600; padding:6px 14px; border-radius:var(--radius-sm); border:none; cursor:pointer; transition:all .15s; }
+  .btn-primary { background:var(--accent); color:white; }
+  .btn-primary:hover { background:var(--accent-dark); }
+  .btn-secondary { background:var(--accent-light); color:var(--accent); border:1px solid var(--accent-mid); }
+  .btn-secondary:hover { background:#d0e6f8; }
+  .btn-danger { background:var(--red-light); color:var(--red); border:1px solid #e07050; }
+  .btn-danger:hover { background:#f5d8d0; }
+  .result-area { font-family:'Courier New',monospace; font-size:13px; background:#F5F8FC; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 14px; margin-top:8px; min-height:40px; line-height:1.9; white-space:pre-wrap; }
+  .result-ok { color:var(--green); }
+  .result-err { color:var(--red); }
+  .result-var { color:var(--accent); font-weight:700; }
+  .result-num { color:#CC6A00; font-weight:700; }
+  .step-log { font-size:12px; color:var(--text-muted); margin-top:4px; min-height:22px; }
+  .step-log .log-op { color:var(--amber); font-weight:600; }
+  .step-log .log-swap { color:var(--blue); font-weight:600; }
+  .step-log .log-ok { color:var(--green); font-weight:600; }
+
+  @media(max-width:640px) {
+    .container{padding:20px 14px;}
+    .tab-btn{font-size:12px;padding:6px 10px;}
+    header{padding:24px 20px 20px;}
+    .chapter-badge{display:none;}
+  }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 20px;
+    flex-wrap: wrap;
+  }
+  .ch-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .ch-link:hover { background: var(--accent-light); color: var(--accent); }
+  .ch-link.active { background: var(--accent); color: white; }
+  .ch-num { font-size: 10px; font-weight: 700; opacity: .6; }
+  .ch-sep { width: 1px; height: 18px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+  .ch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .ch-arrow:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Maths 2 — Chapitre 5</div>
+  <h1>Systèmes d'équations linéaires</h1>
+  <p>Méthode de Gauss · Échelonnage · Pivotage partiel · Résolution finale</p>
+  <div class="chapter-badge">Ch. 05</div>
+</header>
+
+<nav class="chapter-nav">
+  <a class="ch-arrow" href="ch04_matrices.html">← Précédent</a>
+  <div class="ch-sep"></div>
+  <a class="ch-link" href="ch01_relations_binaires.html"><span class="ch-num">01</span> Relations Binaires</a>
+  <a class="ch-link" href="ch02_relations_ordre.html"><span class="ch-num">02</span> Relations d'Ordre</a>
+  <a class="ch-link" href="ch03_relations_equivalence.html"><span class="ch-num">03</span> Relations d'Équivalence</a>
+  <a class="ch-link" href="ch04_matrices.html"><span class="ch-num">04</span> Les Matrices</a>
+  <a class="ch-link active" href="ch05_systemes_lineaires_v2.html"><span class="ch-num">05</span> Systèmes linéaires</a>
+  <a class="ch-link" href="ch06_markov.html"><span class="ch-num">06</span> Markov</a>
+  <a class="ch-link" href="ch07_langages_formels.html"><span class="ch-num">07</span> Langages formels</a>
+  <div class="ch-sep"></div>
+  <a class="ch-arrow" href="ch06_markov.html">Suivant →</a>
+</nav>
+
+<div class="container">
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="show('intro',this)"><span class="num">1</span> Introduction</button>
+    <button class="tab-btn" onclick="show('matrice',this)"><span class="num">2</span> Matrice augmentée</button>
+    <button class="tab-btn" onclick="show('echelonnee',this)"><span class="num">3</span> Matrice échelonnée</button>
+    <button class="tab-btn" onclick="show('operations',this)"><span class="num">4</span> Opérations permises</button>
+    <button class="tab-btn" onclick="show('pivotage',this)"><span class="num">5</span> Pivotage partiel</button>
+    <button class="tab-btn" onclick="show('resolution',this)"><span class="num">6</span> Résolution finale</button>
+    <button class="tab-btn" onclick="show('pseudocode',this)"><span class="num">7</span> Pseudo-code</button>
+    <button class="tab-btn" onclick="show('solveur',this)"><span class="num">8</span> Solveur interactif</button>
+    <button class="tab-btn" onclick="show('recap',this)"><span class="num">9</span> Récapitulatif</button>
+  </nav>
+
+  <!-- ===== 1. INTRODUCTION ===== -->
+  <div class="section active" id="s-intro">
+    <div class="section-header"><div class="icon">📐</div>Introduction — Pourquoi les systèmes linéaires ?</div>
+
+    <div class="def-box">
+      <div class="label">Problème motivant</div>
+      <p>Un client achète 10 articles de 2 types différents A (5 €) et B (6 €) pour un total de 56 €. Combien d'articles de chaque type ?</p>
+    </div>
+
+    <p style="margin:12px 0 6px; font-weight:600;">a) Modélisation — système de 2 équations à 2 inconnues :</p>
+    <span class="formula">x + y  = 10      (x = nb articles A, y = nb articles B)
+5x + 6y = 56</span>
+
+    <p style="margin:12px 0 6px; font-weight:600;">b) Forme matricielle A·X = B :</p>
+    <div class="matrix-wrap">
+      <div class="caption">Matrice augmentée [A | B]</div>
+      <table class="matrix-table">
+        <tr><td class="matrix-bracket" rowspan="2">(</td><td>1</td><td>1</td><td class="bterm">10</td><td class="matrix-bracket" rowspan="2">)</td></tr>
+        <tr><td>5</td><td>6</td><td class="bterm">56</td></tr>
+      </table>
+    </div>
+
+    <div class="tip">💡 L'idée de Gauss : au lieu de résoudre le système algébriquement, on applique des opérations sur les <strong>lignes de la matrice</strong> pour la simplifier.</div>
+
+    <div class="grid2" style="margin-top:16px;">
+      <div class="card blue">
+        <h3>Les 3 étapes de la méthode</h3>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body">Former la <strong>matrice augmentée</strong> [A|B]</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Échelonner</strong> la matrice (mettre des 0 sous les pivots)</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Résoudre</strong> par substitution arrière</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Cas possibles</h3>
+        <ul style="padding-left:16px; margin-top:4px;">
+          <li style="color:var(--green); font-weight:600; font-size:13px; margin-bottom:6px;">✔ Solution unique → résolution complète</li>
+          <li style="color:var(--red); font-size:13px; margin-bottom:6px;">✘ Aucune solution → contradiction (ex: 0 = −5) → MathException</li>
+          <li style="color:var(--amber); font-size:13px;">⚠ Infinité de solutions → variable libre → MathException</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 2. MATRICE AUGMENTEE ===== -->
+  <div class="section" id="s-matrice">
+    <div class="section-header"><div class="icon">[·]</div>Matrice augmentée</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Si un système s'écrit <strong>A·X = B</strong>, on regroupe A et B en une seule matrice séparée par une barre verticale :</p>
+      <span class="formula">[A | B]</span>
+      <p>La <strong>dernière colonne</strong> (à droite de la barre) contient les termes indépendants.</p>
+    </div>
+
+    <div class="def-box" style="border-left-color:var(--blue);">
+      <div class="label" style="color:var(--blue);">Dimensions</div>
+      <p>Une matrice <strong>m × n</strong> représente :</p>
+      <p>→ <strong>m</strong> équations (lignes) | <strong>n−1</strong> inconnues (colonnes sauf la dernière) | <strong>n</strong>-ième colonne = termes indépendants</p>
+    </div>
+
+    <p style="margin:14px 0 6px; font-weight:600;">Exemple — 3 équations, 5 inconnues :</p>
+    <span class="formula">x₁ + 2x₂ + 3x₃ − x₄ − x₅ = 2
+2x₁ +  x₂       + x₄ + x₅ = 1
+3x₁       − 2x₃ + 5x₄ + 4x₅ = 3</span>
+    <div class="matrix-wrap">
+      <div class="caption">Matrice augmentée correspondante (3 × 6)</div>
+      <table class="matrix-table">
+        <tr><td class="matrix-bracket" rowspan="3">(</td><td>1</td><td>2</td><td>3</td><td>−1</td><td>−1</td><td class="bterm">2</td><td class="matrix-bracket" rowspan="3">)</td></tr>
+        <tr><td>2</td><td>1</td><td>0</td><td>1</td><td>1</td><td class="bterm">1</td></tr>
+        <tr><td>3</td><td>0</td><td>−2</td><td>5</td><td>4</td><td class="bterm">3</td></tr>
+      </table>
+    </div>
+
+    <div class="tip">💡 Matrice 3×6 → système de 3 équations à <strong>5 inconnues</strong> (n−1 = 6−1 = 5).</div>
+  </div>
+
+  <!-- ===== 3. MATRICE ECHELONNEE ===== -->
+  <div class="section" id="s-echelonnee">
+    <div class="section-header"><div class="icon">↘</div>Matrice échelonnée</div>
+
+    <div class="def-box">
+      <div class="label">Définition</div>
+      <p>Une matrice est <strong>échelonnée</strong> si le nombre de zéros en début de ligne <strong>augmente strictement</strong> à chaque ligne non entièrement nulle.</p>
+      <p style="margin-top:6px;">Les lignes de zéros sont toujours en bas.</p>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemples — Échelonnée ou non ?</p>
+
+    <div class="grid2">
+      <div class="card green">
+        <h3>✔ Échelonnée (0 → 1 → 3 → 4 zéros)</h3>
+        <span class="formula-sm"> 1  3  3  5  6
+ 0 -1  2  5 -3
+ 0  0  0  4  5
+ 0  0  0  0  5</span>
+      </div>
+      <div class="card green">
+        <h3>✔ Échelonnée (lignes nulles en bas)</h3>
+        <span class="formula-sm"> 4 -3  2  5  7
+ 0 -1  2  5 -3
+ 0  0  0  0  0
+ 0  0  0  0  0</span>
+      </div>
+      <div class="card red">
+        <h3>✘ Non échelonnée (lignes 3 et 4 : même nb de 0)</h3>
+        <span class="formula-sm">-2  3  2  5  7
+ 0 -1  2  5 -3
+ 0  0  4  5  6   ← 2 zéros
+ 0  0  7 -5  3   ← 2 zéros aussi !</span>
+      </div>
+      <div class="card red">
+        <h3>✘ Non échelonnée (lignes 2 et 3 : même nb de 0)</h3>
+        <span class="formula-sm">-2  3  2  5  7
+ 0 -1  2  5 -3   ← 1 zéro
+ 0  4  5  6  7   ← 1 zéro aussi !</span>
+      </div>
+    </div>
+
+    <div class="def-box" style="margin-top:14px;">
+      <div class="label">Notion de pivot</div>
+      <p>Le <strong>pivot</strong> d'une ligne est le premier élément non nul de cette ligne. L'échelonnage consiste à mettre des 0 sous chaque pivot.</p>
+    </div>
+
+    <p style="font-weight:600; margin:12px 0 6px;">Exemple d'échelonnage simple :</p>
+    <div class="matrix-wrap">
+      <div class="caption">Étape : ℓ₂ ← ℓ₂ − 5·ℓ₁</div>
+      <div class="op-arrow">
+        <table class="matrix-table">
+          <tr><td class="matrix-bracket" rowspan="2">(</td><td class="pivot">1</td><td>1</td><td class="bterm">10</td><td class="matrix-bracket" rowspan="2">)</td></tr>
+          <tr><td>5</td><td>6</td><td class="bterm">56</td></tr>
+        </table>
+        <span style="font-size:1.3rem; color:#888;">→</span>
+        <span class="op-label">ℓ₂ ← ℓ₂ − 5·ℓ₁</span>
+        <span style="font-size:1.3rem; color:#888;">→</span>
+        <table class="matrix-table">
+          <tr><td class="matrix-bracket" rowspan="2">(</td><td class="pivot">1</td><td>1</td><td class="bterm">10</td><td class="matrix-bracket" rowspan="2">)</td></tr>
+          <tr><td class="zero">0</td><td>1</td><td class="bterm">6</td></tr>
+        </table>
+        <span style="font-size:12px; color:var(--green); font-weight:600;">✔ Échelonnée</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 4. OPERATIONS PERMISES ===== -->
+  <div class="section" id="s-operations">
+    <div class="section-header"><div class="icon">⚙</div>Opérations permises</div>
+
+    <p style="margin-bottom:10px; color:var(--text-muted);">Seules ces 3 opérations préservent les solutions du système :</p>
+
+    <div class="grid2">
+      <div class="card blue">
+        <h3>OP1 — Multiplier une ligne par λ ≠ 0</h3>
+        <span class="formula-sm">ℓᵢ ← λ · ℓᵢ     (λ ≠ 0)</span>
+        <p>Diviser tous les éléments d'une ligne par un même nombre.</p>
+      </div>
+      <div class="card blue">
+        <h3>OP2 — Permuter deux lignes</h3>
+        <span class="formula-sm">ℓᵢ ↔ ℓⱼ</span>
+        <p>Echanger l'ordre de deux lignes.</p>
+      </div>
+    </div>
+    <div class="card blue" style="margin-top:0;">
+      <h3>OP3 — Combinaison linéaire (l'opération principale)</h3>
+      <span class="formula-sm">ℓᵢ ← ℓᵢ − μ · ℓⱼ     (la ligne i doit rester dans le calcul, coefficient ≠ 0)</span>
+      <p>Remplacer une ligne par elle-même moins un multiple d'une autre ligne. C'est l'opération qu'on utilise pour mettre des 0 sous les pivots.</p>
+    </div>
+
+    <div class="warning" style="margin-top:14px;">
+      ⚠️ <strong>Opérations interdites :</strong> multiplier par 0, opérer sur les colonnes, remplacer ℓᵢ par une combinaison qui ne contient pas ℓᵢ.
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 6px;">Méthodes Java à implémenter :</p>
+    <span class="formula">// Permute les lignes d'indices l1 et l2
+private void permuter(int l1, int l2)
+
+// Remplace la ligne l1 par la ligne l1 - a * l2
+// → fait : ℓ_l1 ← ℓ_l1 - a * ℓ_l2
+private void remplacer(int l1, double a, int l2)</span>
+  </div>
+
+  <!-- ===== 5. PIVOTAGE PARTIEL ===== -->
+  <div class="section" id="s-pivotage">
+    <div class="section-header"><div class="icon">🔄</div>Échelonnage par pivotage partiel</div>
+
+    <div class="def-box">
+      <div class="label">Idée principale</div>
+      <p>Pour chaque colonne, choisir comme pivot l'élément de <strong>plus grande valeur absolue</strong>. Cela améliore la stabilité numérique (évite les divisions par de petits nombres).</p>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Algorithme (pour chaque colonne) :</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">a</div><div class="step-body">Chercher <code>kmax</code> = ligne avec max(|valeur|) dans la colonne courante, à partir de la ligne pivot</div></div>
+      <div class="step"><div class="step-num">b</div><div class="step-body">Si le max est non nul : permuter <code>ℓ_pivot ↔ ℓ_kmax</code></div></div>
+      <div class="step"><div class="step-num">c</div><div class="step-body">Pour chaque ligne i sous le pivot : <code>ℓᵢ ← ℓᵢ − (M[i][col] / M[pivot][col]) · ℓ_pivot</code></div></div>
+      <div class="step"><div class="step-num">d</div><div class="step-body">Avancer à la ligne suivante ET à la colonne suivante<br>
+      <span style="color:var(--red);">⚠ Si le pivot vaut 0 : colonne déjà échelonnée → colonne suivante SANS avancer de ligne !</span></div></div>
+    </div>
+
+    <div class="warning" style="margin-top:12px;">
+      <strong>Cas colonne nulle :</strong> tous les éléments en dessous du pivot sont 0 → on reste sur la même ligne pivot et on passe à la colonne suivante.
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">Exemple complet (cours) :</p>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">Système : x₁ − x₂ + x₃ = 1 &nbsp;|&nbsp; −4x₁ + 2x₂ + 2x₃ = 2 &nbsp;|&nbsp; 2x₁ + x₂ + x₃ = −1</p>
+
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Étape 0 — Matrice initiale <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <table class="matrix-table">
+          <tr><td class="matrix-bracket" rowspan="3">(</td><td>1</td><td>−1</td><td>1</td><td class="bterm">1</td><td class="matrix-bracket" rowspan="3">)</td></tr>
+          <tr><td>−4</td><td>2</td><td>2</td><td class="bterm">2</td></tr>
+          <tr><td>2</td><td>1</td><td>1</td><td class="bterm">−1</td></tr>
+        </table>
+        <p style="margin-top:8px; font-size:13px; color:var(--text-muted);">Col 1 : valeurs absolues = {1, 4, 2} → max = <strong style="color:#CC6A00;">4</strong> (ligne 2)</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Étape 1 — Permutation ℓ₁ ↔ ℓ₂ (pivot = −4) <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <div class="op-arrow">
+          <table class="matrix-table">
+            <tr><td class="matrix-bracket" rowspan="3">(</td><td class="pivot">−4</td><td>2</td><td>2</td><td class="bterm">2</td><td class="matrix-bracket" rowspan="3">)</td></tr>
+            <tr><td>1</td><td>−1</td><td>1</td><td class="bterm">1</td></tr>
+            <tr><td>2</td><td>1</td><td>1</td><td class="bterm">−1</td></tr>
+          </table>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">Ensuite on applique : <span class="op-label">ℓ₂ ← ℓ₂ + ¼·ℓ₁</span> et <span class="op-label">ℓ₃ ← ℓ₃ + ½·ℓ₁</span></p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Étape 2 — Après élimination col 1 <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <table class="matrix-table">
+          <tr><td class="matrix-bracket" rowspan="3">(</td><td class="pivot">−4</td><td>2</td><td>2</td><td class="bterm">2</td><td class="matrix-bracket" rowspan="3">)</td></tr>
+          <tr><td class="zero">0</td><td>−1/2</td><td>3/2</td><td class="bterm">3/2</td></tr>
+          <tr><td class="zero">0</td><td>2</td><td>2</td><td class="bterm">0</td></tr>
+        </table>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:8px;">Col 2 (lignes 2,3) : valeurs abs = {1/2, 2} → max = <strong style="color:#CC6A00;">2</strong> (ligne 3) → permuter ℓ₂ ↔ ℓ₃</p>
+      </div>
+    </div>
+
+    <div class="accordion">
+      <div class="acc-head" onclick="toggleAcc(this)">Étape 3 — Permuter ℓ₂ ↔ ℓ₃, puis éliminer col 2 → Matrice échelonnée ✔ <span class="acc-arrow">▼</span></div>
+      <div class="acc-body">
+        <div class="op-arrow" style="align-items:flex-start;">
+          <div>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:6px;">Après permutation :</p>
+            <table class="matrix-table">
+              <tr><td class="matrix-bracket" rowspan="3">(</td><td>−4</td><td>2</td><td>2</td><td class="bterm">2</td><td class="matrix-bracket" rowspan="3">)</td></tr>
+              <tr><td class="zero">0</td><td class="pivot">2</td><td>2</td><td class="bterm">0</td></tr>
+              <tr><td class="zero">0</td><td>−1/2</td><td>3/2</td><td class="bterm">3/2</td></tr>
+            </table>
+          </div>
+          <span style="font-size:1.3rem; color:#888; margin-top:20px;">→</span>
+          <div>
+            <p style="font-size:12px; color:var(--green); font-weight:600; margin-bottom:6px;">Résultat échelonné ✔</p>
+            <table class="matrix-table">
+              <tr><td class="matrix-bracket" rowspan="3">(</td><td class="pivot">−4</td><td>2</td><td>2</td><td class="bterm">2</td><td class="matrix-bracket" rowspan="3">)</td></tr>
+              <tr><td class="zero">0</td><td class="pivot">2</td><td>2</td><td class="bterm">0</td></tr>
+              <tr><td class="zero">0</td><td class="zero">0</td><td class="pivot">2</td><td class="bterm">3/2</td></tr>
+            </table>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); margin-top:8px;"><span class="op-label">ℓ₃ ← ℓ₃ + ¼·ℓ₂</span> → 3 pivots non nuls sur la diagonale.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 6. RESOLUTION FINALE ===== -->
+  <div class="section" id="s-resolution">
+    <div class="section-header"><div class="icon">✓</div>Résolution finale (back-substitution)</div>
+
+    <div class="def-box">
+      <div class="label">Principe</div>
+      <p>Une fois la matrice échelonnée, on isole les inconnues <strong>de bas en haut</strong> (de la dernière à la première).</p>
+    </div>
+
+    <p style="font-weight:600; margin:12px 0 6px;">Formule générale :</p>
+    <span class="formula">Pour i allant de n−1 à 1 :
+
+         M[i][n]  −  Σ( M[i][j] · xⱼ )   pour j de i+1 à n−1
+xᵢ  =  ──────────────────────────────────────────────────
+                          M[i][i]
+
+(on a besoin des xⱼ calculés avant, d'où le calcul de bas en haut)</span>
+
+    <p style="font-weight:600; margin:14px 0 6px;">Exemple numérique (suite de l'échelonnage précédent) :</p>
+    <div class="matrix-wrap">
+      <div class="caption">Matrice échelonnée</div>
+      <table class="matrix-table">
+        <tr><td class="matrix-bracket" rowspan="3">(</td><td class="pivot">−4</td><td>2</td><td>2</td><td class="bterm">2</td><td class="matrix-bracket" rowspan="3">)</td></tr>
+        <tr><td class="zero">0</td><td class="pivot">2</td><td>2</td><td class="bterm">0</td></tr>
+        <tr><td class="zero">0</td><td class="zero">0</td><td class="pivot">2</td><td class="bterm">3/2</td></tr>
+      </table>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><code>x₃ = (3/2) / 2 = 3/4</code></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><code>x₂ = (0 − 2·(3/4)) / 2 = −3/4</code></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><code>x₁ = (2 − 2·(−3/4) − 2·(3/4)) / (−4) = −1/2</code></div></div>
+    </div>
+    <div class="success" style="margin-top:10px;">✔ Solution : S = { (−1/2 , −3/4 , 3/4) }</div>
+
+    <p style="font-weight:600; margin:16px 0 8px;">Les 4 cas sans solution unique → Exception :</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Condition</th><th>Signification</th><th>Exemple</th></tr></thead>
+        <tbody>
+          <tr><td><code>n &lt; 2</code></td><td>Pas une matrice de système</td><td>0 ou 1 colonne</td></tr>
+          <tr><td><code>m &lt; n−1</code></td><td>Pas assez d'équations</td><td>2 éq. pour 4 inconnues</td></tr>
+          <tr><td><code>m ≥ n  ET  M[n][n] ≠ 0</code></td><td>Contradiction (0 = c ≠ 0)</td><td>Dernière ligne : 0 = −5</td></tr>
+          <tr><td><code>M[n−1][n−1] = 0</code></td><td>Variable libre / ∞ solutions</td><td>Division par 0 impossible</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== 7. PSEUDO-CODE ===== -->
+  <div class="section" id="s-pseudocode">
+    <div class="section-header"><div class="icon">📝</div>Pseudo-code complet</div>
+
+    <p style="font-weight:600; margin-bottom:8px;">echelonner() — Pivotage partiel :</p>
+    <div class="algo-box">
+<span>lignePivot  = 1</span>
+<span>colonnePivot = 1</span>
+<span> </span>
+<span><span class="kw">tant que</span> lignePivot ≤ nbLignes <span class="kw">et</span> colonnePivot ≤ nbColonnes <span class="kw">faire</span></span>
+<span class="ind1"><span class="cmt">// Trouver la ligne avec le plus grand |valeur| dans la colonne</span></span>
+<span class="ind1">kmax ← argmax<sub>k ∈ [lignePivot..m]</sub> |M[k][colonnePivot]|</span>
+<span> </span>
+<span class="ind1"><span class="kw">si</span> M[kmax][colonnePivot] ≠ 0 <span class="kw">alors</span></span>
+<span class="ind2"><span class="fn">permuter</span>(lignePivot, kmax)</span>
+<span class="ind2"><span class="kw">pour</span> i <span class="kw">de</span> lignePivot+1 <span class="kw">à</span> m <span class="kw">faire</span></span>
+<span class="ind3"><span class="fn">remplacer</span>(i, M[i][colonnePivot] / M[lignePivot][colonnePivot], lignePivot)</span>
+<span class="ind2"><span class="kw">fin pour</span></span>
+<span class="ind2">lignePivot ← lignePivot + 1</span>
+<span class="ind1"><span class="kw">fin si</span>   <span class="cmt">// si pivot = 0 : on ne touche pas à lignePivot !</span></span>
+<span class="ind1">colonnePivot ← colonnePivot + 1</span>
+<span><span class="kw">fin tant que</span></span>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">resoudreSysteme() — Pseudo-code complet :</p>
+    <div class="algo-box">
+<span><span class="cmt">// 1. Vérifications avant échelonnage</span></span>
+<span><span class="kw">si</span> n &lt; 2 <span class="kw">alors</span> <span class="err">Exception("Pas un système")</span></span>
+<span><span class="kw">si</span> m &lt; n−1 <span class="kw">alors</span> <span class="err">Exception("Pas assez d'équations")</span></span>
+<span> </span>
+<span><span class="cmt">// 2. Échelonner</span></span>
+<span><span class="fn">echelonner()</span></span>
+<span> </span>
+<span><span class="cmt">// 3. Vérifications après échelonnage</span></span>
+<span><span class="kw">si</span> m ≥ n <span class="kw">et</span> M[n][n] ≠ 0 <span class="kw">alors</span> <span class="err">Exception("Pas de solution unique")</span></span>
+<span><span class="kw">si</span> M[n−1][n−1] = 0 <span class="kw">alors</span> <span class="err">Exception("Pas de solution unique")</span></span>
+<span> </span>
+<span><span class="cmt">// 4. Back-substitution (de bas en haut !)</span></span>
+<span><span class="kw">pour</span> i <span class="kw">de</span> n−1 <span class="kw">à</span> 1 <span class="kw">faire</span></span>
+<span class="ind1">somme ← 0</span>
+<span class="ind1"><span class="kw">pour</span> j <span class="kw">de</span> i+1 <span class="kw">à</span> n−1 <span class="kw">faire</span></span>
+<span class="ind2">somme ← somme + M[i][j] · x[j]</span>
+<span class="ind1"><span class="kw">fin pour</span></span>
+<span class="ind1"><span class="hi">x[i] ← (M[i][n] − somme) / M[i][i]</span></span>
+<span><span class="kw">fin pour</span></span>
+<span> </span>
+<span><span class="kw">retourner</span> <span class="fn">matrice_colonne(x)</span></span>
+    </div>
+
+    <p style="font-weight:600; margin:14px 0 8px;">estEchelonnee() :</p>
+    <div class="algo-box">
+<span><span class="fn">boolean estEchelonnee()</span></span>
+<span class="ind1">zerosPrec ← −1  <span class="cmt">// nb de 0 en début de la ligne précédente</span></span>
+<span class="ind1"><span class="kw">pour</span> i <span class="kw">de</span> 1 <span class="kw">à</span> m <span class="kw">faire</span></span>
+<span class="ind2">zeros ← nb de zéros en début de ligne i</span>
+<span class="ind2"><span class="kw">si</span> zeros &lt; n <span class="cmt">// ligne non nulle</span></span>
+<span class="ind3"><span class="kw">si</span> zeros ≤ zerosPrec <span class="kw">alors retourner</span> <span class="err">false</span></span>
+<span class="ind3">zerosPrec ← zeros</span>
+<span class="ind1"><span class="kw">fin pour</span></span>
+<span class="ind1"><span class="kw">retourner</span> <span class="fn">true</span></span>
+    </div>
+  </div>
+
+  <!-- ===== 8. SOLVEUR INTERACTIF ===== -->
+  <div class="section" id="s-solveur">
+    <div class="section-header"><div class="icon">🧮</div>Solveur interactif</div>
+    <p style="color:var(--text-muted); margin-bottom:14px; font-size:13px;">Entre les coefficients et observe chaque étape de l'algorithme de Gauss.</p>
+
+    <div class="solver-box">
+      <h3>Système à résoudre</h3>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <button class="btn btn-primary" id="btn2" onclick="setSize(2)">2×2</button>
+        <button class="btn btn-secondary" id="btn3" onclick="setSize(3)">3×3</button>
+        <button class="btn btn-secondary" onclick="loadEx(0)">Exemple articles A/B</button>
+        <button class="btn btn-secondary" onclick="loadEx(1)">Exemple pivotage partiel</button>
+        <button class="btn btn-secondary" onclick="loadEx(2)">Exemple 3×3</button>
+      </div>
+
+      <div id="input-area"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="solveAll()">▶ Résoudre (toutes les étapes)</button>
+        <button class="btn btn-secondary" onclick="solveStep()">→ Étape suivante</button>
+        <button class="btn btn-danger" onclick="resetSolver()">↺ Réinitialiser</button>
+      </div>
+    </div>
+
+    <div id="steps-area" style="display:none;">
+      <p style="font-weight:600; margin-bottom:8px; font-size:13px;">Étapes de l'échelonnage :</p>
+      <div id="steps-content"></div>
+    </div>
+
+    <div id="result-area" style="display:none;">
+      <p style="font-weight:600; margin:12px 0 6px; font-size:13px;">Résultat :</p>
+      <div class="result-area" id="result-box"></div>
+    </div>
+  </div>
+
+  <!-- ===== 9. RECAP ===== -->
+  <div class="section" id="s-recap">
+    <div class="section-header"><div class="icon">📋</div>Récapitulatif — Méthode complète</div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Former la matrice augmentée</strong> [A|B] — coefficients à gauche, termes indépendants à droite séparés par |</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Vérifications préalables</strong> : n ≥ 2 colonnes ET m ≥ n−1 lignes → sinon MathException</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Échelonner</strong> avec pivotage partiel : pour chaque colonne, trouver max(|val|), permuter, éliminer sous le pivot</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Vérifications après échelonnage</strong> : si m≥n vérifier M[n][n]=0, vérifier M[n−1][n−1]≠0 → sinon MathException</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Back-substitution</strong> : commencer à la ligne n−1 et remonter jusqu'à la ligne 1</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><strong>Retourner</strong> le vecteur solution sous forme de matrice colonne</div></div>
+    </div>
+
+    <p style="font-weight:600; margin:20px 0 10px;">Pièges classiques à l'examen :</p>
+    <div class="grid2">
+      <div class="card red">
+        <h3>⚠️ Colonne nulle</h3>
+        <p>Si tous les éléments sous le pivot sont 0 → passer à la colonne suivante <strong>sans avancer la ligne pivot</strong>.</p>
+      </div>
+      <div class="card red">
+        <h3>⚠️ Vérification M[n−1][n−1]</h3>
+        <p>Toujours vérifier que M[n−1][n−1] ≠ 0 avant la back-substitution, même si la matrice semble bien échelonnée.</p>
+      </div>
+      <div class="card red">
+        <h3>⚠️ Ligne de départ</h3>
+        <p>La back-substitution commence à la ligne <strong>n−1</strong> (pas à la dernière ligne de M si m > n−1).</p>
+      </div>
+      <div class="card red">
+        <h3>⚠️ Matrice m×n avec m > n</h3>
+        <p>Ex: matrice 5×4 → 3 inconnues, commencer la résolution à la ligne 3. Lignes 4 et 5 doivent être de zéros.</p>
+      </div>
+    </div>
+
+    <p style="font-weight:600; margin:20px 0 10px;">Récap des signatures Java :</p>
+    <span class="formula">private void permuter(int l1, int l2)
+private void remplacer(int l1, double a, int l2)  // ℓ_l1 ← ℓ_l1 - a * ℓ_l2
+public void echelonner()
+public boolean estEchelonnee()
+public Matrice resoudreSysteme()   // Lance MathException si pas de solution unique</span>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ===== TABS =====
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== ACCORDION =====
+function toggleAcc(head) {
+  head.classList.toggle('open');
+  head.nextElementSibling.classList.toggle('open');
+}
+
+// ===== SOLVER =====
+let sz = 2;
+let sbsState = null;
+
+const EXAMPLES = [
+  [[1,1,10],[5,6,56]],
+  [[1,-1,1,1],[-4,2,2,2],[2,1,1,-1]],
+  [[2,1,-1,8],[-3,-1,2,-11],[-2,1,2,-3]]
+];
+
+function setSize(n) {
+  sz = n;
+  document.getElementById('btn2').className = n===2 ? 'btn btn-primary' : 'btn btn-secondary';
+  document.getElementById('btn3').className = n===3 ? 'btn btn-primary' : 'btn btn-secondary';
+  buildInput(n);
+  hideOutput();
+}
+
+function buildInput(n) {
+  let html = '<table class="input-matrix-table"><tbody>';
+  for (let i=0; i<n; i++) {
+    html += '<tr>';
+    for (let j=0; j<n; j++) html += `<td><input type="number" id="v${i}${j}" value="0" step="any"></td>`;
+    html += `<td class="sep-col">|</td><td><input type="number" id="v${i}${n}" value="0" step="any"></td>`;
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  document.getElementById('input-area').innerHTML = html;
+}
+
+function loadEx(idx) {
+  const ex = EXAMPLES[idx];
+  setSize(ex.length);
+  ex.forEach((row,i) => row.forEach((val,j) => { const el=document.getElementById(`v${i}${j}`); if(el) el.value=val; }));
+  hideOutput();
+}
+
+function getM() {
+  return Array.from({length:sz}, (_,i) =>
+    Array.from({length:sz+1}, (_,j) => parseFloat(document.getElementById(`v${i}${j}`).value)||0)
+  );
+}
+function cloneM(M) { return M.map(r=>[...r]); }
+
+function frac(v) {
+  if (Math.abs(v) < 1e-9) return '0';
+  const r = Math.round(v*1e8)/1e8;
+  if (Number.isInteger(r)) return String(r);
+  for (let d=2; d<=24; d++) {
+    const n2 = Math.round(r*d);
+    if (Math.abs(n2/d - r) < 1e-7) return `${n2}/${d}`;
+  }
+  return r.toFixed(4);
+}
+
+function renderM(M, pivotR, pivotC) {
+  let h = '<table class="matrix-table"><tr><td class="matrix-bracket" rowspan="'+M.length+'">(</td>';
+  M.forEach((row, i) => {
+    if (i>0) h += '<tr>';
+    const n = row.length;
+    row.forEach((v,j) => {
+      const val = frac(v);
+      let cls = '';
+      if (i===pivotR && j===pivotC) cls = 'pivot';
+      else if (Math.abs(v)<1e-9) cls = 'zero';
+      const bterm = (j===n-1) ? ' class="bterm"' : (cls ? ` class="${cls}"` : '');
+      if (j===n-1) h += `<td class="bterm">${val}</td>`;
+      else h += `<td${cls?' class="'+cls+'"':''}>${val}</td>`;
+    });
+    h += `<td class="matrix-bracket" rowspan="${i===0?M.length:0}" style="${i>0?'display:none':''}">)</td></tr>`;
+  });
+  h += '</table>';
+  return h;
+}
+
+function gauss(M) {
+  const m=M.length, n=M[0].length;
+  const steps=[{mat:cloneM(M), log:'Matrice initiale', pr:-1, pc:-1}];
+  let lp=0, cp=0;
+  while(lp<m && cp<n-1) {
+    let kmax=lp;
+    for(let k=lp+1;k<m;k++) if(Math.abs(M[k][cp])>Math.abs(M[kmax][cp])) kmax=k;
+    if(Math.abs(M[kmax][cp])>1e-10){
+      if(kmax!==lp){
+        [M[lp],M[kmax]]=[M[kmax],M[lp]];
+        steps.push({mat:cloneM(M), log:`<span class="log-swap">Permutation</span> ℓ${lp+1} ↔ ℓ${kmax+1}`, pr:lp, pc:cp});
+      }
+      let opLog='';
+      for(let i=lp+1;i<m;i++){
+        const f=M[i][cp]/M[lp][cp];
+        if(Math.abs(f)>1e-10){
+          for(let j=cp;j<n;j++) M[i][j]-=f*M[lp][j];
+          opLog+=`<span class="log-op">ℓ${i+1} ← ℓ${i+1} − ${frac(f)}·ℓ${lp+1}</span> `;
+        }
+      }
+      if(opLog) steps.push({mat:cloneM(M), log:opLog, pr:lp, pc:cp});
+      lp++;
+    } else {
+      steps.push({mat:cloneM(M), log:`Col ${cp+1} nulle → même ligne pivot, colonne suivante`, pr:-1, pc:-1});
+    }
+    cp++;
+  }
+  return {steps, echM:M};
+}
+
+function backSub(M) {
+  const n=M[0].length-1, m=M.length;
+  if(n<1) return {err:'Pas un système (besoin ≥ 2 colonnes)'};
+  if(m<n) return {err:`Pas assez d'équations : ${m} éq. pour ${n} inconnues`};
+  if(m>=n+1 && Math.abs(M[n][n])>1e-10) return {err:`Contradiction : 0 = ${frac(M[n][n])}`};
+  if(Math.abs(M[n-1][n-1])<1e-10) return {err:'M[n−1][n−1] = 0 → variable libre, infinité de solutions'};
+  const x=new Array(n).fill(0);
+  for(let i=n-1;i>=0;i--){
+    let s=0;
+    for(let j=i+1;j<n;j++) s+=M[i][j]*x[j];
+    x[i]=(M[i][n]-s)/M[i][i];
+  }
+  return {x};
+}
+
+function buildStepHTML(step, idx) {
+  return `<div style="margin-bottom:10px; padding:10px; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm);">
+    <div style="font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px;">Étape ${idx}</div>
+    ${renderM(step.mat, step.pr, step.pc)}
+    <div class="step-log" style="margin-top:6px;">${step.log}</div>
+  </div>`;
+}
+
+function solveAll() {
+  sbsState = null;
+  const M = getM();
+  const {steps, echM} = gauss(cloneM(M));
+  document.getElementById('steps-area').style.display='block';
+  document.getElementById('steps-content').innerHTML = steps.map((s,i)=>buildStepHTML(s,i)).join('');
+  const res = backSub(echM);
+  showResult(res);
+}
+
+let stepM=null, stepGaussState=null;
+function solveStep() {
+  if(!stepGaussState){
+    stepM=cloneM(getM());
+    stepGaussState={m:stepM.length,n:stepM[0].length,lp:0,cp:0,stepIdx:0};
+    document.getElementById('steps-area').style.display='block';
+    document.getElementById('steps-content').innerHTML=buildStepHTML({mat:cloneM(stepM),log:'Matrice initiale',pr:-1,pc:-1},0);
+    stepGaussState.stepIdx=1;
+    return;
+  }
+  const {m,n} = stepGaussState;
+  const M=stepM;
+  if(stepGaussState.lp>=m||stepGaussState.cp>=n-1){
+    const res=backSub(cloneM(M));
+    showResult(res);
+    stepGaussState=null; stepM=null;
+    return;
+  }
+  let {lp,cp}=stepGaussState;
+  let kmax=lp;
+  for(let k=lp+1;k<m;k++) if(Math.abs(M[k][cp])>Math.abs(M[kmax][cp])) kmax=k;
+  let log='',pr=-1,pc=-1;
+  if(Math.abs(M[kmax][cp])>1e-10){
+    if(kmax!==lp){[M[lp],M[kmax]]=[M[kmax],M[lp]]; log=`<span class="log-swap">Permutation</span> ℓ${lp+1} ↔ ℓ${kmax+1}`; pr=lp; pc=cp; }
+    else {
+      for(let i=lp+1;i<m;i++){
+        const f=M[i][cp]/M[lp][cp];
+        if(Math.abs(f)>1e-10){for(let j=cp;j<n;j++) M[i][j]-=f*M[lp][j]; log+=`<span class="log-op">ℓ${i+1} ← ℓ${i+1} − ${frac(f)}·ℓ${lp+1}</span> `;}
+      }
+      if(!log) log=`Col ${cp+1} : rien à éliminer`;
+      stepGaussState.lp++;
+      stepGaussState.cp++;
+    }
+  } else { log=`Col ${cp+1} nulle → même ligne, colonne suivante`; stepGaussState.cp++; }
+  document.getElementById('steps-content').innerHTML+=buildStepHTML({mat:cloneM(M),log,pr,pc},stepGaussState.stepIdx++);
+  document.getElementById('steps-content').lastElementChild.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function showResult(res) {
+  const area=document.getElementById('result-area');
+  area.style.display='block';
+  const box=document.getElementById('result-box');
+  if(res.err){
+    box.innerHTML=`<span class="result-err">✘ Exception : ${res.err}</span>`;
+  } else {
+    let h=`<span class="result-ok">✔ Solution unique :\n\n</span>`;
+    res.x.forEach((v,i)=>{ h+=`  <span class="result-var">x${i+1}</span> = <span class="result-num">${frac(v)}</span>\n`; });
+    box.innerHTML=h;
+  }
+}
+
+function hideOutput() {
+  document.getElementById('steps-area').style.display='none';
+  document.getElementById('result-area').style.display='none';
+  document.getElementById('steps-content').innerHTML='';
+  stepGaussState=null; stepM=null; sbsState=null;
+}
+
+function resetSolver() { hideOutput(); }
+
+// Init
+setSize(2);
+loadEx(0);
+</script>
+</body>
+</html>

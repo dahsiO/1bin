@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maths 2 — Chapitre 4 : Les Matrices</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #185FA5;
+    --accent-light: #E6F1FB;
+    --accent-mid: #378ADD;
+    --accent-dark: #0C447C;
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --red: #993C1D;
+    --red-light: #FAECE7;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --purple: #533AB7;
+    --purple-light: #EEEDFE;
+    --bg: #f8f7f4;
+    --card: #ffffff;
+    --text: #1a1a18;
+    --text-muted: #6b6a66;
+    --border: rgba(0,0,0,0.1);
+    --border-strong: rgba(0,0,0,0.18);
+    --radius: 10px;
+    --radius-sm: 6px;
+    --surface: #ffffff;
+    --surface2: #f5f5f3;
+    --code-bg: #f3f4f6;
+    --accent2: #854F0B;
+    --accent3: #993C1D;
+    --accent4: #533AB7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0C447C 0%, #185FA5 60%, #378ADD 100%);
+    color: white;
+    border-bottom: 1px solid var(--border);
+    padding: 36px 40px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    pointer-events: none;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+  .header-meta {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    opacity: .7;
+    margin-bottom: 8px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  header h1 span { color: rgba(255,255,255,0.9); }
+  .header-sub {
+    font-size: 13px;
+    opacity: .75;
+    margin-top: 0;
+    font-weight: 400;
+  }
+
+  /* TABS */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-top: 2px solid transparent;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    position: relative;
+    top: -1px;
+  }
+  .tab-btn:hover { color: rgba(255,255,255,0.9); }
+  .tab-btn.active { color: white; border-top-color: white; }
+
+  /* MAIN */
+  main { max-width: 1000px; margin: 0 auto; padding: 2rem; }
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .card-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* DEFINITION BOX */
+  .def-box {
+    background: var(--accent-light);
+    border: 1px solid rgba(24,95,165,0.2);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .warn-box {
+    background: var(--amber-light);
+    border: 1px solid rgba(133,79,11,0.2);
+    border-left: 3px solid var(--amber);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .danger-box {
+    background: var(--red-light);
+    border: 1px solid rgba(153,60,29,0.2);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .success-box {
+    background: var(--green-light);
+    border: 1px solid rgba(15,110,86,0.2);
+    border-left: 3px solid var(--green);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  /* FORMULA */
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem 1.2rem;
+    margin: 0.8rem 0;
+    font-size: 0.88rem;
+    color: var(--accent);
+    display: block;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+  .formula .op { color: var(--amber); }
+  .formula .var { color: var(--purple); }
+  .formula .num { color: var(--green); }
+
+  /* MATRIX DISPLAY */
+  .matrix-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 0.8rem 0;
+  }
+  .matrix-bracket {
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+    font-weight: 100;
+  }
+  .matrix-grid {
+    display: grid;
+    gap: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+  .matrix-cell { text-align: center; }
+  .matrix-cell.highlight { color: var(--accent); font-weight: 700; }
+  .matrix-cell.hl-orange { color: var(--accent2); font-weight: 700; }
+  .matrix-cell.hl-pink { color: var(--accent3); font-weight: 700; }
+  .matrix-op {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--accent2);
+    align-self: center;
+  }
+  .matrix-eq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    align-self: center;
+  }
+  .matrix-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 0.3rem;
+  }
+
+  /* TABLE */
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    font-family: 'JetBrains Mono', monospace;
+    margin: 1rem 0;
+  }
+  table.data-table th {
+    background: var(--surface2);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    color: var(--accent);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+  }
+  table.data-table td {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  table.data-table tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .badge-green { background: var(--green-light); color: var(--green); border: 1px solid rgba(15,110,86,0.25); }
+  .badge-red { background: var(--red-light); color: var(--red); border: 1px solid rgba(153,60,29,0.25); }
+  .badge-blue { background: var(--purple-light); color: var(--purple); border: 1px solid rgba(83,58,183,0.25); }
+  .badge-orange { background: var(--amber-light); color: var(--amber); border: 1px solid rgba(133,79,11,0.25); }
+  .badge-teal { background: var(--accent-light); color: var(--accent); border: 1px solid rgba(24,95,165,0.25); }
+
+  /* STEPS */
+  .step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .step-content { flex: 1; line-height: 1.7; font-size: 0.92rem; }
+  .step-title { font-weight: 700; margin-bottom: 0.3rem; }
+
+  /* INTERACTIVE CALCULATOR */
+  .calc-panel {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.2rem 0;
+  }
+  .calc-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 1rem;
+  }
+  .matrix-input-grid {
+    display: inline-grid;
+    gap: 6px;
+    margin: 0.5rem 0;
+  }
+  .matrix-input-grid input {
+    width: 52px; height: 38px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .matrix-input-grid input:focus { border-color: var(--accent); }
+  .calc-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin: 0.5rem 0.4rem 0 0;
+  }
+  .calc-btn:hover { background: #7df0dd; transform: translateY(-1px); }
+  .calc-btn.secondary { background: transparent; color: var(--accent2); border: 1px solid var(--accent2); }
+  .calc-btn.secondary:hover { background: rgba(240,165,0,0.1); }
+  .calc-result {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    min-height: 60px;
+    white-space: pre-wrap;
+  }
+  .calc-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .calc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 0.3rem;
+  }
+
+  /* POPULATION SIM */
+  .sim-controls { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+  .sim-input {
+    display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .sim-input label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+  .sim-input input {
+    width: 90px; height: 36px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sim-input input:focus { border-color: var(--accent); }
+  .timeline-bar {
+    display: flex; gap: 4px; align-items: flex-end; height: 80px; margin-top: 0.5rem;
+  }
+  .bar-segment {
+    border-radius: 3px 3px 0 0;
+    transition: height 0.3s ease;
+    min-width: 8px;
+  }
+  .bar-a { background: var(--accent); }
+  .bar-b { background: var(--accent2); }
+
+  /* SECTION TITLES */
+  h2.sec-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  h2.sec-title .icon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    background: var(--accent-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  h3.sub-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 1.2rem 0 0.8rem;
+    color: var(--accent2);
+  }
+  p { line-height: 1.7; font-size: 0.92rem; margin-bottom: 0.7rem; }
+  ul, ol { padding-left: 1.5rem; line-height: 1.8; font-size: 0.92rem; }
+  li { margin-bottom: 0.2rem; }
+  strong { color: var(--accent-dark); }
+  em { color: var(--amber); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    letter-spacing: 0.08em;
+  }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.8rem 0; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ACCORDION */
+  .accordion { margin: 0.5rem 0; }
+  .accordion-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    transition: border-color 0.2s;
+    margin-bottom: 2px;
+  }
+  .accordion-header:hover { border-color: var(--accent); color: var(--accent); }
+  .accordion-header .chevron { font-size: 0.7rem; transition: transform 0.2s; }
+  .accordion-header.open .chevron { transform: rotate(180deg); }
+  .accordion-body {
+    display: none;
+    padding: 1rem;
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .accordion-body.open { display: block; }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 20px;
+    flex-wrap: wrap;
+  }
+  .ch-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .ch-link:hover { background: rgba(92,225,200,0.12); color: var(--accent); }
+  .ch-link.active { background: var(--accent); color: white; }
+  .ch-num { font-size: 10px; font-weight: 700; opacity: .6; }
+  .ch-sep { width: 1px; height: 18px; background: var(--border); margin: 0 6px; flex-shrink: 0; }
+  .ch-arrow {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: all .15s;
+  }
+  .ch-arrow:hover { background: rgba(92,225,200,0.12); color: var(--accent); border-color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-meta">Maths 2 · HE Vinci — Chapitre 4 / 8</div>
+  <h1>Les <span>Matrices</span></h1>
+  <p class="header-sub">Définitions · Opérations · Modélisation de systèmes · Évolution de populations</p>
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="show('s-def', this)">01 Définitions</button>
+    <button class="tab-btn" onclick="show('s-add', this)">02 Addition</button>
+    <button class="tab-btn" onclick="show('s-mul', this)">03 Multiplication</button>
+    <button class="tab-btn" onclick="show('s-trans', this)">04 Transposée</button>
+    <button class="tab-btn" onclick="show('s-sys', this)">05 Systèmes linéaires</button>
+    <button class="tab-btn" onclick="show('s-pop', this)">06 Évolution pop.</button>
+    <button class="tab-btn" onclick="show('s-calc', this)">07 Calculatrice</button>
+    <button class="tab-btn" onclick="show('s-recap', this)">08 Récap</button>
+  </nav>
+</header>
+
+<nav class="chapter-nav">
+  <a class="ch-arrow" href="ch03_relations_equivalence.html">← Précédent</a>
+  <div class="ch-sep"></div>
+  <a class="ch-link" href="ch01_relations_binaires.html"><span class="ch-num">01</span> Relations Binaires</a>
+  <a class="ch-link" href="ch02_relations_ordre.html"><span class="ch-num">02</span> Relations d'Ordre</a>
+  <a class="ch-link" href="ch03_relations_equivalence.html"><span class="ch-num">03</span> Relations d'Équivalence</a>
+  <a class="ch-link active" href="ch04_matrices.html"><span class="ch-num">04</span> Les Matrices</a>
+  <a class="ch-link" href="ch05_systemes_lineaires_v2.html"><span class="ch-num">05</span> Systèmes linéaires</a>
+  <a class="ch-link" href="ch06_markov.html"><span class="ch-num">06</span> Markov</a>
+  <a class="ch-link" href="ch07_langages_formels.html"><span class="ch-num">07</span> Langages formels</a>
+  <div class="ch-sep"></div>
+  <a class="ch-arrow" href="ch05_systemes_lineaires_v2.html">Suivant →</a>
+</nav>
+
+<main>
+
+<!-- =================== 01 DEFINITIONS =================== -->
+<div class="section active" id="s-def">
+  <h2 class="sec-title"><span class="icon">🧮</span>Définitions fondamentales</h2>
+
+  <div class="card">
+    <div class="card-title">Qu'est-ce qu'une matrice ?</div>
+    <p>Une matrice est un <strong>tableau rectangulaire de nombres</strong> organisés en lignes et colonnes. C'est un outil puissant pour modéliser des données structurées : états de jeu, commandes, populations…</p>
+    <div class="def-box">
+      Une matrice <strong>m × n</strong> est un tableau de <em>m</em> lignes et <em>n</em> colonnes.<br>
+      Si tous les éléments sont réels : <strong>A ∈ ℝ<sup>m×n</sup></strong><br>
+      L'élément en ligne <em>i</em>, colonne <em>j</em> se note <strong>a<sub>ij</sub></strong>
+    </div>
+
+    <div class="matrix-wrap">
+      <span class="matrix-bracket">[</span>
+      <div>
+        <div class="matrix-grid" style="grid-template-columns: repeat(4,1fr)">
+          <span class="matrix-cell">a<sub>11</sub></span><span class="matrix-cell">a<sub>12</sub></span><span class="matrix-cell">…</span><span class="matrix-cell">a<sub>1n</sub></span>
+          <span class="matrix-cell">a<sub>21</sub></span><span class="matrix-cell">a<sub>22</sub></span><span class="matrix-cell">…</span><span class="matrix-cell">a<sub>2n</sub></span>
+          <span class="matrix-cell" style="color:var(--text-muted)">⋮</span><span class="matrix-cell" style="color:var(--text-muted)">⋮</span><span class="matrix-cell" style="color:var(--text-muted)">⋱</span><span class="matrix-cell" style="color:var(--text-muted)">⋮</span>
+          <span class="matrix-cell">a<sub>m1</sub></span><span class="matrix-cell">a<sub>m2</sub></span><span class="matrix-cell">…</span><span class="matrix-cell">a<sub>mn</sub></span>
+        </div>
+        <div class="matrix-label">Matrice A ∈ ℝ<sup>m×n</sup></div>
+      </div>
+      <span class="matrix-bracket">]</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Exemple concret — Jeu de la vie</div>
+    <p>Une grille 3×3 avec cases vivantes (1) ou mortes (0) se représente directement comme une matrice booléenne :</p>
+    <div class="matrix-wrap">
+      <div>
+        <div style="display:grid;grid-template-columns:repeat(3,36px);gap:4px;margin:0.5rem 0">
+          <div style="width:36px;height:36px;background:#e8e8e6;border:1px solid rgba(0,0,0,0.1);border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#185FA5;border:1px solid #185FA5;border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#e8e8e6;border:1px solid rgba(0,0,0,0.1);border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#185FA5;border:1px solid #185FA5;border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#185FA5;border:1px solid #185FA5;border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#185FA5;border:1px solid #185FA5;border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#e8e8e6;border:1px solid rgba(0,0,0,0.1);border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#185FA5;border:1px solid #185FA5;border-radius:3px"></div>
+          <div style="width:36px;height:36px;background:#e8e8e6;border:1px solid rgba(0,0,0,0.1);border-radius:3px"></div>
+        </div>
+        <div class="matrix-label">État visuel</div>
+      </div>
+      <span class="matrix-op" style="font-size:1.5rem">⟹</span>
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:repeat(3,1fr)">
+          <span class="matrix-cell">0</span><span class="matrix-cell highlight">1</span><span class="matrix-cell">0</span>
+          <span class="matrix-cell highlight">1</span><span class="matrix-cell highlight">1</span><span class="matrix-cell highlight">1</span>
+          <span class="matrix-cell">0</span><span class="matrix-cell highlight">1</span><span class="matrix-cell">0</span>
+        </div>
+        <div class="matrix-label">Matrice 3×3</div>
+      </div>
+    </div>
+    <p>Noir/mort = <strong>0</strong>, Blanc/vivant = <strong>1</strong></p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Types de matrices importants</div>
+    <div class="two-col">
+      <div>
+        <h3 class="sub-title">Matrice carrée (n×n)</h3>
+        <p>Même nombre de lignes et de colonnes. Ordre n.</p>
+        <div class="matrix-wrap">
+          <span class="matrix-bracket">[</span>
+          <div class="matrix-grid" style="grid-template-columns:repeat(2,1fr)">
+            <span class="matrix-cell">3</span><span class="matrix-cell">1</span>
+            <span class="matrix-cell">2</span><span class="matrix-cell">5</span>
+          </div>
+          <span class="matrix-bracket">]</span>
+          <span style="font-family:JetBrains Mono;font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem">2×2</span>
+        </div>
+      </div>
+      <div>
+        <h3 class="sub-title">Matrice identité I<sub>n</sub></h3>
+        <p>1 sur la diagonale, 0 ailleurs. Équivalent matriciel de "1".</p>
+        <div class="matrix-wrap">
+          <span class="matrix-bracket">[</span>
+          <div class="matrix-grid" style="grid-template-columns:repeat(3,1fr)">
+            <span class="matrix-cell highlight">1</span><span class="matrix-cell">0</span><span class="matrix-cell">0</span>
+            <span class="matrix-cell">0</span><span class="matrix-cell highlight">1</span><span class="matrix-cell">0</span>
+            <span class="matrix-cell">0</span><span class="matrix-cell">0</span><span class="matrix-cell highlight">1</span>
+          </div>
+          <span class="matrix-bracket">]</span>
+          <span style="font-family:JetBrains Mono;font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem">I₃</span>
+        </div>
+      </div>
+    </div>
+    <div class="warn-box">
+      <strong>Propriété clé :</strong> A · I<sub>n</sub> = I<sub>n</sub> · A = A &nbsp;(pour toute matrice carrée A d'ordre n)
+    </div>
+
+    <h3 class="sub-title">Notation de l'élément a<sub>ij</sub></h3>
+    <p>Pour A ∈ ℝ<sup>3×4</sup>, l'élément ligne 1, colonne 3 est <strong>a<sub>13</sub></strong></p>
+    <div class="formula">a<sub>ij</sub>  ← ligne <span class="var">i</span>, colonne <span class="var">j</span></div>
+  </div>
+</div>
+
+<!-- =================== 02 ADDITION =================== -->
+<div class="section" id="s-add">
+  <h2 class="sec-title"><span class="icon">➕</span>Addition de matrices</h2>
+
+  <div class="card">
+    <div class="card-title">Règle</div>
+    <div class="def-box">
+      L'addition de deux matrices se fait <strong>élément par élément</strong> (mêmes indices).<br>
+      <strong>Condition :</strong> les deux matrices doivent avoir les <em>mêmes dimensions</em>.
+    </div>
+    <div class="formula">Si C = A + B &nbsp;alors&nbsp; <span class="var">c</span><sub>ij</sub> = <span class="var">a</span><sub>ij</sub> <span class="op">+</span> <span class="var">b</span><sub>ij</sub></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Exemple visuel</div>
+    <div class="matrix-wrap" style="align-items:center">
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:repeat(4,1fr)">
+          <span class="matrix-cell hl-orange">5</span><span class="matrix-cell">2</span><span class="matrix-cell">4</span><span class="matrix-cell">1</span>
+          <span class="matrix-cell">3</span><span class="matrix-cell">0</span><span class="matrix-cell">2</span><span class="matrix-cell">3</span>
+          <span class="matrix-cell">2</span><span class="matrix-cell">1</span><span class="matrix-cell">5</span><span class="matrix-cell">0</span>
+        </div>
+        <div class="matrix-label">Commande 1 (3×4)</div>
+      </div>
+      <span class="matrix-op">+</span>
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:repeat(4,1fr)">
+          <span class="matrix-cell hl-orange">1</span><span class="matrix-cell">3</span><span class="matrix-cell">0</span><span class="matrix-cell">2</span>
+          <span class="matrix-cell">5</span><span class="matrix-cell">2</span><span class="matrix-cell">2</span><span class="matrix-cell">4</span>
+          <span class="matrix-cell">0</span><span class="matrix-cell">1</span><span class="matrix-cell">2</span><span class="matrix-cell">0</span>
+        </div>
+        <div class="matrix-label">Commande 2 (3×4)</div>
+      </div>
+      <span class="matrix-eq">=</span>
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:repeat(4,1fr)">
+          <span class="matrix-cell highlight">6</span><span class="matrix-cell">5</span><span class="matrix-cell">4</span><span class="matrix-cell">3</span>
+          <span class="matrix-cell">8</span><span class="matrix-cell">2</span><span class="matrix-cell">4</span><span class="matrix-cell">7</span>
+          <span class="matrix-cell">2</span><span class="matrix-cell">2</span><span class="matrix-cell">7</span><span class="matrix-cell">0</span>
+        </div>
+        <div class="matrix-label">Total (3×4)</div>
+      </div>
+    </div>
+    <p style="margin-top:0.8rem">a<sub>11</sub> : <span style="color:var(--accent2)">5</span> + <span style="color:var(--accent2)">1</span> = <span style="color:var(--accent)">6</span></p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Multiplication par un scalaire</div>
+    <p>Multiplier une matrice par un réel <em>k</em> revient à multiplier <strong>tous les éléments</strong> par k.</p>
+    <div class="formula">k · A = matrice où chaque élément <span class="var">a</span><sub>ij</sub> devient <span class="var">k</span> · <span class="var">a</span><sub>ij</sub></div>
+    <div class="matrix-wrap" style="margin-top:0.8rem">
+      <span style="font-family:JetBrains Mono;color:var(--accent2);font-size:1rem">2 ·</span>
+      <div class="matrix-grid" style="grid-template-columns:1fr">
+        <span class="matrix-cell">2</span>
+        <span class="matrix-cell">1</span>
+        <span class="matrix-cell">3</span>
+        <span class="matrix-cell">4</span>
+      </div>
+      <span class="matrix-eq">=</span>
+      <div class="matrix-grid" style="grid-template-columns:1fr">
+        <span class="matrix-cell highlight">4</span>
+        <span class="matrix-cell highlight">2</span>
+        <span class="matrix-cell highlight">6</span>
+        <span class="matrix-cell highlight">8</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="danger-box">
+    <strong>⚠ Condition OBLIGATOIRE pour l'addition :</strong> A et B doivent avoir exactement les mêmes dimensions m×n. Sinon, l'addition est <span class="badge badge-red">IMPOSSIBLE</span>
+  </div>
+</div>
+
+<!-- =================== 03 MULTIPLICATION =================== -->
+<div class="section" id="s-mul">
+  <h2 class="sec-title"><span class="icon">✖️</span>Multiplication de matrices</h2>
+
+  <div class="card">
+    <div class="card-title">Règle fondamentale</div>
+    <div class="def-box">
+      Si C = A · B avec A ∈ ℝ<sup>m×p</sup> et B ∈ ℝ<sup>p×n</sup>, alors C ∈ ℝ<sup>m×n</sup><br><br>
+      <strong>c<sub>ij</sub></strong> = ligne i de A × colonne j de B (produit scalaire)
+    </div>
+    <div class="formula">c<sub>ij</sub> = <span class="var">a</span><sub>i1</sub>·<span class="var">b</span><sub>1j</sub> + <span class="var">a</span><sub>i2</sub>·<span class="var">b</span><sub>2j</sub> + … + <span class="var">a</span><sub>ip</sub>·<span class="var">b</span><sub>pj</sub></div>
+    <div class="warn-box">
+      <strong>Condition :</strong> le nombre de <em>colonnes de A</em> doit égaler le nombre de <em>lignes de B</em><br>
+      A (<span style="color:var(--accent)">m×<u>p</u></span>) · B (<span style="color:var(--accent)"><u>p</u>×n</span>) = C (<span style="color:var(--accent2)">m×n</span>)
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Exemple — Commande × Prix</div>
+    <div class="matrix-wrap" style="align-items:center">
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:repeat(4,1fr)">
+          <span class="matrix-cell hl-orange">5</span><span class="matrix-cell hl-orange">2</span><span class="matrix-cell hl-orange">4</span><span class="matrix-cell hl-orange">1</span>
+          <span class="matrix-cell">3</span><span class="matrix-cell">0</span><span class="matrix-cell">2</span><span class="matrix-cell">3</span>
+          <span class="matrix-cell">2</span><span class="matrix-cell">1</span><span class="matrix-cell">5</span><span class="matrix-cell">0</span>
+        </div>
+        <div class="matrix-label">Commandes (3×4)</div>
+      </div>
+      <span class="matrix-op">·</span>
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:1fr">
+          <span class="matrix-cell hl-orange">2</span>
+          <span class="matrix-cell hl-orange">1</span>
+          <span class="matrix-cell hl-orange">3</span>
+          <span class="matrix-cell hl-orange">4</span>
+        </div>
+        <div class="matrix-label">Prix (4×1)</div>
+      </div>
+      <span class="matrix-eq">=</span>
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:1fr">
+          <span class="matrix-cell highlight">28</span>
+          <span class="matrix-cell">24</span>
+          <span class="matrix-cell">20</span>
+        </div>
+        <div class="matrix-label">Coûts (3×1)</div>
+      </div>
+    </div>
+    <div class="formula" style="margin-top:1rem">
+      I1: 5·2 + 2·1 + 4·3 + 1·4 = 10+2+12+4 = <span class="num">28</span>€<br>
+      I2: 3·2 + 0·1 + 2·3 + 3·4 = 6+0+6+12 = <span class="num">24</span>€<br>
+      I3: 2·2 + 1·1 + 5·3 + 0·4 = 4+1+15+0 = <span class="num">20</span>€
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚠ Pièges classiques — NON-commutativité</div>
+    <div class="danger-box">
+      <strong>La multiplication matricielle N'EST PAS commutative !</strong><br>
+      En général : A·B ≠ B·A
+    </div>
+    <p>Contre-exemple : soit A = [[1,2],[3,6]] et B = [[2,4],[-1,-2]]</p>
+    <div class="two-col">
+      <div>
+        <div style="font-family:JetBrains Mono;font-size:0.8rem;color:var(--accent);margin-bottom:0.5rem">A · B =</div>
+        <div class="matrix-wrap">
+          <div class="matrix-grid" style="grid-template-columns:repeat(2,1fr)">
+            <span class="matrix-cell highlight">0</span><span class="matrix-cell highlight">0</span>
+            <span class="matrix-cell highlight">0</span><span class="matrix-cell highlight">0</span>
+          </div>
+          <span style="font-family:JetBrains Mono;font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem">= O₂</span>
+        </div>
+        <span class="badge badge-teal">Matrice nulle !</span>
+      </div>
+      <div>
+        <div style="font-family:JetBrains Mono;font-size:0.8rem;color:var(--accent2);margin-bottom:0.5rem">B · A =</div>
+        <div class="matrix-wrap">
+          <div class="matrix-grid" style="grid-template-columns:repeat(2,1fr)">
+            <span class="matrix-cell hl-orange">14</span><span class="matrix-cell hl-orange">28</span>
+            <span class="matrix-cell hl-orange">-7</span><span class="matrix-cell hl-orange">-14</span>
+          </div>
+        </div>
+        <span class="badge badge-orange">≠ O₂</span>
+      </div>
+    </div>
+    <div class="danger-box" style="margin-top:1rem">
+      <strong>Piège :</strong> A·B = 0 <em>n'implique pas</em> que A = 0 ou B = 0 !<br>
+      C'est une différence fondamentale avec les nombres réels.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Dimensions compatibles — Exercice type</div>
+    <table class="data-table">
+      <thead><tr><th>Opération</th><th>Dimensions</th><th>Possible ?</th><th>Résultat</th></tr></thead>
+      <tbody>
+        <tr><td>[1×2] · [2×1]</td><td>col(A)=2 = lig(B)=2</td><td><span class="badge badge-green">OUI</span></td><td>1×1</td></tr>
+        <tr><td>[2×1] · [1×2]</td><td>col(A)=1 = lig(B)=1</td><td><span class="badge badge-green">OUI</span></td><td>2×2</td></tr>
+        <tr><td>[3×3] · [3×3]</td><td>col(A)=3 = lig(B)=3</td><td><span class="badge badge-green">OUI</span></td><td>3×3</td></tr>
+        <tr><td>[3×2] · [3×4]</td><td>col(A)=2 ≠ lig(B)=3</td><td><span class="badge badge-red">NON</span></td><td>—</td></tr>
+        <tr><td>[3×2] · [2×4]</td><td>col(A)=2 = lig(B)=2</td><td><span class="badge badge-green">OUI</span></td><td>3×4</td></tr>
+        <tr><td>[1×4] · I₃</td><td>col(A)=4 ≠ lig(I)=3</td><td><span class="badge badge-red">NON</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="warn-box"><strong>Méthode mnémotechnique :</strong> écrire les dimensions côte à côte.<br>
+    (m×<u>p</u>)·(<u>p</u>×n) → les deux p intérieurs doivent être égaux → résultat : m×n</div>
+  </div>
+</div>
+
+<!-- =================== 04 TRANSPOSÉE =================== -->
+<div class="section" id="s-trans">
+  <h2 class="sec-title"><span class="icon">🔄</span>Transposée</h2>
+
+  <div class="card">
+    <div class="card-title">Définition</div>
+    <div class="def-box">
+      La <strong>transposée</strong> d'une matrice A, notée <strong>A<sup>T</sup></strong>, est obtenue en intervertissant lignes et colonnes.<br><br>
+      Si B = A<sup>T</sup> alors <strong>b<sub>ij</sub> = a<sub>ji</sub></strong><br><br>
+      Si A est m×n, alors A<sup>T</sup> est <strong>n×m</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Visualisation interactive</div>
+    <div class="matrix-wrap" style="align-items:flex-start">
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:repeat(4,1fr)">
+          <span class="matrix-cell hl-orange">5</span><span class="matrix-cell">2</span><span class="matrix-cell">4</span><span class="matrix-cell">1</span>
+          <span class="matrix-cell highlight">3</span><span class="matrix-cell">0</span><span class="matrix-cell">2</span><span class="matrix-cell">3</span>
+          <span class="matrix-cell" style="color:var(--accent4)">2</span><span class="matrix-cell">1</span><span class="matrix-cell">5</span><span class="matrix-cell">0</span>
+        </div>
+        <div class="matrix-label">A (3×4) — <span style="color:var(--accent2)">ligne 1</span>, <span style="color:var(--accent)">ligne 2</span>, <span style="color:var(--accent4)">ligne 3</span></div>
+      </div>
+      <span class="matrix-op" style="margin-top:0.6rem">⟹</span>
+      <div>
+        <div class="matrix-grid" style="grid-template-columns:repeat(3,1fr)">
+          <span class="matrix-cell hl-orange">5</span><span class="matrix-cell highlight">3</span><span class="matrix-cell" style="color:var(--accent4)">2</span>
+          <span class="matrix-cell hl-orange">2</span><span class="matrix-cell highlight">0</span><span class="matrix-cell" style="color:var(--accent4)">1</span>
+          <span class="matrix-cell hl-orange">4</span><span class="matrix-cell highlight">2</span><span class="matrix-cell" style="color:var(--accent4)">5</span>
+          <span class="matrix-cell hl-orange">1</span><span class="matrix-cell highlight">3</span><span class="matrix-cell" style="color:var(--accent4)">0</span>
+        </div>
+        <div class="matrix-label">A<sup>T</sup> (4×3) — colonnes = ex-lignes</div>
+      </div>
+    </div>
+    <p style="margin-top:0.8rem">Les <em>lignes</em> de A deviennent les <em>colonnes</em> de A<sup>T</sup> (et vice-versa).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Propriétés de la transposée</div>
+    <table class="data-table">
+      <thead><tr><th>Propriété</th><th>Formule</th></tr></thead>
+      <tbody>
+        <tr><td>Double transposée</td><td><span class="formula" style="display:inline;padding:0.2rem 0.5rem">(A<sup>T</sup>)<sup>T</sup> = A</span></td></tr>
+        <tr><td>Transposée d'une somme</td><td><span class="formula" style="display:inline;padding:0.2rem 0.5rem">(A + B)<sup>T</sup> = A<sup>T</sup> + B<sup>T</sup></span></td></tr>
+        <tr><td>Transposée d'un produit</td><td><span class="formula" style="display:inline;padding:0.2rem 0.5rem">(A · B)<sup>T</sup> = B<sup>T</sup> · A<sup>T</sup></span> (ordre inversé !)</td></tr>
+        <tr><td>Transposée scalaire</td><td><span class="formula" style="display:inline;padding:0.2rem 0.5rem">(k · A)<sup>T</sup> = k · A<sup>T</sup></span></td></tr>
+      </tbody>
+    </table>
+    <div class="warn-box"><strong>Note :</strong> (A·B)<sup>T</sup> = B<sup>T</sup>·A<sup>T</sup> — l'ordre s'inverse, comme pour l'inverse d'un produit !</div>
+  </div>
+</div>
+
+<!-- =================== 05 SYSTÈMES LINÉAIRES =================== -->
+<div class="section" id="s-sys">
+  <h2 class="sec-title"><span class="icon">📐</span>Modélisation de systèmes linéaires</h2>
+
+  <div class="card">
+    <div class="card-title">Forme matricielle A·X = B</div>
+    <div class="def-box">
+      Tout système de <em>m</em> équations à <em>n</em> inconnues s'écrit :<br><br>
+      <strong>A · X = B</strong><br><br>
+      — A : matrice <em>m×n</em> des <strong>coefficients</strong><br>
+      — X : matrice colonne <em>n×1</em> des <strong>inconnues</strong><br>
+      — B : matrice colonne <em>m×1</em> des <strong>termes indépendants</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Exemple complet</div>
+    <p>Un client achète 10 articles de type A (5€) et B (6€) pour 56€ au total.</p>
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Mise en équations</div>
+        <div class="formula">x + y = 10 &nbsp; (nb articles)<br>5x + 6y = 56 &nbsp; (prix total)</div>
+      </div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Forme matricielle</div>
+        <div class="matrix-wrap">
+          <div class="matrix-grid" style="grid-template-columns:repeat(2,1fr)">
+            <span class="matrix-cell hl-orange">1</span><span class="matrix-cell hl-orange">1</span>
+            <span class="matrix-cell hl-orange">5</span><span class="matrix-cell hl-orange">6</span>
+          </div>
+          <span class="matrix-op" style="margin:0 0.3rem">·</span>
+          <div class="matrix-grid" style="grid-template-columns:1fr">
+            <span class="matrix-cell highlight">x</span>
+            <span class="matrix-cell highlight">y</span>
+          </div>
+          <span class="matrix-eq" style="margin:0 0.3rem">=</span>
+          <div class="matrix-grid" style="grid-template-columns:1fr">
+            <span class="matrix-cell" style="color:var(--green)">10</span>
+            <span class="matrix-cell" style="color:var(--green)">56</span>
+          </div>
+        </div>
+        <div style="margin-top:0.5rem;display:flex;gap:1rem;flex-wrap:wrap">
+          <span class="badge badge-orange">A (2×2)</span>
+          <span class="badge badge-teal">X (2×1)</span>
+          <span class="badge badge-green">B (2×1)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Exercice interactif — construis ton système</div>
+    <div class="calc-panel">
+      <div class="calc-title">🔧 Convertisseur système → forme matricielle</div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem">Entrer les coefficients du système (2 équations, 2 inconnues)</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;margin-bottom:0.8rem">
+        <div>
+          <div class="calc-label" style="margin-bottom:0.3rem">Éq. 1 : <span style="color:var(--accent)">a</span>x + <span style="color:var(--accent)">b</span>y = <span style="color:var(--green)">c</span></div>
+          <div style="display:flex;gap:0.5rem;align-items:center">
+            <input id="a11" type="number" value="1" style="width:52px;height:38px;background:var(--code-bg);border:1px solid var(--border);border-radius:4px;color:var(--accent);font-family:JetBrains Mono;font-size:0.88rem;text-align:center;outline:none">
+            <span style="font-family:JetBrains Mono;color:var(--text-muted)">x +</span>
+            <input id="a12" type="number" value="1" style="width:52px;height:38px;background:var(--code-bg);border:1px solid var(--border);border-radius:4px;color:var(--accent);font-family:JetBrains Mono;font-size:0.88rem;text-align:center;outline:none">
+            <span style="font-family:JetBrains Mono;color:var(--text-muted)">y =</span>
+            <input id="b1" type="number" value="10" style="width:52px;height:38px;background:var(--code-bg);border:1px solid var(--border);border-radius:4px;color:var(--green);font-family:JetBrains Mono;font-size:0.88rem;text-align:center;outline:none">
+          </div>
+        </div>
+        <div>
+          <div class="calc-label" style="margin-bottom:0.3rem">Éq. 2 : <span style="color:var(--accent)">a</span>x + <span style="color:var(--accent)">b</span>y = <span style="color:var(--green)">c</span></div>
+          <div style="display:flex;gap:0.5rem;align-items:center">
+            <input id="a21" type="number" value="5" style="width:52px;height:38px;background:var(--code-bg);border:1px solid var(--border);border-radius:4px;color:var(--accent);font-family:JetBrains Mono;font-size:0.88rem;text-align:center;outline:none">
+            <span style="font-family:JetBrains Mono;color:var(--text-muted)">x +</span>
+            <input id="a22" type="number" value="6" style="width:52px;height:38px;background:var(--code-bg);border:1px solid var(--border);border-radius:4px;color:var(--accent);font-family:JetBrains Mono;font-size:0.88rem;text-align:center;outline:none">
+            <span style="font-family:JetBrains Mono;color:var(--text-muted)">y =</span>
+            <input id="b2" type="number" value="56" style="width:52px;height:38px;background:var(--code-bg);border:1px solid var(--border);border-radius:4px;color:var(--green);font-family:JetBrains Mono;font-size:0.88rem;text-align:center;outline:none">
+          </div>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="buildSystem()">Construire A·X = B</button>
+      <div class="calc-result" id="sys-result">Clique sur le bouton pour voir la forme matricielle…</div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== 06 ÉVOLUTION POPULATIONS =================== -->
+<div class="section" id="s-pop">
+  <h2 class="sec-title"><span class="icon">📊</span>Évolution de populations</h2>
+
+  <div class="card">
+    <div class="card-title">Modèle matriciel de dynamique</div>
+    <div class="def-box">
+      Pour <em>i</em> populations p₁, p₂, …, pᵢ :<br><br>
+      <strong>P<sup>(n+1)</sup> = M · P<sup>(n)</sup></strong><br><br>
+      — m<sub>jk</sub> : fraction de la population <em>p<sub>k</sub></em> qui contribue à <em>p<sub>j</sub></em> à la période suivante<br>
+      — P<sup>(n)</sup> = Mⁿ · P<sup>(0)</sup>
+    </div>
+    <div class="warn-box">
+      Une <strong>distribution stable</strong> P* vérifie : <strong>P* = M · P*</strong><br>
+      (le vecteur ne change plus d'une période à l'autre)
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Exemple complets — Deux comptes financiers</div>
+    <p>Comptes <em>a</em> et <em>b</em> : chaque année, 10% de <em>a</em> va vers <em>b</em>, 40% de <em>b</em> va vers <em>a</em>.</p>
+    <div class="formula">
+a(n+1) = <span class="num">0.90</span>·a(n) + <span class="num">0.40</span>·b(n)<br>
+b(n+1) = <span class="num">0.10</span>·a(n) + <span class="num">0.60</span>·b(n)
+    </div>
+    <div class="matrix-wrap" style="margin:1rem 0">
+      <div class="matrix-grid" style="grid-template-columns:1fr">
+        <span class="matrix-cell highlight">a(n+1)</span>
+        <span class="matrix-cell highlight">b(n+1)</span>
+      </div>
+      <span class="matrix-eq" style="margin:0 0.3rem">=</span>
+      <div class="matrix-grid" style="grid-template-columns:repeat(2,1fr)">
+        <span class="matrix-cell hl-orange">0.90</span><span class="matrix-cell hl-orange">0.40</span>
+        <span class="matrix-cell hl-orange">0.10</span><span class="matrix-cell hl-orange">0.60</span>
+      </div>
+      <span class="matrix-op" style="margin:0 0.3rem">·</span>
+      <div class="matrix-grid" style="grid-template-columns:1fr">
+        <span class="matrix-cell">a(n)</span>
+        <span class="matrix-cell">b(n)</span>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Calcul des premières périodes</h3>
+    <table class="data-table">
+      <thead><tr><th>Période</th><th>Compte a</th><th>Compte b</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>t=0 (départ)</td><td>1 000 €</td><td>10 000 €</td><td>11 000 €</td></tr>
+        <tr><td>t=1</td><td>0.9×1000 + 0.4×10000 = <strong style="color:var(--accent)">4 900 €</strong></td><td>0.1×1000 + 0.6×10000 = <strong>6 100 €</strong></td><td>11 000 €</td></tr>
+        <tr><td>t=2</td><td>0.9×4900 + 0.4×6100 = <strong style="color:var(--accent)">6 850 €</strong></td><td>0.1×4900 + 0.6×6100 = <strong>4 150 €</strong></td><td>11 000 €</td></tr>
+        <tr><td>t→∞</td><td><strong style="color:var(--green)">8 800 €</strong></td><td><strong style="color:var(--green)">2 200 €</strong></td><td>11 000 €</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-title">Trouver la distribution stable</h3>
+    <p>On cherche (x, y) tel que M·P = P, soit :</p>
+    <div class="formula">
+-0.10x + 0.40y = 0  ⟹  x = 4y<br>
+x + y = 11000  ⟹  4y + y = 11000  ⟹  y = <span class="num">2200</span><br>
+⟹  x = <span class="num">8800</span>
+    </div>
+    <div class="success-box">Distribution stable : <strong>a = 8 800 €</strong>, <strong>b = 2 200 €</strong> (rapport 4:1)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎮 Simulation interactive</div>
+    <div class="calc-panel">
+      <div class="calc-title">Simulateur de comptes financiers</div>
+      <div class="sim-controls">
+        <div class="sim-input">
+          <label>Compte a₀ (€)</label>
+          <input type="number" id="sim-a0" value="1000">
+        </div>
+        <div class="sim-input">
+          <label>Compte b₀ (€)</label>
+          <input type="number" id="sim-b0" value="10000">
+        </div>
+        <div class="sim-input">
+          <label>% a→b (/100)</label>
+          <input type="number" id="sim-pab" value="0.10" step="0.01" min="0" max="1">
+        </div>
+        <div class="sim-input">
+          <label>% b→a (/100)</label>
+          <input type="number" id="sim-pba" value="0.40" step="0.01" min="0" max="1">
+        </div>
+        <div class="sim-input">
+          <label>Nb. périodes</label>
+          <input type="number" id="sim-n" value="10" min="1" max="30">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="runSim()">▶ Simuler</button>
+      <div class="calc-result" id="sim-result" style="min-height:80px">Lance la simulation…</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Exercice d'examen — Rongeurs (Juin 2018)</div>
+    <p>Trois classes : juvéniles j, préadultes p, adultes a. On cherche la matrice A tel que P(t+1) = A·P(t).</p>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        Voir les contraintes biologiques <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <ul>
+          <li>Juvéniles ne se reproduisent pas → <strong>a₁₁ = 0</strong></li>
+          <li>Juvéniles ne peuvent pas rester juvéniles l'année suivante et ne peuvent pas devenir directement adultes → <strong>a₃₁ = 0</strong></li>
+          <li>Préadultes ne peuvent pas rester préadultes → <strong>a₂₂ = 0</strong></li>
+          <li>Adultes ne peuvent pas rajeunir → <strong>a₂₃ = 0</strong></li>
+          <li>Rongeurs vivent max 3 ans → <strong>a₃₃ = 0</strong></li>
+        </ul>
+        <div class="formula" style="margin-top:0.8rem">
+A = [ [0,  a₁₂, a₁₃],<br>
+      [a₂₁, 0,   0  ],<br>
+      [0,  a₃₂,  0  ] ]
+        </div>
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        Voir la résolution (données t=0→1) <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <p>Observations : j(0)=60, p(0)=100, a(0)=80 → j(1)=860, p(1)=18, a(1)=60</p>
+        <div class="formula">
+100·a₁₂ + 80·a₁₃ = 860  →  5a₁₂ + 4a₁₃ = 43  (1)<br>
+60·a₂₁ = 18             →  a₂₁ = 0.3<br>
+100·a₃₂ = 60            →  a₃₂ = 0.6
+        </div>
+        <p>Données t=1→2 donnent aussi : 3a₁₂ + 10a₁₃ = 79 (2)</p>
+        <div class="formula">
+Système (1),(2) → a₁₂ = <span class="num">3</span>, a₁₃ = <span class="num">7</span>
+        </div>
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAcc(this)">
+        Résultat final <span class="chevron">▼</span>
+      </div>
+      <div class="accordion-body">
+        <div class="matrix-wrap">
+          <div class="matrix-grid" style="grid-template-columns:repeat(3,1fr)">
+            <span class="matrix-cell">0</span><span class="matrix-cell highlight">3</span><span class="matrix-cell highlight">7</span>
+            <span class="matrix-cell hl-orange">0.3</span><span class="matrix-cell">0</span><span class="matrix-cell">0</span>
+            <span class="matrix-cell">0</span><span class="matrix-cell hl-orange">0.6</span><span class="matrix-cell">0</span>
+          </div>
+        </div>
+        <div class="success-box" style="margin-top:0.8rem">
+          A = [[0, 3, 7], [0.3, 0, 0], [0, 0.6, 0]]<br>
+          <em>a₁₂=3 préadultes et a₁₃=7 adultes produisent chacun des juvéniles</em>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== 07 CALCULATRICE =================== -->
+<div class="section" id="s-calc">
+  <h2 class="sec-title"><span class="icon">🔢</span>Calculatrice matricielle 2×2</h2>
+
+  <div class="card">
+    <div class="card-title">Opérations sur matrices 2×2</div>
+    <div class="calc-panel">
+      <div class="calc-title">Matrice A</div>
+      <div class="calc-row">
+        <div>
+          <div class="matrix-input-grid" style="grid-template-columns:repeat(2,1fr)" id="matA">
+            <input type="number" id="a00" value="1"><input type="number" id="a01" value="2">
+            <input type="number" id="a10" value="3"><input type="number" id="a11i" value="6">
+          </div>
+          <div class="calc-label">A (2×2)</div>
+        </div>
+      </div>
+    </div>
+    <div class="calc-panel">
+      <div class="calc-title">Matrice B</div>
+      <div class="calc-row">
+        <div>
+          <div class="matrix-input-grid" style="grid-template-columns:repeat(2,1fr)">
+            <input type="number" id="b00" value="2"><input type="number" id="b01" value="4">
+            <input type="number" id="b10" value="-1"><input type="number" id="b11i" value="-2">
+          </div>
+          <div class="calc-label">B (2×2)</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin:1rem 0">
+      <button class="calc-btn" onclick="calcOp('add')">A + B</button>
+      <button class="calc-btn" onclick="calcOp('mul')">A × B</button>
+      <button class="calc-btn secondary" onclick="calcOp('mulr')">B × A</button>
+      <button class="calc-btn secondary" onclick="calcOp('transA')">Aᵀ</button>
+      <button class="calc-btn secondary" onclick="calcOp('transB')">Bᵀ</button>
+    </div>
+    <div class="calc-result" id="calc-out">Choisis une opération…</div>
+  </div>
+</div>
+
+<!-- =================== 08 RECAP =================== -->
+<div class="section" id="s-recap">
+  <h2 class="sec-title"><span class="icon">📋</span>Récapitulatif complet</h2>
+
+  <div class="card">
+    <div class="card-title">Tableau de synthèse — Opérations</div>
+    <table class="data-table">
+      <thead><tr><th>Opération</th><th>Notation</th><th>Condition</th><th>Résultat dim.</th></tr></thead>
+      <tbody>
+        <tr><td>Addition</td><td>A + B</td><td>A et B mêmes dimensions</td><td>m×n (inchangé)</td></tr>
+        <tr><td>Mult. scalaire</td><td>k·A</td><td>Toujours possible</td><td>m×n (inchangé)</td></tr>
+        <tr><td>Multiplication</td><td>A·B</td><td>col(A) = lig(B)</td><td>m×n</td></tr>
+        <tr><td>Transposée</td><td>Aᵀ</td><td>Toujours possible</td><td>n×m (inversé)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚠ Pièges d'examen</div>
+    <div class="danger-box">
+      <strong>1. Non-commutativité :</strong> A·B ≠ B·A en général<br><br>
+      <strong>2. Zéro diviseurs :</strong> A·B = 0 n'implique pas A=0 ou B=0<br><br>
+      <strong>3. Dimensions pour multiplication :</strong> vérifier col(A) = lig(B), pas l'inverse<br><br>
+      <strong>4. Transposée d'un produit :</strong> (A·B)ᵀ = Bᵀ·Aᵀ (ordre inversé !)<br><br>
+      <strong>5. Matrice identité :</strong> A·Iₙ = A seulement si A est m×n et I est n×n
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Modèle de populations — Méthode</div>
+    <table class="data-table">
+      <thead><tr><th>Étape</th><th>Action</th><th>Formule</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Identifier les populations et transitions</td><td>m<sub>jk</sub> = part de p<sub>k</sub> → p<sub>j</sub></td></tr>
+        <tr><td>2</td><td>Écrire la matrice de transition M</td><td>P(n+1) = M·P(n)</td></tr>
+        <tr><td>3</td><td>Calculer les états futurs</td><td>P(n) = Mⁿ·P(0)</td></tr>
+        <tr><td>4</td><td>Trouver la distribution stable P*</td><td>Résoudre M·P* = P*</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Modélisation A·X = B — Méthode</div>
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-content"><div class="step-title">Nommer les inconnues</div>x, y, z… une variable par type</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-content"><div class="step-title">Écrire le système d'équations</div>m équations pour n inconnues</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-content"><div class="step-title">Extraire A, X, B</div>A = coefficients, X = inconnues, B = termes libres</div>
+    </div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-content"><div class="step-title">Vérifier les dimensions</div>A (m×n) · X (n×1) = B (m×1)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Vocabulaire clé</div>
+    <div class="tag-row">
+      <span class="badge badge-teal">Matrice m×n</span>
+      <span class="badge badge-orange">a_ij = ligne i, col j</span>
+      <span class="badge badge-blue">Matrice carrée</span>
+      <span class="badge badge-green">Matrice identité Iₙ</span>
+      <span class="badge badge-red">Non-commutative</span>
+      <span class="badge badge-teal">Transposée Aᵀ</span>
+      <span class="badge badge-orange">Distribution stable</span>
+      <span class="badge badge-blue">A·X = B</span>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Maths 2 — Les Matrices · HE Vinci · Synthèse de révision · Chapitre 4/8
+</footer>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+function buildSystem() {
+  const a11 = parseFloat(document.getElementById('a11').value);
+  const a12 = parseFloat(document.getElementById('a12').value);
+  const a21 = parseFloat(document.getElementById('a21').value);
+  const a22 = parseFloat(document.getElementById('a22').value);
+  const b1  = parseFloat(document.getElementById('b1').value);
+  const b2  = parseFloat(document.getElementById('b2').value);
+  const r = document.getElementById('sys-result');
+  r.innerHTML = `Système :\n${a11}x + ${a12}y = ${b1}\n${a21}x + ${a22}y = ${b2}\n\nForme matricielle A·X = B :\n\nA = [ [${a11}, ${a12}], [${a21}, ${a22}] ]  (2×2)\nX = [ x, y ]ᵀ  (2×1)\nB = [ ${b1}, ${b2} ]ᵀ  (2×1)`;
+}
+
+function runSim() {
+  let a = parseFloat(document.getElementById('sim-a0').value);
+  let b = parseFloat(document.getElementById('sim-b0').value);
+  const pab = parseFloat(document.getElementById('sim-pab').value);
+  const pba = parseFloat(document.getElementById('sim-pba').value);
+  const n = parseInt(document.getElementById('sim-n').value);
+  let lines = [`t=0 : a = ${a.toFixed(0)}€, b = ${b.toFixed(0)}€`];
+  for(let i=1;i<=n;i++){
+    const na = (1-pab)*a + pba*b;
+    const nb = pab*a + (1-pba)*b;
+    a=na; b=nb;
+    lines.push(`t=${i} : a = ${a.toFixed(1)}€, b = ${b.toFixed(1)}€  (total: ${(a+b).toFixed(0)}€)`);
+  }
+  document.getElementById('sim-result').textContent = lines.join('\n');
+}
+
+function getMatrix(ids) {
+  return ids.map(id => parseFloat(document.getElementById(id).value));
+}
+function fmtMatrix(m) {
+  return `[ ${m[0]}  ${m[1]} ]\n[ ${m[2]}  ${m[3]} ]`;
+}
+function calcOp(op) {
+  const A = getMatrix(['a00','a01','a10','a11i']);
+  const B = getMatrix(['b00','b01','b10','b11i']);
+  let out = '';
+  if(op === 'add') {
+    const C = A.map((v,i) => v + B[i]);
+    out = `A + B =\n${fmtMatrix(C)}`;
+  } else if(op === 'mul') {
+    const C = [
+      A[0]*B[0]+A[1]*B[2], A[0]*B[1]+A[1]*B[3],
+      A[2]*B[0]+A[3]*B[2], A[2]*B[1]+A[3]*B[3]
+    ];
+    out = `A × B =\n${fmtMatrix(C)}\n\nDétail c₁₁ = ${A[0]}×${B[0]} + ${A[1]}×${B[2]} = ${C[0]}\n        c₁₂ = ${A[0]}×${B[1]} + ${A[1]}×${B[3]} = ${C[1]}`;
+  } else if(op === 'mulr') {
+    const C = [
+      B[0]*A[0]+B[1]*A[2], B[0]*A[1]+B[1]*A[3],
+      B[2]*A[0]+B[3]*A[2], B[2]*A[1]+B[3]*A[3]
+    ];
+    out = `B × A =\n${fmtMatrix(C)}\n\n(Rappel : A×B ≠ B×A en général !)`;
+  } else if(op === 'transA') {
+    const C = [A[0],A[2],A[1],A[3]];
+    out = `Aᵀ =\n${fmtMatrix(C)}`;
+  } else if(op === 'transB') {
+    const C = [B[0],B[2],B[1],B[3]];
+    out = `Bᵀ =\n${fmtMatrix(C)}`;
+  }
+  document.getElementById('calc-out').textContent = out;
+}
+</script>
+</body>
+</html>
